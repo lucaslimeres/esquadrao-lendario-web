@@ -8,7 +8,13 @@ import type {
   ElencoAdmin,
   ElencoDetalhe,
   EquipeAdmin,
+  FonteImportacao,
+  Importacao,
+  ImportacaoDetalhe,
+  ItemImportacao,
+  DadosRascunho,
   JogadorAdmin,
+  NovaImportacao,
   Pagina,
   ResultadoImportacao,
   UsuarioAdmin,
@@ -86,4 +92,13 @@ export const adminApi = {
   criarJogador: (elencoId: string, d: Omit<JogadorAdmin, "id" | "elencoId">) => adminRequest<JogadorAdmin>("POST", `/admin/elencos/${elencoId}/jogadores`, d),
   atualizarJogador: (id: string, d: Partial<Omit<JogadorAdmin, "id" | "elencoId">>) => adminRequest<JogadorAdmin>("PATCH", `/admin/jogadores/${id}`, d),
   excluirJogador: (id: string) => adminRequest<null>("DELETE", `/admin/jogadores/${id}`),
+
+  fontesImportacao: () => adminRequest<{ campeoes: FonteImportacao[]; elencos: FonteImportacao[] }>("GET", "/admin/importacoes/fontes"),
+  importacoes: (competicaoId: string) => adminRequest<Importacao[]>("GET", `/admin/importacoes${qs({ competicaoId })}`),
+  importacao: (id: string) => adminRequest<ImportacaoDetalhe>("GET", `/admin/importacoes/${id}`),
+  criarImportacao: (d: NovaImportacao) => adminRequest<Importacao>("POST", "/admin/importacoes", d),
+  publicarImportacao: (id: string) =>
+    adminRequest<{ publicados: number[]; falhas: Array<{ temporada: number; erro: string }> }>("POST", `/admin/importacoes/${id}/publicar`),
+  editarItemImportacao: (id: string, dados: DadosRascunho) => adminRequest<ItemImportacao>("PATCH", `/admin/importacoes/itens/${id}`, dados),
+  acaoItemImportacao: (id: string, acao: "publicar" | "descartar" | "reabrir") => adminRequest<ItemImportacao>("POST", `/admin/importacoes/itens/${id}/${acao}`),
 };

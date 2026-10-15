@@ -24,6 +24,7 @@ import { Route as AdminPainelUsuariosRouteImport } from './routes/admin/_painel/
 import { Route as AdminPainelBaseIndexRouteImport } from './routes/admin/_painel/base/index'
 import { Route as AdminPainelBaseCompeticoesIdRouteImport } from './routes/admin/_painel/base/competicoes.$id'
 import { Route as AdminPainelBaseElencosIdRouteImport } from './routes/admin/_painel/base/elencos.$id'
+import { Route as AdminPainelBaseImportacoesIdRouteImport } from './routes/admin/_painel/base/importacoes.$id'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -103,6 +104,12 @@ const AdminPainelBaseElencosIdRoute =
     path: '/base/elencos/$id',
     getParentRoute: () => AdminPainelRoute,
   } as any)
+const AdminPainelBaseImportacoesIdRoute =
+  AdminPainelBaseImportacoesIdRouteImport.update({
+    id: '/base/importacoes/$id',
+    path: '/base/importacoes/$id',
+    getParentRoute: () => AdminPainelRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -120,6 +127,7 @@ export interface FileRoutesByFullPath {
   '/admin/base/': typeof AdminPainelBaseIndexRoute
   '/admin/base/competicoes/$id': typeof AdminPainelBaseCompeticoesIdRoute
   '/admin/base/elencos/$id': typeof AdminPainelBaseElencosIdRoute
+  '/admin/base/importacoes/$id': typeof AdminPainelBaseImportacoesIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -136,6 +144,7 @@ export interface FileRoutesByTo {
   '/admin/base': typeof AdminPainelBaseIndexRoute
   '/admin/base/competicoes/$id': typeof AdminPainelBaseCompeticoesIdRoute
   '/admin/base/elencos/$id': typeof AdminPainelBaseElencosIdRoute
+  '/admin/base/importacoes/$id': typeof AdminPainelBaseImportacoesIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -154,6 +163,7 @@ export interface FileRoutesById {
   '/admin/_painel/base/': typeof AdminPainelBaseIndexRoute
   '/admin/_painel/base/competicoes/$id': typeof AdminPainelBaseCompeticoesIdRoute
   '/admin/_painel/base/elencos/$id': typeof AdminPainelBaseElencosIdRoute
+  '/admin/_painel/base/importacoes/$id': typeof AdminPainelBaseImportacoesIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -173,6 +183,7 @@ export interface FileRouteTypes {
     | '/admin/base/'
     | '/admin/base/competicoes/$id'
     | '/admin/base/elencos/$id'
+    | '/admin/base/importacoes/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -189,6 +200,7 @@ export interface FileRouteTypes {
     | '/admin/base'
     | '/admin/base/competicoes/$id'
     | '/admin/base/elencos/$id'
+    | '/admin/base/importacoes/$id'
   id:
     | '__root__'
     | '/'
@@ -206,6 +218,7 @@ export interface FileRouteTypes {
     | '/admin/_painel/base/'
     | '/admin/_painel/base/competicoes/$id'
     | '/admin/_painel/base/elencos/$id'
+    | '/admin/_painel/base/importacoes/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -327,6 +340,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminPainelBaseElencosIdRouteImport
       parentRoute: typeof AdminPainelRoute
     }
+    '/admin/_painel/base/importacoes/$id': {
+      id: '/admin/_painel/base/importacoes/$id'
+      path: '/base/importacoes/$id'
+      fullPath: '/admin/base/importacoes/$id'
+      preLoaderRoute: typeof AdminPainelBaseImportacoesIdRouteImport
+      parentRoute: typeof AdminPainelRoute
+    }
   }
 }
 
@@ -337,6 +357,7 @@ interface AdminPainelRouteChildren {
   AdminPainelBaseIndexRoute: typeof AdminPainelBaseIndexRoute
   AdminPainelBaseCompeticoesIdRoute: typeof AdminPainelBaseCompeticoesIdRoute
   AdminPainelBaseElencosIdRoute: typeof AdminPainelBaseElencosIdRoute
+  AdminPainelBaseImportacoesIdRoute: typeof AdminPainelBaseImportacoesIdRoute
 }
 
 const AdminPainelRouteChildren: AdminPainelRouteChildren = {
@@ -346,6 +367,7 @@ const AdminPainelRouteChildren: AdminPainelRouteChildren = {
   AdminPainelBaseIndexRoute: AdminPainelBaseIndexRoute,
   AdminPainelBaseCompeticoesIdRoute: AdminPainelBaseCompeticoesIdRoute,
   AdminPainelBaseElencosIdRoute: AdminPainelBaseElencosIdRoute,
+  AdminPainelBaseImportacoesIdRoute: AdminPainelBaseImportacoesIdRoute,
 }
 
 const AdminPainelRouteWithChildren = AdminPainelRoute._addFileChildren(
