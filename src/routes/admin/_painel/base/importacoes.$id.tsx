@@ -59,7 +59,7 @@ function ImportacaoPage() {
         }
       />
       <div className="mb-6 grid grid-cols-2 lg:grid-cols-4">
-        <Numero rotulo="Situação" valor={ROTULO_STATUS_IMPORTACAO[imp.status]} destaque={imp.status === "concluida"} detalhe={`Página: ${imp.paginaWikipedia}`} />
+        <Numero rotulo="Situação" valor={ROTULO_STATUS_IMPORTACAO[imp.status]} destaque={imp.status === "concluida"} detalhe={imp.fontesCampeoes.includes("highlightly") || imp.fontesElencos.includes("highlightly") ? `Liga: ${imp.ligaHighlightly ?? "—"}` : `Página: ${imp.paginaWikipedia}`} />
         <Numero rotulo="Temporadas" valor={imp.totalItens ? `${imp.itensProcessados}/${imp.totalItens}` : "—"} detalhe="processadas" />
         <Numero rotulo="Para revisar" valor={rascunhos} detalhe={`${imp.itensPorStatus.sem_dados ?? 0} sem elenco`} />
         <Numero rotulo="Publicados" valor={imp.itensPorStatus.publicado ?? 0} detalhe={`${imp.itensPorStatus.descartado ?? 0} descartados`} />

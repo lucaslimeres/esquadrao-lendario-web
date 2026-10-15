@@ -18,7 +18,10 @@ describe("NovaImportacaoDialogo", () => {
   it("manda anos, fontes na ordem escolhida e a página", async () => {
     const fetch = vi.fn(async (url: string, init?: RequestInit) => {
       if (url.endsWith("/admin/importacoes/fontes")) {
-        return resposta({ campeoes: [{ id: "wikidata", nome: "Wikidata" }], elencos: [{ id: "wikipedia-en", nome: "Wikipedia (inglês)" }, { id: "wikidata", nome: "Wikidata" }] });
+        return resposta({
+          campeoes: [{ id: "wikidata", nome: "Wikidata", indisponivel: null }],
+          elencos: [{ id: "wikipedia-en", nome: "Wikipedia (inglês)", indisponivel: null }, { id: "wikidata", nome: "Wikidata", indisponivel: null }],
+        });
       }
       return resposta({ id: "imp-1", ...JSON.parse(String(init?.body)) }, 202);
     });
@@ -37,6 +40,29 @@ describe("NovaImportacaoDialogo", () => {
     await waitFor(() => expect(aoCriar).toHaveBeenCalled());
     const envio = JSON.parse(String(fetch.mock.calls.at(-1)![1]!.body));
     expect(envio).toMatchObject({ competicaoId: "c1", anoInicio: 2000, fontesCampeoes: ["wikidata"], fontesElencos: ["wikidata", "wikipedia-en"], paginaWikipedia: "Copa Libertadores" });
+  });
+});
+
+describe("NovaImportacaoDialogo com a Highlightly", () => {
+  it("fonte sem chave aparece desmarcada com o motivo; com chave, pede o nome da liga", async () => {
+    const fetch = vi.fn(async (url: string, init?: RequestInit) => {
+      if (url.endsWith("/admin/importacoes/fontes")) {
+        return resposta({
+          campeoes: [{ id: "wikidata", nome: "Wikidata", indisponivel: null }, { id: "highlightly", nome: "Highlightly", indisponivel: null }],
+          elencos: [{ id: "highlightly", nome: "Highlightly", indisponivel: "Configure HIGHLIGHTLY_API_KEY na API para usar esta fonte." }],
+        });
+      }
+      return resposta({ id: "imp-2", ...JSON.parse(String(init?.body)) }, 202);
+    });
+    vi.stubGlobal("fetch", fetch);
+    const aoCriar = vi.fn();
+    comQuery(<NovaImportacaoDialogo competicao={{ id: "c1", nome: "Libertadores", slug: "libertadores" } as CompeticaoAdmin} aoFechar={() => {}} aoCriar={aoCriar} />);
+
+    expect(await screen.findByText("Configure HIGHLIGHTLY_API_KEY na API para usar esta fonte.")).toBeInTheDocument();
+    const checkboxes = screen.getAllByRole("checkbox", { name: /Highlightly/ });
+    expect(checkboxes.at(-1)).toBeDisabled();
+    await userEvent.type(screen.getByLabelText(/Nome da liga na Highlightly/), "CONMEBOL Libertadores");
+    expect(screen.getByRole("button", { name: /Começar importação/ })).toBeDisabled(); // no elenco source left
   });
 });
 

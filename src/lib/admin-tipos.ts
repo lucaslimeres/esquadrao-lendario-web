@@ -132,6 +132,8 @@ export interface ResultadoImportacao {
 export interface FonteImportacao {
   id: string;
   nome: string;
+  /** Why it can't be used now (e.g. Highlightly without a key); null = available. */
+  indisponivel: string | null;
 }
 
 export type StatusImportacao = "pendente" | "processando" | "concluida" | "falhou";
@@ -143,6 +145,7 @@ export interface Importacao {
   fontesCampeoes: string[];
   fontesElencos: string[];
   paginaWikipedia: string;
+  ligaHighlightly: string | null;
   anoInicio: number;
   anoFim: number;
   status: StatusImportacao;
@@ -183,4 +186,5 @@ export interface NovaImportacao {
   fontesCampeoes: string[];
   fontesElencos: string[];
   paginaWikipedia?: string;
+  ligaHighlightly?: string;
 }
