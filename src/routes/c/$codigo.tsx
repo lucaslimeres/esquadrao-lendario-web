@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
+import { EspacoPublicidade } from "@/components/anuncio";
 import { Campo } from "@/components/jogo/campo";
 import { Pagina, TituloPagina } from "@/components/layout";
 import { Button } from "@/components/ui/button";
@@ -58,6 +59,7 @@ function CampanhaCompartilhada() {
           </div>
         </div>
       </div>
+      <EspacoPublicidade posicao="compartilhada" className="mt-12" />
     </Pagina>
   );
 }

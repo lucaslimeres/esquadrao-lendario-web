@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as CadastroRouteImport } from './routes/cadastro'
 import { Route as EntrarRouteImport } from './routes/entrar'
 import { Route as MinhasCampanhasRouteImport } from './routes/minhas-campanhas'
+import { Route as PrivacidadeRouteImport } from './routes/privacidade'
 import { Route as AdminPainelRouteImport } from './routes/admin/_painel'
 import { Route as AdminLoginRouteImport } from './routes/admin/login'
 import { Route as CCodigoRouteImport } from './routes/c/$codigo'
@@ -45,6 +46,11 @@ const EntrarRoute = EntrarRouteImport.update({
 const MinhasCampanhasRoute = MinhasCampanhasRouteImport.update({
   id: '/minhas-campanhas',
   path: '/minhas-campanhas',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivacidadeRoute = PrivacidadeRouteImport.update({
+  id: '/privacidade',
+  path: '/privacidade',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminPainelRoute = AdminPainelRouteImport.update({
@@ -122,6 +128,7 @@ export interface FileRoutesByFullPath {
   '/cadastro': typeof CadastroRoute
   '/entrar': typeof EntrarRoute
   '/minhas-campanhas': typeof MinhasCampanhasRoute
+  '/privacidade': typeof PrivacidadeRoute
   '/admin': typeof AdminPainelRouteWithChildren
   '/admin/login': typeof AdminLoginRoute
   '/c/$codigo': typeof CCodigoRoute
@@ -141,6 +148,7 @@ export interface FileRoutesByTo {
   '/cadastro': typeof CadastroRoute
   '/entrar': typeof EntrarRoute
   '/minhas-campanhas': typeof MinhasCampanhasRoute
+  '/privacidade': typeof PrivacidadeRoute
   '/admin/login': typeof AdminLoginRoute
   '/c/$codigo': typeof CCodigoRoute
   '/jogar/$id': typeof JogarIdRoute
@@ -160,6 +168,7 @@ export interface FileRoutesById {
   '/cadastro': typeof CadastroRoute
   '/entrar': typeof EntrarRoute
   '/minhas-campanhas': typeof MinhasCampanhasRoute
+  '/privacidade': typeof PrivacidadeRoute
   '/admin/_painel': typeof AdminPainelRouteWithChildren
   '/admin/login': typeof AdminLoginRoute
   '/c/$codigo': typeof CCodigoRoute
@@ -181,6 +190,7 @@ export interface FileRouteTypes {
     | '/cadastro'
     | '/entrar'
     | '/minhas-campanhas'
+    | '/privacidade'
     | '/admin'
     | '/admin/login'
     | '/c/$codigo'
@@ -200,6 +210,7 @@ export interface FileRouteTypes {
     | '/cadastro'
     | '/entrar'
     | '/minhas-campanhas'
+    | '/privacidade'
     | '/admin/login'
     | '/c/$codigo'
     | '/jogar/$id'
@@ -218,6 +229,7 @@ export interface FileRouteTypes {
     | '/cadastro'
     | '/entrar'
     | '/minhas-campanhas'
+    | '/privacidade'
     | '/admin/_painel'
     | '/admin/login'
     | '/c/$codigo'
@@ -238,6 +250,7 @@ export interface RootRouteChildren {
   CadastroRoute: typeof CadastroRoute
   EntrarRoute: typeof EntrarRoute
   MinhasCampanhasRoute: typeof MinhasCampanhasRoute
+  PrivacidadeRoute: typeof PrivacidadeRoute
   AdminPainelRoute: typeof AdminPainelRouteWithChildren
   AdminLoginRoute: typeof AdminLoginRoute
   CCodigoRoute: typeof CCodigoRoute
@@ -273,6 +286,13 @@ declare module '@tanstack/react-router' {
       path: '/minhas-campanhas'
       fullPath: '/minhas-campanhas'
       preLoaderRoute: typeof MinhasCampanhasRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacidade': {
+      id: '/privacidade'
+      path: '/privacidade'
+      fullPath: '/privacidade'
+      preLoaderRoute: typeof PrivacidadeRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin/_painel': {
@@ -400,6 +420,7 @@ const rootRouteChildren: RootRouteChildren = {
   CadastroRoute: CadastroRoute,
   EntrarRoute: EntrarRoute,
   MinhasCampanhasRoute: MinhasCampanhasRoute,
+  PrivacidadeRoute: PrivacidadeRoute,
   AdminPainelRoute: AdminPainelRouteWithChildren,
   AdminLoginRoute: AdminLoginRoute,
   CCodigoRoute: CCodigoRoute,
