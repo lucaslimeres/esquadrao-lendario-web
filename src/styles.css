@@ -1,0 +1,77 @@
+@import "tailwindcss";
+
+/*
+ * Esquadrão Lendário — tokens da marca (marca/tokens no repo de contexto).
+ * Prancheta tática: tinta sobre papel, réguas de 2px, cantos retos, verde só no que importa.
+ */
+@theme {
+  --font-sans: "Archivo", system-ui, sans-serif;
+
+  --color-verde: #1f5f3f;
+  --color-verde-claro: #5aa376;
+  --color-verde-nevoa: #c9dfd1;
+  --color-verde-100: #e6f0ea;
+  --color-verde-800: #123a27;
+  --color-tinta: #201e1d;
+  --color-papel: #f3f2f2;
+  --color-gramado: #eae9e9;
+  --color-neutro-300: #d7d3d3;
+  --color-neutro-400: #bab6b6;
+  --color-neutro-500: #9b9797;
+  --color-neutro-600: #7d7979;
+  --color-neutro-700: #605d5d;
+  --color-neutro-800: #444141;
+
+  /* Raio zero em tudo. */
+  --radius-xs: 0;
+  --radius-sm: 0;
+  --radius-md: 0;
+  --radius-lg: 0;
+  --radius-xl: 0;
+  --radius-2xl: 0;
+  --radius-full: 0;
+}
+
+@layer base {
+  html {
+    background: var(--color-papel);
+    color: var(--color-tinta);
+    -webkit-font-smoothing: antialiased;
+  }
+  body {
+    min-height: 100dvh;
+    font-size: 16px;
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-verde);
+    outline-offset: 2px;
+  }
+}
+
+@utility font-display {
+  font-weight: 800;
+  font-stretch: 125%;
+  letter-spacing: -0.02em;
+  line-height: 0.95;
+}
+
+@utility rotulo {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+@utility regua {
+  border-color: var(--color-tinta);
+  border-width: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

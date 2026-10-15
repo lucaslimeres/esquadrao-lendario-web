@@ -1,0 +1,83 @@
+import { ArrowRight, FastForward } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Placar } from "@/components/jogo/placar";
+import { Button } from "@/components/ui/button";
+import { fraseFinal } from "@/lib/jogo";
+import type { PartidaCampanha } from "@/lib/tipos";
+import { cn } from "@/lib/utils";
+
+const MS_POR_MINUTO = 45;
+const MS_POR_PENALTI = 500;
+
+function prefereSemAnimacao() {
+  return typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+}
+
+/** Minute-by-minute reveal of a match that the API already simulated. */
+export function PartidaAoVivo({ partida, onFim }: { partida: PartidaCampanha; onFim: () => void }) {
+  const duracao = partida.prorrogacao ? 120 : 90;
+  const totalPenaltis = partida.penaltis?.length ?? 0;
+  // Timeline: minutes 0…duracao, then one step per penalty kick.
+  const fim = duracao + totalPenaltis;
+  const [passo, setPasso] = useState(() => (prefereSemAnimacao() ? fim : 0));
+
+  useEffect(() => {
+    if (passo >= fim) return;
+    const atraso = passo < duracao ? MS_POR_MINUTO : MS_POR_PENALTI;
+    const t = window.setTimeout(() => setPasso((p) => p + 1), atraso);
+    return () => window.clearTimeout(t);
+  }, [passo, fim, duracao]);
+
+  const minuto = Math.min(passo, duracao);
+  const gols = partida.gols.filter((g) => g.minuto <= minuto);
+  const penaltis = (partida.penaltis ?? []).slice(0, Math.max(0, passo - duracao));
+  const terminou = passo >= fim;
+
+  return (
+    <section aria-live="polite" className="mx-auto max-w-2xl">
+      <Placar
+        partida={partida}
+        golsPro={gols.filter((g) => g.doSeuTime).length}
+        golsContra={gols.filter((g) => !g.doSeuTime).length}
+        minuto={terminou ? null : minuto}
+      />
+      <ol className="mt-4 space-y-2">
+        {gols.map((g, i) => (
+          <li key={i} className={cn("flex items-center gap-3 border-l-4 bg-white p-3", g.doSeuTime ? "border-verde" : "border-tinta")}>
+            <span className="w-10 font-display text-lg">{g.minuto}'</span>
+            <span className="font-semibold">{g.jogadorNome}</span>
+            <span className="ml-auto text-sm text-neutro-700">{g.doSeuTime ? "Seu esquadrão" : (partida.adversario?.rotulo ?? "Adversário")}</span>
+          </li>
+        ))}
+        {minuto > 90 && minuto <= duracao && !terminou && <li className="rotulo text-neutro-700">Prorrogação</li>}
+      </ol>
+      {penaltis.length > 0 && (
+        <div className="mt-6">
+          <p className="rotulo mb-2">Pênaltis</p>
+          <ol className="grid grid-cols-2 gap-2 text-sm">
+            {penaltis.map((c, i) => (
+              <li key={i} className={cn("flex justify-between bg-white p-2", !c.doSeuTime && "col-start-2")}>
+                <span className="truncate">{c.jogadorNome}</span>
+                <span className="font-bold">{c.convertido ? "Gol" : "Perdeu"}</span>
+              </li>
+            ))}
+          </ol>
+        </div>
+      )}
+      <div className="mt-6">
+        {terminou ? (
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <p className="font-display text-3xl">{fraseFinal(partida)}</p>
+            <Button onClick={onFim} className="sm:w-56">
+              Continuar <ArrowRight aria-hidden />
+            </Button>
+          </div>
+        ) : (
+          <Button variant="link" onClick={() => setPasso(fim)}>
+            Pular <FastForward aria-hidden />
+          </Button>
+        )}
+      </div>
+    </section>
+  );
+}
