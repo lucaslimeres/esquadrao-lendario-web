@@ -11,13 +11,15 @@ export interface Admin {
 }
 
 export interface Dashboard {
-  usuarios: { contas: number; convidados: number; inativos: number; contasNovas7d: number };
+  usuarios: { contas: number; inativos: number; contasNovas7d: number };
   campanhas: {
     total: number;
     emAndamento: number;
     campeas: number;
     eliminadas: number;
     ultimos7d: number;
+    /** Played without an account (guests are not stored as users). */
+    semConta: number;
     taxaTitulo: number | null;
     porFormacao: Array<{ formacao: string; total: number }>;
   };
@@ -41,7 +43,6 @@ export interface UsuarioAdmin {
   id: string;
   nome: string | null;
   email: string | null;
-  convidado: boolean;
   ativo: boolean;
   createdAt: string;
   totalCampanhas: number;
