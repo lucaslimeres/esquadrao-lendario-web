@@ -87,4 +87,7 @@ export const api = {
   proximaPartida: (id: string) =>
     request<{ partida: Campanha["partidas"][number]; campanha: Campanha }>(`/campanhas/${id}/proxima-partida`, { method: "POST" }),
   compartilhada: (codigo: string) => request<CampanhaPublica>(`/compartilhar/${codigo}`, { autenticado: false }),
+  /** "Fale conosco". `site` is the hidden honeypot field (bots fill it, people don't). */
+  enviarContato: (dados: { nome: string; email: string; assunto: string; mensagem: string; site?: string }) =>
+    request<{ recebida: true }>("/contato", { method: "POST", body: dados, autenticado: false }),
 };

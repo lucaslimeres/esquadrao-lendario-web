@@ -6,6 +6,7 @@ import { Campo } from "@/components/jogo/campo";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Carregando, Erro } from "@/components/ui/estados";
+import { FormFaleConosco } from "@/features/fale-conosco";
 import { api } from "@/lib/api";
 import { config } from "@/lib/config";
 import type { Posicao, VagaCampanha } from "@/lib/tipos";
@@ -25,6 +26,7 @@ function LandingPage() {
       <Regras />
       <App />
       <ComOuSemConta />
+      <FaleConosco />
       <ChamadaFinal />
     </main>
   );
@@ -270,6 +272,20 @@ function ComOuSemConta() {
             </Link>
           </Button>
         </div>
+      </div>
+    </Secao>
+  );
+}
+
+function FaleConosco() {
+  return (
+    <Secao id="fale-conosco" rotulo="Fale conosco" titulo="Sugestão, dúvida ou time faltando?">
+      <div className="grid gap-8 lg:grid-cols-[1fr_2fr]">
+        <p className="text-lg text-neutro-800">
+          Manda pra gente: competição que você quer ver, campeão que ficou de fora, jogador com overall injusto ou qualquer problema no jogo. A
+          resposta chega no seu e-mail.
+        </p>
+        <FormFaleConosco />
       </div>
     </Secao>
   );

@@ -24,10 +24,11 @@ function Dashboard() {
 
       <section className="mb-8">
         <h2 className="rotulo mb-3">Jogadores</h2>
-        <div className="grid grid-cols-2 lg:grid-cols-3">
+        <div className="grid grid-cols-2 lg:grid-cols-4">
           <Numero rotulo="Contas" valor={fmt.format(usuarios.contas)} detalhe={`+${usuarios.contasNovas7d} nos últimos 7 dias`} />
           <Numero rotulo="Desativados" valor={fmt.format(usuarios.inativos)} />
           <Numero rotulo="Admins ativos" valor={data.admins.ativos} />
+          <Numero rotulo="Mensagens novas" valor={fmt.format(data.mensagens.novas)} detalhe="Fale conosco" destaque={data.mensagens.novas > 0} />
         </div>
       </section>
 
