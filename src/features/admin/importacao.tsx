@@ -126,7 +126,7 @@ export function NovaImportacaoDialogo({ competicao, aoFechar, aoCriar }: { compe
           </CampoForm>
         )}
         <p className="text-xs text-neutro-700">
-          Nenhuma fonte tem overall: o rascunho sugere um (60–88) por titular, reserva, gols e braçadeira na final. Revise antes de publicar. O link de
+          Nenhuma fonte tem overall: o rascunho sugere um (75–97): titular da final começa em 86, e gol e braçadeira na final somam pontos. Revise antes de publicar. O link de
           cada fonte fica guardado no rascunho (os dados da Wikipedia são CC BY-SA).
         </p>
         <Button type="submit" className="w-full" disabled={criar.isPending || !fontes.data || escolhidasCampeoes.length === 0 || escolhidasElencos.length === 0}>
