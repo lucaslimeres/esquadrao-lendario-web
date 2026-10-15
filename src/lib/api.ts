@@ -13,6 +13,11 @@ export class ApiError extends Error {
   }
 }
 
+/** Message to show for any error: the API's pt-BR text, or a fallback. */
+export function mensagemErro(erro: unknown, padrao = "Algo deu errado."): string {
+  return erro instanceof ApiError ? erro.message : padrao;
+}
+
 type TokenProvider = () => string | null;
 type UnauthorizedHandler = () => void;
 

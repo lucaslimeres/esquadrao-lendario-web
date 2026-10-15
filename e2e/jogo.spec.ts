@@ -43,6 +43,7 @@ test("landing explica o jogo e aponta para o app e para o navegador", async ({ p
 
 test("sem conta: joga a campanha inteira e nada fica no histórico", async ({ page }) => {
   await page.goto("/jogar");
+  await page.getByRole("radio", { name: /^Libertadores/ }).click();
   await page.getByRole("button", { name: /Começar a montar o time/ }).click();
   await expect(page.getByText("Jogando sem conta.")).toBeVisible();
   await montarTime(page);
@@ -58,6 +59,7 @@ test("sem conta: joga a campanha inteira e nada fica no histórico", async ({ pa
 
 test("campanha sem conta não abre em outra aba", async ({ page, context }) => {
   await page.goto("/jogar");
+  await page.getByRole("radio", { name: /^Libertadores/ }).click();
   await page.getByRole("button", { name: /Começar a montar o time/ }).click();
   await expect(page.getByText("Que time vai cair?")).toBeVisible();
   // A new tab has its own sessionStorage: the guest session (and its game) doesn't follow.
@@ -68,6 +70,7 @@ test("campanha sem conta não abre em outra aba", async ({ page, context }) => {
 
 test("criar conta no meio da partida leva a campanha para o histórico", async ({ page }) => {
   await page.goto("/jogar");
+  await page.getByRole("radio", { name: /^Libertadores/ }).click();
   await page.getByRole("button", { name: /Começar a montar o time/ }).click();
   await page.getByRole("button", { name: /Sorteia aí!/ }).click();
   await page.locator("li[data-jogador] button:not([disabled])").first().click();
