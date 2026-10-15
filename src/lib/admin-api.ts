@@ -64,7 +64,7 @@ export const adminApi = {
     adminRequest<Admin>("PATCH", `/admin/administradores/${id}`, d),
   excluirAdmin: (id: string) => adminRequest<null>("DELETE", `/admin/administradores/${id}`),
 
-  usuarios: (f: { busca?: string; tipo?: string; ativo?: string; pagina?: number; porPagina?: number }) =>
+  usuarios: (f: { busca?: string; ativo?: string; pagina?: number; porPagina?: number }) =>
     adminRequest<Pagina<UsuarioAdmin>>("GET", `/admin/usuarios${qs(f)}`),
   usuario: (id: string) => adminRequest<UsuarioDetalhe>("GET", `/admin/usuarios/${id}`),
   criarUsuario: (d: { nome: string; email: string; senha: string }) => adminRequest<UsuarioAdmin>("POST", "/admin/usuarios", d),
