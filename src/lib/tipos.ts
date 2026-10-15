@@ -1,6 +1,6 @@
 // Contratos da API (esquadrao-lendario-api). A API calcula tudo; aqui só tipamos o que ela devolve.
 
-export type Posicao = "GOL" | "ZAG" | "LAT" | "VOL" | "MEI" | "PON" | "ATA";
+export type Posicao = "GK" | "CB" | "LB" | "RB" | "CDM" | "CM" | "CAM" | "LW" | "RW" | "ST";
 export type Estilo = "defensivo" | "equilibrado" | "ofensivo";
 export type Fase = "grupo" | "dezesseis_avos" | "oitavas" | "quartas" | "semifinal" | "final";
 export type StatusCampanha = "montagem" | "pronta" | "em_andamento" | "campea" | "eliminada";

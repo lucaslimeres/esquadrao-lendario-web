@@ -18,7 +18,10 @@ describe("NovaImportacaoDialogo", () => {
   it("manda anos, fontes na ordem escolhida e a página", async () => {
     const fetch = vi.fn(async (url: string, init?: RequestInit) => {
       if (url.endsWith("/admin/importacoes/fontes")) {
-        return resposta({ campeoes: [{ id: "wikidata", nome: "Wikidata" }], elencos: [{ id: "wikipedia-en", nome: "Wikipedia (inglês)" }, { id: "wikidata", nome: "Wikidata" }] });
+        return resposta({
+          campeoes: [{ id: "wikidata", nome: "Wikidata", indisponivel: null }],
+          elencos: [{ id: "wikipedia-en", nome: "Wikipedia (inglês)", indisponivel: null }, { id: "wikidata", nome: "Wikidata", indisponivel: null }],
+        });
       }
       return resposta({ id: "imp-1", ...JSON.parse(String(init?.body)) }, 202);
     });
@@ -40,6 +43,29 @@ describe("NovaImportacaoDialogo", () => {
   });
 });
 
+describe("NovaImportacaoDialogo com a Highlightly", () => {
+  it("fonte sem chave aparece desmarcada com o motivo; com chave, pede o nome da liga", async () => {
+    const fetch = vi.fn(async (url: string, init?: RequestInit) => {
+      if (url.endsWith("/admin/importacoes/fontes")) {
+        return resposta({
+          campeoes: [{ id: "wikidata", nome: "Wikidata", indisponivel: null }, { id: "highlightly", nome: "Highlightly", indisponivel: null }],
+          elencos: [{ id: "highlightly", nome: "Highlightly", indisponivel: "Configure HIGHLIGHTLY_API_KEY na API para usar esta fonte." }],
+        });
+      }
+      return resposta({ id: "imp-2", ...JSON.parse(String(init?.body)) }, 202);
+    });
+    vi.stubGlobal("fetch", fetch);
+    const aoCriar = vi.fn();
+    comQuery(<NovaImportacaoDialogo competicao={{ id: "c1", nome: "Libertadores", slug: "libertadores" } as CompeticaoAdmin} aoFechar={() => {}} aoCriar={aoCriar} />);
+
+    expect(await screen.findByText("Configure HIGHLIGHTLY_API_KEY na API para usar esta fonte.")).toBeInTheDocument();
+    const checkboxes = screen.getAllByRole("checkbox", { name: /Highlightly/ });
+    expect(checkboxes.at(-1)).toBeDisabled();
+    await userEvent.type(screen.getByLabelText(/Nome da liga na Highlightly/), "CONMEBOL Libertadores");
+    expect(screen.getByRole("button", { name: /Começar importação/ })).toBeDisabled(); // no elenco source left
+  });
+});
+
 describe("EditorRascunho", () => {
   it("edita posição, remove e adiciona jogador e salva no formato do JSON", async () => {
     const item: ItemImportacao = {
@@ -51,9 +77,9 @@ describe("EditorRascunho", () => {
         temporada: 2005,
         equipe: { nome: "São Paulo", sigla: "SAO", pais: "BR", corPrimaria: "#201E1D", corSecundaria: "#F3F2F2" },
         jogadores: [
-          { nome: "Rogério Ceni", posicao: "GOL", secundarias: [], overall: 82 },
-          { nome: "Mineiro", posicao: "MEI", secundarias: ["VOL"], overall: 78 },
-          { nome: "Sobra", posicao: "ATA", secundarias: [], overall: 70 },
+          { nome: "Rogério Ceni", posicao: "GK", secundarias: [], overall: 82 },
+          { nome: "Mineiro", posicao: "CM", secundarias: ["CDM"], overall: 78 },
+          { nome: "Sobra", posicao: "ST", secundarias: [], overall: 70 },
         ],
       },
       avisos: [],
@@ -65,7 +91,7 @@ describe("EditorRascunho", () => {
     const aoSalvar = vi.fn();
     comQuery(<EditorRascunho item={item} aoFechar={() => {}} aoSalvar={aoSalvar} />);
 
-    await userEvent.selectOptions(screen.getByLabelText("Posição de Mineiro"), "VOL");
+    await userEvent.selectOptions(screen.getByLabelText("Posição de Mineiro"), "CDM");
     await userEvent.click(screen.getByRole("button", { name: "Remover Sobra" }));
     await userEvent.click(screen.getByRole("button", { name: /Adicionar jogador/ }));
     await userEvent.type(screen.getByLabelText("Nome do jogador 3"), "Amoroso");
@@ -76,9 +102,9 @@ describe("EditorRascunho", () => {
     expect(url).toMatch(/\/admin\/importacoes\/itens\/it-1$/);
     expect(init!.method).toBe("PATCH");
     expect(JSON.parse(String(init!.body)).jogadores).toEqual([
-      { nome: "Rogério Ceni", posicao: "GOL", secundarias: [], overall: 82 },
-      { nome: "Mineiro", posicao: "VOL", secundarias: [], overall: 78 },
-      { nome: "Amoroso", posicao: "ATA", secundarias: [], overall: 70 },
+      { nome: "Rogério Ceni", posicao: "GK", secundarias: [], overall: 82 },
+      { nome: "Mineiro", posicao: "CDM", secundarias: [], overall: 78 },
+      { nome: "Amoroso", posicao: "ST", secundarias: [], overall: 70 },
     ]);
   });
 });

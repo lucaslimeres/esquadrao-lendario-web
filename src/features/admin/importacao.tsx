@@ -28,6 +28,14 @@ function EscolherFontes({ legenda, dica, fontes, escolhidas, mudar }: { legenda:
       <ol className="border-2 border-neutro-400 bg-white">
         {ordenadas.map((f) => {
           const posicao = escolhidas.indexOf(f.id);
+          if (f.indisponivel) {
+            return (
+              <li key={f.id} className="border-b border-gramado px-3 py-2 last:border-b-0">
+                <Checkbox rotulo={f.nome} checked={false} disabled className="cursor-not-allowed opacity-60" />
+                <p className="pb-1 text-xs text-neutro-700">{f.indisponivel}</p>
+              </li>
+            );
+          }
           return (
             <li key={f.id} className="flex items-center justify-between gap-2 border-b border-gramado px-3 last:border-b-0">
               <Checkbox rotulo={posicao >= 0 ? `${posicao + 1}º · ${f.nome}` : f.nome} checked={posicao >= 0} onChange={() => mudar(alternarFonte(escolhidas, f.id))} />
@@ -58,8 +66,12 @@ export function NovaImportacaoDialogo({ competicao, aoFechar, aoCriar }: { compe
   const [campeoes, setCampeoes] = useState<string[] | null>(null);
   const [elencos, setElencos] = useState<string[] | null>(null);
   const [pagina, setPagina] = useState("");
-  const escolhidasCampeoes = campeoes ?? fontes.data?.campeoes.map((f) => f.id) ?? [];
-  const escolhidasElencos = elencos ?? fontes.data?.elencos.map((f) => f.id) ?? [];
+  const [liga, setLiga] = useState("");
+  const disponiveis = (lista?: FonteImportacao[]) => lista?.filter((f) => !f.indisponivel).map((f) => f.id) ?? [];
+  const escolhidasCampeoes = campeoes ?? disponiveis(fontes.data?.campeoes);
+  const escolhidasElencos = elencos ?? disponiveis(fontes.data?.elencos);
+  const usaWikipedia = escolhidasCampeoes.includes("wikidata") || escolhidasElencos.includes("wikipedia-en");
+  const usaHighlightly = escolhidasCampeoes.includes("highlightly") || escolhidasElencos.includes("highlightly");
 
   const criar = useMutation({
     mutationFn: () =>
@@ -70,6 +82,7 @@ export function NovaImportacaoDialogo({ competicao, aoFechar, aoCriar }: { compe
         fontesCampeoes: escolhidasCampeoes,
         fontesElencos: escolhidasElencos,
         paginaWikipedia: pagina.trim() || undefined,
+        ligaHighlightly: liga.trim() || undefined,
       }),
     onSuccess: aoCriar,
   });
@@ -79,7 +92,7 @@ export function NovaImportacaoDialogo({ competicao, aoFechar, aoCriar }: { compe
       aberto
       aoMudar={(v) => !v && aoFechar()}
       titulo="Importar de fontes externas"
-      descricao="Busca os campeões e os elencos em fontes gratuitas e gera rascunhos para você revisar. Nada entra no jogo antes de você publicar."
+      descricao="Busca os campeões e os elencos nas fontes escolhidas e gera rascunhos para você revisar. Nada entra no jogo antes de você publicar."
     >
       <form className="space-y-5" onSubmit={(e) => { e.preventDefault(); criar.mutate(); }}>
         {(fontes.error || criar.error) && <Erro mensagem={mensagemErro(fontes.error ?? criar.error)} />}
@@ -99,12 +112,22 @@ export function NovaImportacaoDialogo({ competicao, aoFechar, aoCriar }: { compe
             />
           </>
         )}
-        <CampoForm rotulo="Página na Wikipedia em inglês (opcional)" dica="Artigo da competição, usado para achar campeões e finais. Em branco = padrão da competição.">
-          {(id) => <Input id={id} placeholder="Ex.: Copa Libertadores" maxLength={190} value={pagina} onChange={(e) => setPagina(e.target.value)} />}
-        </CampoForm>
+        {usaWikipedia && (
+          <CampoForm rotulo="Página na Wikipedia em inglês (opcional)" dica="Artigo da competição, usado para achar campeões e finais. Em branco = padrão da competição.">
+            {(id) => <Input id={id} placeholder="Ex.: Copa Libertadores" maxLength={190} value={pagina} onChange={(e) => setPagina(e.target.value)} />}
+          </CampoForm>
+        )}
+        {usaHighlightly && (
+          <CampoForm
+            rotulo="Nome da liga na Highlightly (opcional)"
+            dica="Em branco = padrão da competição. A Highlightly tem cota diária de requisições (o plano grátis permite poucas temporadas por dia) e cobre só os anos mais recentes."
+          >
+            {(id) => <Input id={id} placeholder="Ex.: CONMEBOL Libertadores" maxLength={120} value={liga} onChange={(e) => setLiga(e.target.value)} />}
+          </CampoForm>
+        )}
         <p className="text-xs text-neutro-700">
-          Nenhuma fonte tem overall: o rascunho sugere um (60–88) por titular, reserva, gols e braçadeira na final. Revise antes de publicar. Dados da
-          Wikipedia são CC BY-SA, e o link de cada fonte fica guardado no rascunho.
+          Nenhuma fonte tem overall: o rascunho sugere um (60–88) por titular, reserva, gols e braçadeira na final. Revise antes de publicar. O link de
+          cada fonte fica guardado no rascunho (os dados da Wikipedia são CC BY-SA).
         </p>
         <Button type="submit" className="w-full" disabled={criar.isPending || !fontes.data || escolhidasCampeoes.length === 0 || escolhidasElencos.length === 0}>
           {criar.isPending ? "Enviando…" : "Começar importação"} <CloudDownload aria-hidden />
@@ -178,7 +201,7 @@ export function EditorRascunho({ item, aoFechar, aoSalvar }: { item: ItemImporta
   });
   const setJogador = (indice: number, patch: Partial<JogadorRascunho>) =>
     setDados((d) => ({ ...d, jogadores: d.jogadores.map((j, i) => (i === indice ? { ...j, ...patch } : j)) }));
-  const goleiros = dados.jogadores.filter((j) => j.posicao === "GOL").length;
+  const goleiros = dados.jogadores.filter((j) => j.posicao === "GK").length;
 
   return (
     <Dialogo aberto aoMudar={(v) => !v && aoFechar()} titulo={`Rascunho ${item.temporada}`} descricao="Ajuste o time, os jogadores, as posições e o overall. Publicar depois de salvar.">
@@ -220,7 +243,7 @@ export function EditorRascunho({ item, aoFechar, aoSalvar }: { item: ItemImporta
               </li>
             ))}
           </ul>
-          <Button type="button" variant="link" className="mt-2" onClick={() => setDados((d) => ({ ...d, jogadores: [...d.jogadores, { nome: "", posicao: "ATA", secundarias: [], overall: 70 }] }))}>
+          <Button type="button" variant="link" className="mt-2" onClick={() => setDados((d) => ({ ...d, jogadores: [...d.jogadores, { nome: "", posicao: "ST", secundarias: [], overall: 70 }] }))}>
             <Plus aria-hidden /> Adicionar jogador
           </Button>
         </div>

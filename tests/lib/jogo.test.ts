@@ -13,8 +13,8 @@ describe("regras de exibição", () => {
   });
 
   it("nome da vaga só numera posição repetida", () => {
-    expect(nomeVaga("ZAG_2", true)).toBe("Zagueiro 2");
-    expect(nomeVaga("GOL_1", false)).toBe("Goleiro");
+    expect(nomeVaga("CB_2", true)).toBe("Zagueiro 2");
+    expect(nomeVaga("GK_1", false)).toBe("Goleiro");
   });
 
   it("texto de eliminação por fase", () => {
