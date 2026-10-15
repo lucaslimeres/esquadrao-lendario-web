@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { ArrowRight, Share2 } from "lucide-react";
 import { useState } from "react";
+import { EspacoPublicidade } from "@/components/anuncio";
 import { Campo } from "@/components/jogo/campo";
 import { Button } from "@/components/ui/button";
 import { linkCompartilhamento, textoEliminacao } from "@/lib/jogo";
@@ -93,6 +94,7 @@ export function FimDeCampanha({ campanha }: { campanha: Campanha }) {
           <Artilharia campanha={campanha} />
         </aside>
       </div>
+      <EspacoPublicidade posicao="fimDeCampanha" className="mt-4" />
     </div>
   );
 }

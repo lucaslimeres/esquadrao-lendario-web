@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { createFileRoute, Link, redirect } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
+import { EspacoPublicidade } from "@/components/anuncio";
 import { Pagina, TituloPagina } from "@/components/layout";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -66,6 +67,7 @@ function MinhasCampanhas() {
               </li>
             ))}
           </ul>
+          <EspacoPublicidade posicao="minhasCampanhas" className="mt-10" />
         </>
       )}
     </Pagina>

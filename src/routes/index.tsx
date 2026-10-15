@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, Smartphone, Trophy } from "lucide-react";
+import { EspacoPublicidade } from "@/components/anuncio";
 import { CardJogador } from "@/components/jogo/card-jogador";
 import { Campo } from "@/components/jogo/campo";
 import { Badge } from "@/components/ui/badge";
@@ -24,6 +25,9 @@ function LandingPage() {
       <Cards />
       <Competicoes />
       <Regras />
+      <div className="mx-auto max-w-6xl px-4 pb-14">
+        <EspacoPublicidade posicao="landing" />
+      </div>
       <App />
       <ComOuSemConta />
       <FaleConosco />
