@@ -46,6 +46,11 @@ estilo shadcn (`radix-ui` + `class-variance-authority`), React Hook Form + Zod e
   - Raio zero, réguas de 2px, tudo alinhado à esquerda, alvo de toque mínimo de 44px.
   - Verde só na ação principal, nas lendas, na vitória e nas telas de sorteio e título.
   - Nunca usar vermelho, escudos, logos ou fotos reais.
+- **Anúncios (AdSense):** só via `EspacoPublicidade` (`components/anuncio.tsx`), no fluxo
+  da página, com o rótulo "Publicidade" e altura fixa. Nunca sobre o conteúdo, nunca na
+  montagem, na campanha em andamento, na partida ao vivo ou no `/admin`, e nunca colado
+  em botão. Sem `VITE_ADSENSE_CLIENT`, nada é renderizado. Auto ads fica desligado no
+  painel do AdSense.
 - **Painel admin** separado de verdade:
   - Nunca usar `lib/api.ts`, `useSessao` ou o token do jogador dentro de `/admin`, e
     vice-versa.
