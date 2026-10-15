@@ -5,4 +5,4 @@ import type { Posicao } from "./tipos";
 export const POSICOES = Object.keys(NOME_POSICAO) as Posicao[];
 
 export type DadosJogador = Omit<JogadorAdmin, "id" | "elencoId">;
-export const jogadorVazio: DadosJogador = { nome: "", posicao: "ATA", posicoesSecundarias: [], overall: 75, ativo: true };
+export const jogadorVazio: DadosJogador = { nome: "", posicao: "ST", posicoesSecundarias: [], overall: 75, ativo: true };

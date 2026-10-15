@@ -78,17 +78,17 @@ function Hero() {
 // Decorative 4-3-3 for the hero: positions and overalls only.
 const CAMPO_EXEMPLO: VagaCampanha[] = (
   [
-    ["GOL_1", "GOL", 50, 92, 88],
-    ["LAT_1", "LAT", 20, 75, 89],
-    ["ZAG_1", "ZAG", 40, 75, 86],
-    ["ZAG_2", "ZAG", 60, 75, null],
-    ["LAT_2", "LAT", 80, 75, 93],
-    ["VOL_1", "VOL", 50, 58, 84],
-    ["MEI_1", "MEI", 33, 44, 94],
-    ["MEI_2", "MEI", 67, 44, null],
-    ["PON_1", "PON", 25, 20, 93],
-    ["ATA_1", "ATA", 50, 20, 87],
-    ["PON_2", "PON", 75, 20, null],
+    ["GK_1", "GK", 50, 92, 88],
+    ["LB_1", "LB", 20, 75, 89],
+    ["CB_1", "CB", 40, 75, 86],
+    ["CB_2", "CB", 60, 75, null],
+    ["RB_1", "RB", 80, 75, 93],
+    ["CDM_1", "CDM", 50, 58, 84],
+    ["CM_1", "CM", 33, 44, 94],
+    ["CM_2", "CM", 67, 44, null],
+    ["LW_1", "LW", 25, 20, 93],
+    ["ST_1", "ST", 50, 20, 87],
+    ["RW_1", "RW", 75, 20, null],
   ] as Array<[string, Posicao, number, number, number | null]>
 ).map(([codigo, posicao, x, y, overall]) => ({
   codigo,
@@ -126,10 +126,10 @@ function Cards() {
   return (
     <Secao rotulo="Craques de verdade" titulo="Cada carta, um campeão">
       <div className="flex gap-3 overflow-x-auto pb-2">
-        <CardJogador nome="Arruabarrena" posicao="LAT" overall={72} legenda="Boca Juniors 2000" />
-        <CardJogador nome="Battaglia" posicao="VOL" overall={81} legenda="Boca Juniors 2000" />
-        <CardJogador nome="Lugano" posicao="ZAG" overall={86} legenda="São Paulo 2005" />
-        <CardJogador nome="Zico" posicao="MEI" overall={94} legenda="Flamengo 1981" />
+        <CardJogador nome="Arruabarrena" posicao="LB" overall={72} legenda="Boca Juniors 2000" />
+        <CardJogador nome="Battaglia" posicao="CDM" overall={81} legenda="Boca Juniors 2000" />
+        <CardJogador nome="Lugano" posicao="CB" overall={86} legenda="São Paulo 2005" />
+        <CardJogador nome="Zico" posicao="CAM" overall={94} legenda="Flamengo 1981" />
       </div>
       <p className="mt-4 max-w-2xl text-neutro-700">
         O overall define a raridade: bronze, prata, ouro e lendário. Jogador fora da posição de origem rende menos — escolha

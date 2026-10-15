@@ -59,8 +59,8 @@ test("monta campeonato, time, elenco e jogadores até ficar jogável", async ({ 
   await expect(page.getByText(/Incompleto/)).toBeVisible();
 
   const elenco: Array<[string, string]> = [
-    ["GOL", "Goleiro"], ["LAT", "Lateral A"], ["ZAG", "Zagueiro A"], ["ZAG", "Zagueiro B"], ["LAT", "Lateral B"], ["VOL", "Volante A"],
-    ["VOL", "Volante B"], ["MEI", "Meia A"], ["MEI", "Meia B"], ["ATA", "Atacante A"], ["ATA", "Atacante B"],
+    ["GK", "Goleiro"], ["LB", "Lateral A"], ["CB", "Zagueiro A"], ["CB", "Zagueiro B"], ["RB", "Lateral B"], ["CDM", "Volante A"],
+    ["CDM", "Volante B"], ["CM", "Meia A"], ["CM", "Meia B"], ["ST", "Atacante A"], ["ST", "Atacante B"],
   ];
   const form = page.locator("form", { has: page.getByRole("heading", { name: "Adicionar jogador" }) });
   for (const [posicao, nome] of elenco) {
@@ -75,10 +75,10 @@ test("monta campeonato, time, elenco e jogadores até ficar jogável", async ({ 
   // Edit one player: secondary position + overall.
   await page.getByRole("button", { name: "Editar Meia A" }).click();
   await page.getByRole("dialog").getByLabel("Overall").fill("91");
-  await page.getByRole("dialog").getByLabel("PON").check();
+  await page.getByRole("dialog").getByLabel("CAM", { exact: true }).check();
   await page.getByRole("dialog").getByRole("button", { name: "Salvar" }).click();
   await expect(page.getByRole("row", { name: /Meia A/ })).toContainText("91");
-  await expect(page.getByRole("row", { name: /Meia A/ })).toContainText("PON");
+  await expect(page.getByRole("row", { name: /Meia A/ })).toContainText("CAM");
 
   await page.getByRole("link", { name: "Competição" }).click();
   await expect(page.getByText("Jogável")).toBeVisible();

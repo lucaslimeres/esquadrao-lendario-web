@@ -178,7 +178,7 @@ export function EditorRascunho({ item, aoFechar, aoSalvar }: { item: ItemImporta
   });
   const setJogador = (indice: number, patch: Partial<JogadorRascunho>) =>
     setDados((d) => ({ ...d, jogadores: d.jogadores.map((j, i) => (i === indice ? { ...j, ...patch } : j)) }));
-  const goleiros = dados.jogadores.filter((j) => j.posicao === "GOL").length;
+  const goleiros = dados.jogadores.filter((j) => j.posicao === "GK").length;
 
   return (
     <Dialogo aberto aoMudar={(v) => !v && aoFechar()} titulo={`Rascunho ${item.temporada}`} descricao="Ajuste o time, os jogadores, as posições e o overall. Publicar depois de salvar.">
@@ -220,7 +220,7 @@ export function EditorRascunho({ item, aoFechar, aoSalvar }: { item: ItemImporta
               </li>
             ))}
           </ul>
-          <Button type="button" variant="link" className="mt-2" onClick={() => setDados((d) => ({ ...d, jogadores: [...d.jogadores, { nome: "", posicao: "ATA", secundarias: [], overall: 70 }] }))}>
+          <Button type="button" variant="link" className="mt-2" onClick={() => setDados((d) => ({ ...d, jogadores: [...d.jogadores, { nome: "", posicao: "ST", secundarias: [], overall: 70 }] }))}>
             <Plus aria-hidden /> Adicionar jogador
           </Button>
         </div>
