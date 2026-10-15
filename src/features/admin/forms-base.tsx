@@ -73,7 +73,7 @@ export function FormCompeticao({ competicao, aoFechar, aoSalvar }: DialogoForm<C
 // ───────── Equipe ─────────
 type DadosEquipe = Omit<EquipeAdmin, "id" | "totalElencos">;
 
-function CamposEquipe({ valor, mudar }: { valor: DadosEquipe; mudar: (v: DadosEquipe) => void }) {
+export function CamposEquipe({ valor, mudar }: { valor: DadosEquipe; mudar: (v: DadosEquipe) => void }) {
   const set = (patch: Partial<DadosEquipe>) => mudar({ ...valor, ...patch });
   return (
     <div className="space-y-4">
