@@ -20,6 +20,7 @@ import { Route as JogarIndexRouteImport } from './routes/jogar/index'
 import { Route as JogarIdRouteImport } from './routes/jogar/$id'
 import { Route as AdminPainelIndexRouteImport } from './routes/admin/_painel/index'
 import { Route as AdminPainelAdministradoresRouteImport } from './routes/admin/_painel/administradores'
+import { Route as AdminPainelMensagensRouteImport } from './routes/admin/_painel/mensagens'
 import { Route as AdminPainelUsuariosRouteImport } from './routes/admin/_painel/usuarios'
 import { Route as AdminPainelBaseIndexRouteImport } from './routes/admin/_painel/base/index'
 import { Route as AdminPainelBaseCompeticoesIdRouteImport } from './routes/admin/_painel/base/competicoes.$id'
@@ -82,6 +83,11 @@ const AdminPainelAdministradoresRoute =
     path: '/administradores',
     getParentRoute: () => AdminPainelRoute,
   } as any)
+const AdminPainelMensagensRoute = AdminPainelMensagensRouteImport.update({
+  id: '/mensagens',
+  path: '/mensagens',
+  getParentRoute: () => AdminPainelRoute,
+} as any)
 const AdminPainelUsuariosRoute = AdminPainelUsuariosRouteImport.update({
   id: '/usuarios',
   path: '/usuarios',
@@ -122,6 +128,7 @@ export interface FileRoutesByFullPath {
   '/jogar/$id': typeof JogarIdRoute
   '/jogar/': typeof JogarIndexRoute
   '/admin/administradores': typeof AdminPainelAdministradoresRoute
+  '/admin/mensagens': typeof AdminPainelMensagensRoute
   '/admin/usuarios': typeof AdminPainelUsuariosRoute
   '/admin/': typeof AdminPainelIndexRoute
   '/admin/base/': typeof AdminPainelBaseIndexRoute
@@ -139,6 +146,7 @@ export interface FileRoutesByTo {
   '/jogar/$id': typeof JogarIdRoute
   '/jogar': typeof JogarIndexRoute
   '/admin/administradores': typeof AdminPainelAdministradoresRoute
+  '/admin/mensagens': typeof AdminPainelMensagensRoute
   '/admin/usuarios': typeof AdminPainelUsuariosRoute
   '/admin': typeof AdminPainelIndexRoute
   '/admin/base': typeof AdminPainelBaseIndexRoute
@@ -158,6 +166,7 @@ export interface FileRoutesById {
   '/jogar/$id': typeof JogarIdRoute
   '/jogar/': typeof JogarIndexRoute
   '/admin/_painel/administradores': typeof AdminPainelAdministradoresRoute
+  '/admin/_painel/mensagens': typeof AdminPainelMensagensRoute
   '/admin/_painel/usuarios': typeof AdminPainelUsuariosRoute
   '/admin/_painel/': typeof AdminPainelIndexRoute
   '/admin/_painel/base/': typeof AdminPainelBaseIndexRoute
@@ -178,6 +187,7 @@ export interface FileRouteTypes {
     | '/jogar/$id'
     | '/jogar/'
     | '/admin/administradores'
+    | '/admin/mensagens'
     | '/admin/usuarios'
     | '/admin/'
     | '/admin/base/'
@@ -195,6 +205,7 @@ export interface FileRouteTypes {
     | '/jogar/$id'
     | '/jogar'
     | '/admin/administradores'
+    | '/admin/mensagens'
     | '/admin/usuarios'
     | '/admin'
     | '/admin/base'
@@ -213,6 +224,7 @@ export interface FileRouteTypes {
     | '/jogar/$id'
     | '/jogar/'
     | '/admin/_painel/administradores'
+    | '/admin/_painel/mensagens'
     | '/admin/_painel/usuarios'
     | '/admin/_painel/'
     | '/admin/_painel/base/'
@@ -312,6 +324,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminPainelAdministradoresRouteImport
       parentRoute: typeof AdminPainelRoute
     }
+    '/admin/_painel/mensagens': {
+      id: '/admin/_painel/mensagens'
+      path: '/mensagens'
+      fullPath: '/admin/mensagens'
+      preLoaderRoute: typeof AdminPainelMensagensRouteImport
+      parentRoute: typeof AdminPainelRoute
+    }
     '/admin/_painel/usuarios': {
       id: '/admin/_painel/usuarios'
       path: '/usuarios'
@@ -352,6 +371,7 @@ declare module '@tanstack/react-router' {
 
 interface AdminPainelRouteChildren {
   AdminPainelAdministradoresRoute: typeof AdminPainelAdministradoresRoute
+  AdminPainelMensagensRoute: typeof AdminPainelMensagensRoute
   AdminPainelUsuariosRoute: typeof AdminPainelUsuariosRoute
   AdminPainelIndexRoute: typeof AdminPainelIndexRoute
   AdminPainelBaseIndexRoute: typeof AdminPainelBaseIndexRoute
@@ -362,6 +382,7 @@ interface AdminPainelRouteChildren {
 
 const AdminPainelRouteChildren: AdminPainelRouteChildren = {
   AdminPainelAdministradoresRoute: AdminPainelAdministradoresRoute,
+  AdminPainelMensagensRoute: AdminPainelMensagensRoute,
   AdminPainelUsuariosRoute: AdminPainelUsuariosRoute,
   AdminPainelIndexRoute: AdminPainelIndexRoute,
   AdminPainelBaseIndexRoute: AdminPainelBaseIndexRoute,

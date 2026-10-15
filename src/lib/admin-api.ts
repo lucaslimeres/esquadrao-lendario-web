@@ -14,7 +14,9 @@ import type {
   ItemImportacao,
   DadosRascunho,
   JogadorAdmin,
+  MensagemContato,
   NovaImportacao,
+  PaginaMensagens,
   Pagina,
   ResultadoImportacao,
   UsuarioAdmin,
@@ -92,6 +94,12 @@ export const adminApi = {
   criarJogador: (elencoId: string, d: Omit<JogadorAdmin, "id" | "elencoId">) => adminRequest<JogadorAdmin>("POST", `/admin/elencos/${elencoId}/jogadores`, d),
   atualizarJogador: (id: string, d: Partial<Omit<JogadorAdmin, "id" | "elencoId">>) => adminRequest<JogadorAdmin>("PATCH", `/admin/jogadores/${id}`, d),
   excluirJogador: (id: string) => adminRequest<null>("DELETE", `/admin/jogadores/${id}`),
+
+  mensagens: (f: { status?: string; busca?: string; pagina?: number; porPagina?: number }) => adminRequest<PaginaMensagens>("GET", `/admin/mensagens${qs(f)}`),
+  mensagem: (id: string) => adminRequest<MensagemContato>("GET", `/admin/mensagens/${id}`),
+  statusMensagem: (id: string, status: "lida" | "arquivada" | "nova") => adminRequest<MensagemContato>("PATCH", `/admin/mensagens/${id}`, { status }),
+  responderMensagem: (id: string, resposta: string) => adminRequest<MensagemContato>("POST", `/admin/mensagens/${id}/responder`, { resposta }),
+  excluirMensagem: (id: string) => adminRequest<null>("DELETE", `/admin/mensagens/${id}`),
 
   fontesImportacao: () => adminRequest<{ campeoes: FonteImportacao[]; elencos: FonteImportacao[] }>("GET", "/admin/importacoes/fontes"),
   importacoes: (competicaoId: string) => adminRequest<Importacao[]>("GET", `/admin/importacoes${qs({ competicaoId })}`),

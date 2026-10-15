@@ -80,6 +80,11 @@ export function Rodape() {
       <div className="mx-auto grid max-w-6xl gap-6 px-4 py-8 sm:grid-cols-[auto_1fr] sm:items-start">
         <Logo />
         <div className="space-y-2 text-sm text-neutro-700 sm:justify-self-end sm:text-right">
+          <p>
+            <Link to="/" hash="fale-conosco" className="font-semibold text-tinta underline-offset-4 hover:underline">
+              Fale conosco
+            </Link>
+          </p>
           <p>Clubes aparecem só pelo nome e ano. Nenhum escudo, logo ou foto oficial é usado.</p>
           <p>© {new Date().getFullYear()} Esquadrão Lendário</p>
         </div>
