@@ -4,7 +4,7 @@ import { z } from "zod";
 import { Pagina, TituloPagina } from "@/components/layout";
 import { FormularioAuth } from "@/features/auth-form";
 import { destinoSeguro } from "@/features/sessao";
-import { api } from "@/lib/api";
+import { api, ApiError } from "@/lib/api";
 import { useSessao } from "@/stores/sessao";
 
 const schema = z.object({
@@ -45,12 +45,26 @@ function Entrar() {
             { nome: "senha", rotulo: "Senha", tipo: "password", autoComplete: "current-password" },
           ]}
           aoEnviar={async (dados) => {
-            entrar(await api.login(dados));
+            try {
+              entrar(await api.login(dados));
+            } catch (erro) {
+              // Right password, address never confirmed: the API just sent a code.
+              if (erro instanceof ApiError && erro.codigo === "email_nao_confirmado") {
+                await navigate({ to: "/confirmar-email", search: { email: dados.email, redirect } });
+                return;
+              }
+              throw erro;
+            }
             queryClient.clear();
             await navigate({ to: destinoSeguro(redirect) });
           }}
         />
-        <p className="mt-6">
+        <p className="mt-4">
+          <Link to="/esqueci-senha" search={{ redirect }} className="font-semibold text-verde underline">
+            Esqueci minha senha
+          </Link>
+        </p>
+        <p className="mt-4">
           Ainda não tem conta?{" "}
           <Link to="/cadastro" search={{ redirect }} className="font-semibold text-verde underline">
             Crie grátis

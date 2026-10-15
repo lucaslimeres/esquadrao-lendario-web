@@ -10,7 +10,11 @@ export interface Usuario {
   nome: string | null;
   email: string | null;
   convidado: boolean;
+  emailConfirmado: boolean;
 }
+
+/** 6-digit code by e-mail: sign-up confirmation or password reset. */
+export type FinalidadeCodigo = "confirmar_email" | "redefinir_senha";
 
 export interface Sessao {
   token: string;

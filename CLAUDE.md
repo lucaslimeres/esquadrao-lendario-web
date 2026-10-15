@@ -62,7 +62,9 @@ estilo shadcn (`radix-ui` + `class-variance-authority`), React Hook Form + Zod e
 
 ## Validar antes de subir
 
-`yarn lint`, `yarn build` e `yarn test`. Para `yarn test:e2e`, a API precisa estar rodando
+`yarn lint`, `yarn build` e `yarn test`. Os e2e de cadastro e nova senha leem o código de 6 números do log da API: rode a API sem
+`RESEND_API_KEY`, gravando o log num arquivo, e passe o caminho em `E2E_API_LOG` (sem ela,
+esses testes são pulados). Para `yarn test:e2e`, a API precisa estar rodando
 em `VITE_API_URL` com pelo menos 3 elencos da Libertadores importados. O e2e do painel
 precisa de `E2E_ADMIN_EMAIL` e `E2E_ADMIN_SENHA`, de um admin criado com
 `yarn admin:create` na API; sem essas variáveis, ele é pulado.
