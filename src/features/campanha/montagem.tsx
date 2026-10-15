@@ -1,3 +1,4 @@
+import { Link } from "@tanstack/react-router";
 import { Dices, RefreshCw } from "lucide-react";
 import { useState } from "react";
 import { Campo } from "@/components/jogo/campo";
@@ -52,7 +53,14 @@ export function Montagem({ campanha }: { campanha: Campanha }) {
       <div>
         {erro && (
           <div className="mb-4">
-            <Erro mensagem={erro instanceof ApiError ? erro.message : "Algo deu errado. Tente de novo."} />
+            <Erro mensagem={erro instanceof ApiError ? erro.message : "Algo deu errado. Tente de novo."}>
+              {erro instanceof ApiError && erro.codigo === "sem_time_compativel" && (
+                // Small base: no squad left can fill the open slots. Don't leave the player stuck.
+                <Button asChild variant="link" className="mt-2">
+                  <Link to="/jogar">Começar outra campanha com outra formação</Link>
+                </Button>
+              )}
+            </Erro>
           </div>
         )}
         {!pendente ? (

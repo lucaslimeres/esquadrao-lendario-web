@@ -13,9 +13,17 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as CadastroRouteImport } from './routes/cadastro'
 import { Route as EntrarRouteImport } from './routes/entrar'
 import { Route as MinhasCampanhasRouteImport } from './routes/minhas-campanhas'
+import { Route as AdminPainelRouteImport } from './routes/admin/_painel'
+import { Route as AdminLoginRouteImport } from './routes/admin/login'
 import { Route as CCodigoRouteImport } from './routes/c/$codigo'
 import { Route as JogarIndexRouteImport } from './routes/jogar/index'
 import { Route as JogarIdRouteImport } from './routes/jogar/$id'
+import { Route as AdminPainelIndexRouteImport } from './routes/admin/_painel/index'
+import { Route as AdminPainelAdministradoresRouteImport } from './routes/admin/_painel/administradores'
+import { Route as AdminPainelUsuariosRouteImport } from './routes/admin/_painel/usuarios'
+import { Route as AdminPainelBaseIndexRouteImport } from './routes/admin/_painel/base/index'
+import { Route as AdminPainelBaseCompeticoesIdRouteImport } from './routes/admin/_painel/base/competicoes.$id'
+import { Route as AdminPainelBaseElencosIdRouteImport } from './routes/admin/_painel/base/elencos.$id'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -37,6 +45,16 @@ const MinhasCampanhasRoute = MinhasCampanhasRouteImport.update({
   path: '/minhas-campanhas',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminPainelRoute = AdminPainelRouteImport.update({
+  id: '/admin/_painel',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminLoginRoute = AdminLoginRouteImport.update({
+  id: '/admin/login',
+  path: '/admin/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CCodigoRoute = CCodigoRouteImport.update({
   id: '/c/$codigo',
   path: '/c/$codigo',
@@ -52,24 +70,72 @@ const JogarIdRoute = JogarIdRouteImport.update({
   path: '/jogar/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminPainelIndexRoute = AdminPainelIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AdminPainelRoute,
+} as any)
+const AdminPainelAdministradoresRoute =
+  AdminPainelAdministradoresRouteImport.update({
+    id: '/administradores',
+    path: '/administradores',
+    getParentRoute: () => AdminPainelRoute,
+  } as any)
+const AdminPainelUsuariosRoute = AdminPainelUsuariosRouteImport.update({
+  id: '/usuarios',
+  path: '/usuarios',
+  getParentRoute: () => AdminPainelRoute,
+} as any)
+const AdminPainelBaseIndexRoute = AdminPainelBaseIndexRouteImport.update({
+  id: '/base/',
+  path: '/base/',
+  getParentRoute: () => AdminPainelRoute,
+} as any)
+const AdminPainelBaseCompeticoesIdRoute =
+  AdminPainelBaseCompeticoesIdRouteImport.update({
+    id: '/base/competicoes/$id',
+    path: '/base/competicoes/$id',
+    getParentRoute: () => AdminPainelRoute,
+  } as any)
+const AdminPainelBaseElencosIdRoute =
+  AdminPainelBaseElencosIdRouteImport.update({
+    id: '/base/elencos/$id',
+    path: '/base/elencos/$id',
+    getParentRoute: () => AdminPainelRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/cadastro': typeof CadastroRoute
   '/entrar': typeof EntrarRoute
   '/minhas-campanhas': typeof MinhasCampanhasRoute
+  '/admin': typeof AdminPainelRouteWithChildren
+  '/admin/login': typeof AdminLoginRoute
   '/c/$codigo': typeof CCodigoRoute
   '/jogar/$id': typeof JogarIdRoute
   '/jogar/': typeof JogarIndexRoute
+  '/admin/administradores': typeof AdminPainelAdministradoresRoute
+  '/admin/usuarios': typeof AdminPainelUsuariosRoute
+  '/admin/': typeof AdminPainelIndexRoute
+  '/admin/base/': typeof AdminPainelBaseIndexRoute
+  '/admin/base/competicoes/$id': typeof AdminPainelBaseCompeticoesIdRoute
+  '/admin/base/elencos/$id': typeof AdminPainelBaseElencosIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/cadastro': typeof CadastroRoute
   '/entrar': typeof EntrarRoute
   '/minhas-campanhas': typeof MinhasCampanhasRoute
+  '/admin/login': typeof AdminLoginRoute
   '/c/$codigo': typeof CCodigoRoute
   '/jogar/$id': typeof JogarIdRoute
   '/jogar': typeof JogarIndexRoute
+  '/admin/administradores': typeof AdminPainelAdministradoresRoute
+  '/admin/usuarios': typeof AdminPainelUsuariosRoute
+  '/admin': typeof AdminPainelIndexRoute
+  '/admin/base': typeof AdminPainelBaseIndexRoute
+  '/admin/base/competicoes/$id': typeof AdminPainelBaseCompeticoesIdRoute
+  '/admin/base/elencos/$id': typeof AdminPainelBaseElencosIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -77,9 +143,17 @@ export interface FileRoutesById {
   '/cadastro': typeof CadastroRoute
   '/entrar': typeof EntrarRoute
   '/minhas-campanhas': typeof MinhasCampanhasRoute
+  '/admin/_painel': typeof AdminPainelRouteWithChildren
+  '/admin/login': typeof AdminLoginRoute
   '/c/$codigo': typeof CCodigoRoute
   '/jogar/$id': typeof JogarIdRoute
   '/jogar/': typeof JogarIndexRoute
+  '/admin/_painel/administradores': typeof AdminPainelAdministradoresRoute
+  '/admin/_painel/usuarios': typeof AdminPainelUsuariosRoute
+  '/admin/_painel/': typeof AdminPainelIndexRoute
+  '/admin/_painel/base/': typeof AdminPainelBaseIndexRoute
+  '/admin/_painel/base/competicoes/$id': typeof AdminPainelBaseCompeticoesIdRoute
+  '/admin/_painel/base/elencos/$id': typeof AdminPainelBaseElencosIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -88,27 +162,50 @@ export interface FileRouteTypes {
     | '/cadastro'
     | '/entrar'
     | '/minhas-campanhas'
+    | '/admin'
+    | '/admin/login'
     | '/c/$codigo'
     | '/jogar/$id'
     | '/jogar/'
+    | '/admin/administradores'
+    | '/admin/usuarios'
+    | '/admin/'
+    | '/admin/base/'
+    | '/admin/base/competicoes/$id'
+    | '/admin/base/elencos/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/cadastro'
     | '/entrar'
     | '/minhas-campanhas'
+    | '/admin/login'
     | '/c/$codigo'
     | '/jogar/$id'
     | '/jogar'
+    | '/admin/administradores'
+    | '/admin/usuarios'
+    | '/admin'
+    | '/admin/base'
+    | '/admin/base/competicoes/$id'
+    | '/admin/base/elencos/$id'
   id:
     | '__root__'
     | '/'
     | '/cadastro'
     | '/entrar'
     | '/minhas-campanhas'
+    | '/admin/_painel'
+    | '/admin/login'
     | '/c/$codigo'
     | '/jogar/$id'
     | '/jogar/'
+    | '/admin/_painel/administradores'
+    | '/admin/_painel/usuarios'
+    | '/admin/_painel/'
+    | '/admin/_painel/base/'
+    | '/admin/_painel/base/competicoes/$id'
+    | '/admin/_painel/base/elencos/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -116,6 +213,8 @@ export interface RootRouteChildren {
   CadastroRoute: typeof CadastroRoute
   EntrarRoute: typeof EntrarRoute
   MinhasCampanhasRoute: typeof MinhasCampanhasRoute
+  AdminPainelRoute: typeof AdminPainelRouteWithChildren
+  AdminLoginRoute: typeof AdminLoginRoute
   CCodigoRoute: typeof CCodigoRoute
   JogarIdRoute: typeof JogarIdRoute
   JogarIndexRoute: typeof JogarIndexRoute
@@ -151,6 +250,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MinhasCampanhasRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/_painel': {
+      id: '/admin/_painel'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminPainelRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/login': {
+      id: '/admin/login'
+      path: '/admin/login'
+      fullPath: '/admin/login'
+      preLoaderRoute: typeof AdminLoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/c/$codigo': {
       id: '/c/$codigo'
       path: '/c/$codigo'
@@ -172,14 +285,80 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof JogarIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/_painel/': {
+      id: '/admin/_painel/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminPainelIndexRouteImport
+      parentRoute: typeof AdminPainelRoute
+    }
+    '/admin/_painel/administradores': {
+      id: '/admin/_painel/administradores'
+      path: '/administradores'
+      fullPath: '/admin/administradores'
+      preLoaderRoute: typeof AdminPainelAdministradoresRouteImport
+      parentRoute: typeof AdminPainelRoute
+    }
+    '/admin/_painel/usuarios': {
+      id: '/admin/_painel/usuarios'
+      path: '/usuarios'
+      fullPath: '/admin/usuarios'
+      preLoaderRoute: typeof AdminPainelUsuariosRouteImport
+      parentRoute: typeof AdminPainelRoute
+    }
+    '/admin/_painel/base/': {
+      id: '/admin/_painel/base/'
+      path: '/base'
+      fullPath: '/admin/base/'
+      preLoaderRoute: typeof AdminPainelBaseIndexRouteImport
+      parentRoute: typeof AdminPainelRoute
+    }
+    '/admin/_painel/base/competicoes/$id': {
+      id: '/admin/_painel/base/competicoes/$id'
+      path: '/base/competicoes/$id'
+      fullPath: '/admin/base/competicoes/$id'
+      preLoaderRoute: typeof AdminPainelBaseCompeticoesIdRouteImport
+      parentRoute: typeof AdminPainelRoute
+    }
+    '/admin/_painel/base/elencos/$id': {
+      id: '/admin/_painel/base/elencos/$id'
+      path: '/base/elencos/$id'
+      fullPath: '/admin/base/elencos/$id'
+      preLoaderRoute: typeof AdminPainelBaseElencosIdRouteImport
+      parentRoute: typeof AdminPainelRoute
+    }
   }
 }
+
+interface AdminPainelRouteChildren {
+  AdminPainelAdministradoresRoute: typeof AdminPainelAdministradoresRoute
+  AdminPainelUsuariosRoute: typeof AdminPainelUsuariosRoute
+  AdminPainelIndexRoute: typeof AdminPainelIndexRoute
+  AdminPainelBaseIndexRoute: typeof AdminPainelBaseIndexRoute
+  AdminPainelBaseCompeticoesIdRoute: typeof AdminPainelBaseCompeticoesIdRoute
+  AdminPainelBaseElencosIdRoute: typeof AdminPainelBaseElencosIdRoute
+}
+
+const AdminPainelRouteChildren: AdminPainelRouteChildren = {
+  AdminPainelAdministradoresRoute: AdminPainelAdministradoresRoute,
+  AdminPainelUsuariosRoute: AdminPainelUsuariosRoute,
+  AdminPainelIndexRoute: AdminPainelIndexRoute,
+  AdminPainelBaseIndexRoute: AdminPainelBaseIndexRoute,
+  AdminPainelBaseCompeticoesIdRoute: AdminPainelBaseCompeticoesIdRoute,
+  AdminPainelBaseElencosIdRoute: AdminPainelBaseElencosIdRoute,
+}
+
+const AdminPainelRouteWithChildren = AdminPainelRoute._addFileChildren(
+  AdminPainelRouteChildren,
+)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   CadastroRoute: CadastroRoute,
   EntrarRoute: EntrarRoute,
   MinhasCampanhasRoute: MinhasCampanhasRoute,
+  AdminPainelRoute: AdminPainelRouteWithChildren,
+  AdminLoginRoute: AdminLoginRoute,
   CCodigoRoute: CCodigoRoute,
   JogarIdRoute: JogarIdRoute,
   JogarIndexRoute: JogarIndexRoute,
