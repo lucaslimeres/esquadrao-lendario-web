@@ -3,8 +3,8 @@ import { destinoSeguro, garantirSessao } from "@/features/sessao";
 import type { Sessao } from "@/lib/tipos";
 import { CHAVE_CONTA, CHAVE_CONVIDADO, useSessao } from "@/stores/sessao";
 
-const conta: Sessao = { token: "t-conta", usuario: { id: "u1", nome: "Lucas", email: "l@x.com", convidado: false } };
-const convidado: Sessao = { token: "t-conv", usuario: { id: "u2", nome: null, email: null, convidado: true } };
+const conta: Sessao = { token: "t-conta", usuario: { id: "u1", nome: "Lucas", email: "l@x.com", convidado: false, emailConfirmado: true } };
+const convidado: Sessao = { token: "t-conv", usuario: { id: "u2", nome: null, email: null, convidado: true, emailConfirmado: false } };
 
 beforeEach(() => useSessao.setState({ sessao: null, modo: null }));
 afterEach(() => vi.unstubAllGlobals());

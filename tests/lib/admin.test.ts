@@ -13,7 +13,7 @@ afterEach(() => vi.unstubAllGlobals());
 
 describe("sessão de admin", () => {
   it("fica numa chave própria, separada da sessão do jogador", () => {
-    useSessao.getState().entrar({ token: "t-jogador", usuario: { id: "u1", nome: "J", email: "j@x.com", convidado: false } });
+    useSessao.getState().entrar({ token: "t-jogador", usuario: { id: "u1", nome: "J", email: "j@x.com", convidado: false, emailConfirmado: true } });
     useAdminSessao.getState().entrar({ token: "t-admin", admin });
     expect(localStorage.getItem(CHAVE_ADMIN)).toContain("t-admin");
     expect(localStorage.getItem(CHAVE_CONTA)).toContain("t-jogador");
@@ -23,7 +23,7 @@ describe("sessão de admin", () => {
   });
 
   it("o cliente admin manda só o token de admin e sai em 401", async () => {
-    useSessao.getState().entrar({ token: "t-jogador", usuario: { id: "u1", nome: "J", email: "j@x.com", convidado: false } });
+    useSessao.getState().entrar({ token: "t-jogador", usuario: { id: "u1", nome: "J", email: "j@x.com", convidado: false, emailConfirmado: true } });
     useAdminSessao.getState().entrar({ token: "t-admin", admin });
     const fetch = vi.fn().mockResolvedValue(new Response(JSON.stringify({ erro: "Sessão de administrador inválida", codigo: "unauthorized" }), { status: 401 }));
     vi.stubGlobal("fetch", fetch);

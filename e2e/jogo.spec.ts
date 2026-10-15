@@ -1,4 +1,5 @@
 import { expect, test, type Page } from "@playwright/test";
+import { codigoEnviadoPara, LOG_API } from "./codigo-email";
 
 async function montarTime(page: Page) {
   for (let i = 0; i < 11; i++) {
@@ -69,6 +70,7 @@ test("campanha sem conta não abre em outra aba", async ({ page, context }) => {
 });
 
 test("criar conta no meio da partida leva a campanha para o histórico", async ({ page }) => {
+  test.skip(!LOG_API, "precisa de E2E_API_LOG (log da API com os códigos)");
   await page.goto("/jogar");
   await page.getByRole("radio", { name: /^Libertadores/ }).click();
   await page.getByRole("button", { name: /Começar a montar o time/ }).click();
@@ -79,11 +81,15 @@ test("criar conta no meio da partida leva a campanha para o histórico", async (
 
   await page.getByRole("link", { name: "Criar conta e salvar" }).click();
   await expect(page.getByText("Sua partida sem conta vem junto")).toBeVisible();
-  const email = `e2e.${Date.now()}@exemplo.com`;
+  const email = `e2e.${test.info().project.name}.${Date.now()}@exemplo.com`;
   await page.getByLabel("Nome").fill("Torcedor E2E");
   await page.getByLabel("E-mail").fill(email);
   await page.getByLabel("Senha").fill("senha-forte-123");
   await page.getByRole("button", { name: /Criar conta/ }).click();
+
+  // The account only logs in after the 6-digit code; confirming carries the campaign.
+  await expect(page.getByRole("heading", { name: "Confirme seu e-mail" })).toBeVisible();
+  await page.getByLabel("Código").fill(await codigoEnviadoPara(email));
 
   // Back to the campaign, now as an account: no guest banner, same campaign.
   await expect(page).toHaveURL(campanhaUrl);

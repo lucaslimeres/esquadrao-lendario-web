@@ -1,5 +1,5 @@
 import { config } from "./config";
-import type { Campanha, CampanhaPublica, CampanhaResumo, Competicao, Estilo, Formacao, Sessao, Usuario } from "./tipos";
+import type { Campanha, CampanhaPublica, CampanhaResumo, Competicao, Estilo, FinalidadeCodigo, Formacao, Sessao, Usuario } from "./tipos";
 
 /** Error coming from the API: `{ erro, codigo }` with a pt-BR message ready for the UI. */
 export class ApiError extends Error {
@@ -70,9 +70,19 @@ export const api = {
 
   convidado: () => request<Sessao>("/auth/convidado", { method: "POST", autenticado: false }),
   login: (dados: { email: string; senha: string }) => request<Sessao>("/auth/login", { method: "POST", body: dados, autenticado: false }),
-  /** With a guest token, the API turns that guest into the new account (keeps its campaigns). */
-  cadastro: (dados: { nome: string; email: string; senha: string }, tokenConvidado: string | null) =>
-    request<Sessao>("/auth/cadastro", { method: "POST", body: dados, token: tokenConvidado }),
+  /** Creates the account and e-mails a 6-digit code; the session only comes with `confirmarEmail`. */
+  cadastro: (dados: { nome: string; email: string; senha: string }) =>
+    request<{ email: string; confirmacaoPendente: true }>("/auth/cadastro", { method: "POST", body: dados, autenticado: false }),
+  /** With a guest token, the API moves that guest's campaigns to the account. */
+  confirmarEmail: (dados: { email: string; codigo: string }, tokenConvidado: string | null) =>
+    request<Sessao>("/auth/confirmar-email", { method: "POST", body: dados, token: tokenConvidado }),
+  reenviarCodigo: (dados: { email: string; finalidade: FinalidadeCodigo }) =>
+    request<{ enviado: true }>("/auth/reenviar-codigo", { method: "POST", body: dados, autenticado: false }),
+  esqueciSenha: (email: string) => request<{ enviado: true }>("/auth/esqueci-senha", { method: "POST", body: { email }, autenticado: false }),
+  verificarCodigo: (dados: { email: string; codigo: string }) =>
+    request<{ valido: true }>("/auth/verificar-codigo", { method: "POST", body: dados, autenticado: false }),
+  redefinirSenha: (dados: { email: string; codigo: string; senha: string }) =>
+    request<Sessao>("/auth/redefinir-senha", { method: "POST", body: dados, autenticado: false }),
   me: () => request<Usuario>("/me"),
 
   criarCampanha: (dados: { competicao: string; formacao: string; estilo: Estilo }) =>
