@@ -19,7 +19,6 @@ import type { StatusCampanha } from "@/lib/tipos";
 
 const filtros = z.object({
   busca: z.string().optional(),
-  tipo: z.enum(["todos", "contas", "convidados"]).optional(),
   ativo: z.enum(["true", "false"]).optional(),
   pagina: z.number().int().min(1).optional(),
 });
@@ -40,7 +39,7 @@ function Usuarios() {
   const pagina = busca.pagina ?? 1;
   const { data: lista, isPending, isError, refetch, isFetching } = useQuery({
     queryKey: ["admin", "usuarios", busca],
-    queryFn: () => adminApi.usuarios({ busca: busca.busca, tipo: busca.tipo, ativo: busca.ativo, pagina, porPagina: 20 }),
+    queryFn: () => adminApi.usuarios({ busca: busca.busca, ativo: busca.ativo, pagina, porPagina: 20 }),
     placeholderData: keepPreviousData,
   });
   const filtrar = (patch: Partial<z.infer<typeof filtros>>) => navigate({ search: (s) => ({ ...s, ...patch, pagina: patch.pagina ?? 1 }) });
@@ -49,7 +48,7 @@ function Usuarios() {
   return (
     <>
       <CabecalhoAdmin
-        rotulo="Jogadores do app"
+        rotulo="Contas de jogadores (quem joga sem conta não vira usuário)"
         titulo="Usuários"
         acoes={
           <Button onClick={() => setEditando("novo")} className="w-full sm:w-56">
@@ -58,18 +57,13 @@ function Usuarios() {
         }
       />
       <form
-        className="mb-4 grid gap-3 sm:grid-cols-[1fr_180px_160px_auto]"
+        className="mb-4 grid gap-3 sm:grid-cols-[1fr_180px_auto]"
         onSubmit={(e) => {
           e.preventDefault();
           filtrar({ busca: termo.trim() || undefined });
         }}
       >
         <Input placeholder="Buscar por nome, e-mail ou id" value={termo} onChange={(e) => setTermo(e.target.value)} aria-label="Buscar" />
-        <Select aria-label="Tipo" value={busca.tipo ?? "todos"} onChange={(e) => filtrar({ tipo: e.target.value as "todos" })}>
-          <option value="todos">Todos</option>
-          <option value="contas">Só contas</option>
-          <option value="convidados">Só convidados</option>
-        </Select>
         <Select aria-label="Situação" value={busca.ativo ?? ""} onChange={(e) => filtrar({ ativo: (e.target.value || undefined) as "true" | undefined })}>
           <option value="">Qualquer situação</option>
           <option value="true">Ativos</option>
@@ -93,7 +87,6 @@ function Usuarios() {
               <tr>
                 <th>Nome</th>
                 <th>E-mail</th>
-                <th>Tipo</th>
                 <th>Situação</th>
                 <th className="text-right">Campanhas</th>
                 <th>Desde</th>
@@ -103,9 +96,8 @@ function Usuarios() {
             <tbody>
               {lista.itens.map((u) => (
                 <tr key={u.id}>
-                  <td className="font-semibold">{u.nome ?? <span className="font-normal text-neutro-700">Convidado</span>}</td>
+                  <td className="font-semibold">{u.nome ?? "—"}</td>
                   <td>{u.email ?? "—"}</td>
-                  <td>{u.convidado ? <Badge>Convidado</Badge> : <Badge variant="tinta">Conta</Badge>}</td>
                   <td>{u.ativo ? <Badge variant="avancou">Ativo</Badge> : <Badge variant="eliminado">Desativado</Badge>}</td>
                   <td className="text-right">{u.totalCampanhas}</td>
                   <td>{data.format(new Date(u.createdAt))}</td>
@@ -118,7 +110,7 @@ function Usuarios() {
               ))}
               {lista.itens.length === 0 && (
                 <tr>
-                  <td colSpan={7} className="text-neutro-700">
+                  <td colSpan={6} className="text-neutro-700">
                     Nenhum usuário com esses filtros.
                   </td>
                 </tr>
@@ -171,7 +163,7 @@ function NovoUsuario({ aoFechar, aoSalvar }: { aoFechar: () => void; aoSalvar: (
 function EditarUsuario({ id, aoFechar, aoSalvar }: { id: string; aoFechar: () => void; aoSalvar: () => void }) {
   const { data: u, isPending, isError } = useQuery({ queryKey: ["admin", "usuario", id], queryFn: () => adminApi.usuario(id) });
   return (
-    <Dialogo aberto aoMudar={(v) => !v && aoFechar()} titulo={u ? (u.nome ?? "Convidado") : "Usuário"} descricao={u ? `id ${u.id}` : undefined}>
+    <Dialogo aberto aoMudar={(v) => !v && aoFechar()} titulo={u ? (u.nome ?? "Usuário") : "Usuário"} descricao={u ? `id ${u.id}` : undefined}>
       {isPending && <Carregando />}
       {isError && <Erro mensagem="Não deu para carregar o usuário." />}
       {u && <FormUsuario usuario={u} aoFechar={aoFechar} aoSalvar={aoSalvar} />}
@@ -185,7 +177,7 @@ function FormUsuario({ usuario: u, aoFechar, aoSalvar }: { usuario: Awaited<Retu
   const [senha, setSenha] = useState("");
   const [ativo, setAtivo] = useState(u.ativo);
   const salvar = useMutation({
-    mutationFn: () => adminApi.atualizarUsuario(u.id, u.convidado ? { ativo } : { nome, email, ativo, ...(senha ? { senha } : {}) }),
+    mutationFn: () => adminApi.atualizarUsuario(u.id, { nome, email, ativo, ...(senha ? { senha } : {}) }),
     onSuccess: () => {
       aoSalvar();
       aoFechar();
@@ -195,17 +187,11 @@ function FormUsuario({ usuario: u, aoFechar, aoSalvar }: { usuario: Awaited<Retu
     <div className="space-y-6">
       <form className="space-y-4" onSubmit={(e) => { e.preventDefault(); salvar.mutate(); }}>
         {salvar.error && <Erro mensagem={mensagemErro(salvar.error)} />}
-        {u.convidado ? (
-          <p className="text-sm text-neutro-700">Convidado: não tem nome, e-mail nem senha. Dá só para ativar ou desativar.</p>
-        ) : (
-          <>
-            <CampoForm rotulo="Nome">{(id) => <Input id={id} required minLength={2} value={nome} onChange={(e) => setNome(e.target.value)} />}</CampoForm>
-            <CampoForm rotulo="E-mail">{(id) => <Input id={id} type="email" required value={email} onChange={(e) => setEmail(e.target.value)} />}</CampoForm>
-            <CampoForm rotulo="Nova senha" dica="Deixe em branco para manter a atual.">
-              {(id) => <Input id={id} type="password" autoComplete="new-password" minLength={8} value={senha} onChange={(e) => setSenha(e.target.value)} />}
-            </CampoForm>
-          </>
-        )}
+        <CampoForm rotulo="Nome">{(id) => <Input id={id} required minLength={2} value={nome} onChange={(e) => setNome(e.target.value)} />}</CampoForm>
+        <CampoForm rotulo="E-mail">{(id) => <Input id={id} type="email" required value={email} onChange={(e) => setEmail(e.target.value)} />}</CampoForm>
+        <CampoForm rotulo="Nova senha" dica="Deixe em branco para manter a atual.">
+          {(id) => <Input id={id} type="password" autoComplete="new-password" minLength={8} value={senha} onChange={(e) => setSenha(e.target.value)} />}
+        </CampoForm>
         <Checkbox rotulo="Ativo (pode entrar e jogar)" checked={ativo} onChange={(e) => setAtivo(e.target.checked)} />
         <Button type="submit" className="w-full" disabled={salvar.isPending}>{salvar.isPending ? "Salvando…" : "Salvar"}</Button>
       </form>

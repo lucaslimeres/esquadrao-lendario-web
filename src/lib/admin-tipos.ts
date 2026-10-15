@@ -11,18 +11,21 @@ export interface Admin {
 }
 
 export interface Dashboard {
-  usuarios: { contas: number; convidados: number; inativos: number; contasNovas7d: number };
+  usuarios: { contas: number; inativos: number; contasNovas7d: number };
   campanhas: {
     total: number;
     emAndamento: number;
     campeas: number;
     eliminadas: number;
     ultimos7d: number;
+    /** Played without an account (guests are not stored as users). */
+    semConta: number;
     taxaTitulo: number | null;
     porFormacao: Array<{ formacao: string; total: number }>;
   };
   base: { equipes: number; elencos: number; jogadoresAtivos: number };
   admins: { ativos: number };
+  mensagens: { novas: number };
   competicoes: Array<{
     id: string;
     slug: string;
@@ -41,7 +44,6 @@ export interface UsuarioAdmin {
   id: string;
   nome: string | null;
   email: string | null;
-  convidado: boolean;
   ativo: boolean;
   createdAt: string;
   totalCampanhas: number;
@@ -187,4 +189,25 @@ export interface NovaImportacao {
   fontesElencos: string[];
   paginaWikipedia?: string;
   ligaHighlightly?: string;
+}
+
+// ── Fale conosco ──
+export type StatusMensagem = "nova" | "lida" | "respondida" | "arquivada";
+
+export interface MensagemContato {
+  id: string;
+  nome: string;
+  email: string;
+  assunto: string;
+  mensagem: string;
+  status: StatusMensagem;
+  resposta: string | null;
+  respondidaEm: string | null;
+  respondidaPor: { id: string; nome: string } | null;
+  lidaEm: string | null;
+  createdAt: string;
+}
+
+export interface PaginaMensagens extends Pagina<MensagemContato> {
+  porStatus: Record<StatusMensagem, number>;
 }

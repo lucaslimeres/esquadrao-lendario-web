@@ -1,6 +1,8 @@
 import { Link, useNavigate } from "@tanstack/react-router";
-import { LayoutDashboard, LogOut, Menu, ShieldCheck, Trophy, Users, X } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { LayoutDashboard, LogOut, Mail, Menu, ShieldCheck, Trophy, Users, X } from "lucide-react";
 import { useState, type ReactNode } from "react";
+import { adminApi } from "@/lib/admin-api";
 import { cn } from "@/lib/utils";
 import { useAdminSessao } from "@/stores/admin-sessao";
 
@@ -8,6 +10,7 @@ const ITENS = [
   { to: "/admin", rotulo: "Dashboard", icone: LayoutDashboard, exato: true },
   { to: "/admin/base", rotulo: "Campeonatos, times e jogadores", icone: Trophy, exato: false },
   { to: "/admin/usuarios", rotulo: "Usuários", icone: Users, exato: false },
+  { to: "/admin/mensagens", rotulo: "Mensagens", icone: Mail, exato: false },
   { to: "/admin/administradores", rotulo: "Administradores", icone: ShieldCheck, exato: false },
 ] as const;
 
@@ -19,6 +22,9 @@ export function AdminLayout({ children }: { children: ReactNode }) {
   const { sessao, sair } = useAdminSessao();
   const navigate = useNavigate();
   const [aberto, setAberto] = useState(false);
+  // New "Fale conosco" messages, shown as a counter in the sidebar (refreshed every minute).
+  const { data: resumo } = useQuery({ queryKey: ["admin", "dashboard"], queryFn: adminApi.dashboard, enabled: !!sessao, refetchInterval: 60_000 });
+  const novas = resumo?.mensagens.novas ?? 0;
 
   const nav = (
     <nav className="flex flex-col gap-1" aria-label="Painel">
@@ -32,6 +38,11 @@ export function AdminLayout({ children }: { children: ReactNode }) {
         >
           <Icone className="size-5 shrink-0" aria-hidden />
           {rotulo}
+          {to === "/admin/mensagens" && novas > 0 && (
+            <span className="ml-auto bg-verde-100 px-2 py-0.5 text-xs font-bold text-verde" aria-label={`${novas} nova${novas === 1 ? "" : "s"}`}>
+              {novas}
+            </span>
+          )}
         </Link>
       ))}
     </nav>

@@ -5,6 +5,7 @@ import { Campo } from "@/components/jogo/campo";
 import { CardJogador } from "@/components/jogo/card-jogador";
 import { SeloResultado } from "@/components/jogo/placar";
 import { PartidaAoVivo } from "@/features/campanha/partida-ao-vivo";
+import { RITMO } from "@/lib/ritmo";
 import type { PartidaCampanha, VagaCampanha } from "@/lib/tipos";
 
 const vagas: VagaCampanha[] = [
@@ -64,9 +65,18 @@ describe("PartidaAoVivo", () => {
     render(<PartidaAoVivo partida={partida} onFim={() => {}} />);
     expect(screen.queryByText("Artilheiro")).not.toBeInTheDocument();
     // One tick per act: each minute's state update schedules the next timer.
-    for (let i = 0; i < 12; i++) act(() => vi.advanceTimersByTime(45));
+    const avancar = (passos: number) => {
+      for (let i = 0; i < passos; i++) act(() => vi.advanceTimersByTime(RITMO.gol));
+    };
+    expect(screen.getByText("Bola rolando!")).toBeInTheDocument();
+    avancar(10);
     expect(screen.getByText("Artilheiro")).toBeInTheDocument();
+    // The reveal holds on the goal minute.
+    expect(screen.getByText("Gol!")).toBeInTheDocument();
+    expect(screen.getByText("Artilheiro").closest("li")).toHaveAttribute("data-novo");
     expect(screen.queryByText("Rival")).not.toBeInTheDocument();
+    avancar(35);
+    expect(screen.getByText("Intervalo")).toBeInTheDocument();
   });
 
   it("pular mostra o resultado final e continuar encerra", async () => {
