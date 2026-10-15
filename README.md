@@ -43,6 +43,11 @@ elencos importados.
 | `/entrar`, `/cadastro` | Conta. Cadastrar durante uma partida sem conta leva a partida junto |
 | `/minhas-campanhas` | Histórico (só com conta) |
 | `/c/:codigo` | Resumo público de uma campanha (link compartilhado) |
+| `/admin/login` | Login do painel administrativo (só admins, tabela separada dos jogadores) |
+| `/admin` | Dashboard: jogadores, campanhas, taxa de título, base e competições |
+| `/admin/base` | Campeonatos e times (abas); dentro de cada campeonato ficam os elencos campeões, e dentro do elenco, os jogadores. Inclui importação de JSON |
+| `/admin/usuarios` | CRUD de usuários do jogo: busca, filtros, ativar/desativar e excluir |
+| `/admin/administradores` | CRUD de administradores do painel |
 
 ## Deploy (Vercel)
 

@@ -57,7 +57,7 @@ export function TabelaGrupo({ grupo }: { grupo: NonNullable<Campanha["grupo"]> }
   return (
     <section>
       <h2 className="rotulo mb-3">Grupo {grupo.encerrado ? "· encerrado" : ""}</h2>
-      <div className="overflow-x-auto">
+      <div className="relative overflow-x-auto">
         <table className="w-full border-2 border-neutro-400 bg-white text-sm">
           <thead>
             <tr className="border-b-2 border-tinta text-left">

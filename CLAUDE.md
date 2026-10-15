@@ -23,7 +23,13 @@ estilo shadcn (`radix-ui` + `class-variance-authority`), React Hook Form + Zod e
 - `src/components/ui/`: botão, badge, input e estados.
 - `src/lib/`: `api.ts` (cliente), `tipos.ts` (contratos da API) e `jogo.ts` (textos e
   raridade).
-- `src/stores/sessao.ts`: sessão.
+- `src/stores/sessao.ts`: sessão do jogador.
+- **Painel admin:**
+  - Rotas em `src/routes/admin/`: `login` e o layout com guarda `_painel` (dashboard,
+    `base/`, `usuarios`, `administradores`).
+  - Cliente próprio em `src/lib/admin-api.ts`, sessão própria em
+    `src/stores/admin-sessao.ts` (chave `esquadrao-admin-auth`) e layout em
+    `src/components/admin/`.
 
 ## Regras específicas do web
 
@@ -40,12 +46,21 @@ estilo shadcn (`radix-ui` + `class-variance-authority`), React Hook Form + Zod e
   - Raio zero, réguas de 2px, tudo alinhado à esquerda, alvo de toque mínimo de 44px.
   - Verde só na ação principal, nas lendas, na vitória e nas telas de sorteio e título.
   - Nunca usar vermelho, escudos, logos ou fotos reais.
+- **Painel admin** separado de verdade:
+  - Nunca usar `lib/api.ts`, `useSessao` ou o token do jogador dentro de `/admin`, e
+    vice-versa.
+  - O `__root` não mostra o cabeçalho público em `/admin/*`; o painel usa o
+    `AdminLayout`, escuro e com o selo "Admin".
+  - Tabelas ficam sempre dentro de um contêiner `relative overflow-x-auto`. Sem o
+    `relative`, as células `sr-only` vazam e criam rolagem horizontal no celular.
 - Copy em pt-BR, no tom da marca ("Sorteia aí!", "Bola rolando!").
 
 ## Validar antes de subir
 
 `yarn lint`, `yarn build` e `yarn test`. Para `yarn test:e2e`, a API precisa estar rodando
-em `VITE_API_URL` com pelo menos 3 elencos da Libertadores importados.
+em `VITE_API_URL` com pelo menos 3 elencos da Libertadores importados. O e2e do painel
+precisa de `E2E_ADMIN_EMAIL` e `E2E_ADMIN_SENHA`, de um admin criado com
+`yarn admin:create` na API; sem essas variáveis, ele é pulado.
 
 ## Fluxo de branches
 
