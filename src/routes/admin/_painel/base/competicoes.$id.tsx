@@ -1,6 +1,6 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { ArrowRight, FileJson, Pencil, Plus } from "lucide-react";
+import { ArrowRight, CloudDownload, FileJson, Pencil, Plus } from "lucide-react";
 import { useState } from "react";
 import { BotaoExcluir } from "@/components/admin/confirmar";
 import { Numero, Tabela } from "@/components/admin/form";
@@ -10,6 +10,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Carregando, Erro } from "@/components/ui/estados";
 import { FormCompeticao, FormElenco, ImportarJson } from "@/features/admin/forms-base";
+import { ImportacoesDaCompeticao, NovaImportacaoDialogo } from "@/features/admin/importacao";
 import { adminApi } from "@/lib/admin-api";
 
 export const Route = createFileRoute("/admin/_painel/base/competicoes/$id")({
@@ -20,7 +21,7 @@ function Competicao() {
   const { id } = Route.useParams();
   const queryClient = useQueryClient();
   const navigate = useNavigate();
-  const [dialogo, setDialogo] = useState<"editar" | "elenco" | "importar" | null>(null);
+  const [dialogo, setDialogo] = useState<"editar" | "elenco" | "importar" | "fontes" | null>(null);
   const [aviso, setAviso] = useState<string | null>(null);
   const { data: c, isPending, isError, refetch } = useQuery({ queryKey: ["admin", "competicao", id], queryFn: () => adminApi.competicao(id) });
   const atualizar = () => queryClient.invalidateQueries({ queryKey: ["admin"] });
@@ -64,6 +65,9 @@ function Competicao() {
       <div className="mb-3 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
         <h2 className="rotulo">Elencos campeões</h2>
         <div className="flex flex-col gap-2 sm:flex-row">
+          <Button variant="contorno" tamanho="pequeno" onClick={() => setDialogo("fontes")}>
+            Importar de fontes externas <CloudDownload aria-hidden />
+          </Button>
           <Button variant="contorno" tamanho="pequeno" onClick={() => setDialogo("importar")}>
             Importar JSON <FileJson aria-hidden />
           </Button>
@@ -118,7 +122,18 @@ function Competicao() {
           )}
         </tbody>
       </Tabela>
+      <ImportacoesDaCompeticao competicaoId={c.id} />
 
+      {dialogo === "fontes" && (
+        <NovaImportacaoDialogo
+          competicao={c}
+          aoFechar={() => setDialogo(null)}
+          aoCriar={(i) => {
+            atualizar();
+            navigate({ to: "/admin/base/importacoes/$id", params: { id: i.id } });
+          }}
+        />
+      )}
       {dialogo === "editar" && <FormCompeticao competicao={c} aoFechar={() => setDialogo(null)} aoSalvar={atualizar} />}
       {dialogo === "elenco" && (
         <FormElenco competicaoId={c.id} aoFechar={() => setDialogo(null)} aoSalvar={(e) => { atualizar(); navigate({ to: "/admin/base/elencos/$id", params: { id: e.id } }); }} />

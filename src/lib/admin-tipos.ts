@@ -127,3 +127,60 @@ export interface ResultadoImportacao {
   jogadoresAtualizados: number;
   jogadoresDesativados: number;
 }
+
+// ── Importação automática (fontes gratuitas) ──
+export interface FonteImportacao {
+  id: string;
+  nome: string;
+}
+
+export type StatusImportacao = "pendente" | "processando" | "concluida" | "falhou";
+export type StatusItemImportacao = "rascunho" | "sem_dados" | "publicado" | "descartado";
+
+export interface Importacao {
+  id: string;
+  competicaoId: string;
+  fontesCampeoes: string[];
+  fontesElencos: string[];
+  paginaWikipedia: string;
+  anoInicio: number;
+  anoFim: number;
+  status: StatusImportacao;
+  totalItens: number;
+  itensProcessados: number;
+  erro: string | null;
+  concluidaEm: string | null;
+  createdAt: string;
+  itensPorStatus: Partial<Record<StatusItemImportacao, number>>;
+}
+
+/** Same format as the JSON in data/elencos/ (without the competition). */
+export interface DadosRascunho {
+  temporada: number;
+  equipe: { nome: string; sigla: string; pais: string | null; corPrimaria: string; corSecundaria: string };
+  jogadores: Array<{ nome: string; posicao: Posicao; secundarias: Posicao[]; overall: number }>;
+}
+
+export interface ItemImportacao {
+  id: string;
+  importacaoId: string;
+  temporada: number;
+  status: StatusItemImportacao;
+  dados: DadosRascunho;
+  avisos: string[];
+  referencias: Array<{ fonte: string; url: string }>;
+  elencoId: string | null;
+}
+
+export interface ImportacaoDetalhe extends Importacao {
+  itens: ItemImportacao[];
+}
+
+export interface NovaImportacao {
+  competicaoId: string;
+  anoInicio: number;
+  anoFim: number;
+  fontesCampeoes: string[];
+  fontesElencos: string[];
+  paginaWikipedia?: string;
+}
