@@ -8,17 +8,17 @@ import { PartidaAoVivo } from "@/features/campanha/partida-ao-vivo";
 import type { PartidaCampanha, VagaCampanha } from "@/lib/tipos";
 
 const vagas: VagaCampanha[] = [
-  { codigo: "GOL_1", posicao: "GOL", x: 50, y: 92, jogador: null },
-  { codigo: "ZAG_1", posicao: "ZAG", x: 40, y: 75, jogador: null },
+  { codigo: "GK_1", posicao: "GK", x: 50, y: 92, jogador: null },
+  { codigo: "CB_1", posicao: "CB", x: 40, y: 75, jogador: null },
   {
-    codigo: "ATA_1", posicao: "ATA", x: 50, y: 18,
-    jogador: { id: "j1", nome: "Fulano de Tal", posicao: "ATA", overall: 91, overallEfetivo: 91, encaixe: "principal", elenco: null },
+    codigo: "ST_1", posicao: "ST", x: 50, y: 18,
+    jogador: { id: "j1", nome: "Fulano de Tal", posicao: "ST", overall: 91, overallEfetivo: 91, encaixe: "principal", elenco: null },
   },
 ];
 
 describe("CardJogador", () => {
   it("mostra overall, posição e raridade", () => {
-    const { container } = render(<CardJogador nome="Zico" posicao="MEI" overall={94} legenda="Flamengo 1981" />);
+    const { container } = render(<CardJogador nome="Zico" posicao="CAM" overall={94} legenda="Flamengo 1981" />);
     expect(screen.getByText("94")).toBeInTheDocument();
     expect(screen.getByText("Lendário")).toBeInTheDocument();
     expect(container.firstElementChild).toHaveAttribute("data-raridade", "lendario");
@@ -28,13 +28,13 @@ describe("CardJogador", () => {
 describe("Campo", () => {
   it("desenha vagas vazias, preenchidas e só deixa clicar nas destacadas", async () => {
     const escolher = vi.fn();
-    const { container } = render(<Campo vagas={vagas} destacadas={["ZAG_1"]} aoEscolherVaga={escolher} />);
-    expect(container.querySelector('[data-vaga="GOL_1"]')).toHaveAttribute("data-estado", "vazia");
-    expect(container.querySelector('[data-vaga="ATA_1"]')).toHaveAttribute("data-estado", "preenchida");
+    const { container } = render(<Campo vagas={vagas} destacadas={["CB_1"]} aoEscolherVaga={escolher} />);
+    expect(container.querySelector('[data-vaga="GK_1"]')).toHaveAttribute("data-estado", "vazia");
+    expect(container.querySelector('[data-vaga="ST_1"]')).toHaveAttribute("data-estado", "preenchida");
     expect(screen.getByText("Tal")).toBeInTheDocument();
     expect(screen.getAllByRole("button")).toHaveLength(1);
-    await userEvent.click(screen.getByRole("button", { name: /vaga ZAG/ }));
-    expect(escolher).toHaveBeenCalledWith("ZAG_1");
+    await userEvent.click(screen.getByRole("button", { name: /vaga CB/ }));
+    expect(escolher).toHaveBeenCalledWith("CB_1");
   });
 });
 

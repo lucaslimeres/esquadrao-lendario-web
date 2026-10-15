@@ -92,7 +92,7 @@ function ItemCard({ item, aoEditar, aoMudar }: { item: ItemImportacao; aoEditar:
   const bloqueios = item.avisos.filter(bloqueiaPublicacao);
   const outros = item.avisos.filter((a) => !bloqueiaPublicacao(a));
   const editavel = item.status === "rascunho" || item.status === "sem_dados";
-  const goleiros = item.dados.jogadores.filter((j) => j.posicao === "GOL").length;
+  const goleiros = item.dados.jogadores.filter((j) => j.posicao === "GK").length;
 
   return (
     <li className={cn("border-2 border-neutro-400 bg-white p-4", item.status === "descartado" && "opacity-60")}>

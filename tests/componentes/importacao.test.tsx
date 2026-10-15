@@ -51,9 +51,9 @@ describe("EditorRascunho", () => {
         temporada: 2005,
         equipe: { nome: "São Paulo", sigla: "SAO", pais: "BR", corPrimaria: "#201E1D", corSecundaria: "#F3F2F2" },
         jogadores: [
-          { nome: "Rogério Ceni", posicao: "GOL", secundarias: [], overall: 82 },
-          { nome: "Mineiro", posicao: "MEI", secundarias: ["VOL"], overall: 78 },
-          { nome: "Sobra", posicao: "ATA", secundarias: [], overall: 70 },
+          { nome: "Rogério Ceni", posicao: "GK", secundarias: [], overall: 82 },
+          { nome: "Mineiro", posicao: "CM", secundarias: ["CDM"], overall: 78 },
+          { nome: "Sobra", posicao: "ST", secundarias: [], overall: 70 },
         ],
       },
       avisos: [],
@@ -65,7 +65,7 @@ describe("EditorRascunho", () => {
     const aoSalvar = vi.fn();
     comQuery(<EditorRascunho item={item} aoFechar={() => {}} aoSalvar={aoSalvar} />);
 
-    await userEvent.selectOptions(screen.getByLabelText("Posição de Mineiro"), "VOL");
+    await userEvent.selectOptions(screen.getByLabelText("Posição de Mineiro"), "CDM");
     await userEvent.click(screen.getByRole("button", { name: "Remover Sobra" }));
     await userEvent.click(screen.getByRole("button", { name: /Adicionar jogador/ }));
     await userEvent.type(screen.getByLabelText("Nome do jogador 3"), "Amoroso");
@@ -76,9 +76,9 @@ describe("EditorRascunho", () => {
     expect(url).toMatch(/\/admin\/importacoes\/itens\/it-1$/);
     expect(init!.method).toBe("PATCH");
     expect(JSON.parse(String(init!.body)).jogadores).toEqual([
-      { nome: "Rogério Ceni", posicao: "GOL", secundarias: [], overall: 82 },
-      { nome: "Mineiro", posicao: "VOL", secundarias: [], overall: 78 },
-      { nome: "Amoroso", posicao: "ATA", secundarias: [], overall: 70 },
+      { nome: "Rogério Ceni", posicao: "GK", secundarias: [], overall: 82 },
+      { nome: "Mineiro", posicao: "CDM", secundarias: [], overall: 78 },
+      { nome: "Amoroso", posicao: "ST", secundarias: [], overall: 70 },
     ]);
   });
 });

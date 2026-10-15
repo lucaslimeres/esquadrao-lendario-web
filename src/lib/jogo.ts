@@ -13,13 +13,16 @@ export function raridade(overall: number): Raridade {
 export const NOME_RARIDADE: Record<Raridade, string> = { bronze: "Bronze", prata: "Prata", ouro: "Ouro", lendario: "Lendário" };
 
 export const NOME_POSICAO: Record<Posicao, string> = {
-  GOL: "Goleiro",
-  ZAG: "Zagueiro",
-  LAT: "Lateral",
-  VOL: "Volante",
-  MEI: "Meia",
-  PON: "Ponta",
-  ATA: "Atacante",
+  GK: "Goleiro",
+  CB: "Zagueiro",
+  LB: "Lateral-esquerdo",
+  RB: "Lateral-direito",
+  CDM: "Volante",
+  CM: "Meio-campista",
+  CAM: "Meia ofensivo",
+  LW: "Ponta-esquerda",
+  RW: "Ponta-direita",
+  ST: "Atacante",
 };
 
 export const NOME_FASE: Record<Fase, string> = {
@@ -48,7 +51,7 @@ export const NOME_STATUS: Record<StatusCampanha, string> = {
   eliminada: "Eliminado",
 };
 
-/** Slot label as the player reads it: "ZAG_2" → "Zagueiro 2" (number only when repeated). */
+/** Slot label as the player reads it: "CB_2" → "Zagueiro 2" (number only when repeated). */
 export function nomeVaga(codigo: string, repetida: boolean): string {
   const [posicao, numero] = codigo.split("_") as [Posicao, string];
   const nome = NOME_POSICAO[posicao] ?? posicao;
