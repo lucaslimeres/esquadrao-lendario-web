@@ -2,10 +2,12 @@ import { ArrowRight, FastForward } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Placar } from "@/components/jogo/placar";
 import { Button } from "@/components/ui/button";
+import { eventosAte } from "@/lib/eventos";
 import { fraseFinal } from "@/lib/jogo";
 import { atrasoDoPasso, etapaDoPasso, NOME_ETAPA } from "@/lib/ritmo";
 import type { PartidaCampanha } from "@/lib/tipos";
 import { cn } from "@/lib/utils";
+import { LinhaDoTempo } from "./linha-do-tempo";
 
 function prefereSemAnimacao() {
   return typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
@@ -27,7 +29,6 @@ export function PartidaAoVivo({ partida, onFim }: { partida: PartidaCampanha; on
 
   const minuto = Math.min(passo, duracao);
   const gols = partida.gols.filter((g) => g.minuto <= minuto);
-  const penaltis = (partida.penaltis ?? []).slice(0, Math.max(0, passo - duracao));
   const terminou = passo >= fim;
   const etapa = etapaDoPasso(passo, partida);
   // The goal just scored stays highlighted while the reveal pauses on it.
@@ -50,36 +51,14 @@ export function PartidaAoVivo({ partida, onFim }: { partida: PartidaCampanha; on
           )}
         </p>
       )}
-      <ol className="mt-4 space-y-2">
-        {gols.map((g, i) => (
-          <li
-            key={i}
-            data-novo={golAgora.includes(g) || undefined}
-            className={cn(
-              "flex items-center gap-3 border-l-4 bg-white p-3 transition-colors",
-              g.doSeuTime ? "border-verde" : "border-tinta",
-              golAgora.includes(g) && (g.doSeuTime ? "bg-verde-100" : "bg-gramado"),
-            )}
-          >
-            <span className="w-10 font-display text-lg">{g.minuto}'</span>
-            <span className="font-semibold">{g.jogadorNome}</span>
-            <span className="ml-auto text-sm text-neutro-700">{g.doSeuTime ? "Seu esquadrão" : (partida.adversario?.rotulo ?? "Adversário")}</span>
-          </li>
-        ))}
-      </ol>
-      {penaltis.length > 0 && (
-        <div className="mt-6">
-          <p className="rotulo mb-2">Pênaltis</p>
-          <ol className="grid grid-cols-2 gap-2 text-sm">
-            {penaltis.map((c, i) => (
-              <li key={i} className={cn("flex justify-between bg-white p-2", !c.doSeuTime && "col-start-2")}>
-                <span className="truncate">{c.jogadorNome}</span>
-                <span className="font-bold">{c.convertido ? "Gol" : "Perdeu"}</span>
-              </li>
-            ))}
-          </ol>
-        </div>
-      )}
+      <div className="mt-4">
+        <LinhaDoTempo
+          eventos={eventosAte(partida, passo)}
+          partida={partida}
+          maisRecentePrimeiro
+          destaque={(e) => e.tipo === "gol" && golAgora.some((g) => g.minuto === e.minuto && g.jogadorNome === e.jogadorNome)}
+        />
+      </div>
       <div className="mt-6">
         {terminou ? (
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
