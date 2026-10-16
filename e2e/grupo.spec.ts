@@ -81,7 +81,9 @@ test("campanha em grupo: convite pelo link, montagem de todos e torneio rolando"
 
   await jogarProximo(page);
   // Against the other member it waits for both; the guest's confirmation kicks it off.
-  if (await page.getByText("Aguardando o adversário…").isVisible()) {
+  const aguardando = page.getByText("Aguardando o adversário…");
+  await expect(page.getByRole("button", { name: /Pular/ }).or(aguardando)).toBeVisible({ timeout: 10_000 });
+  if (await aguardando.isVisible()) {
     await expect(outra.getByText(/Ana FC já está pronto esperando você!/)).toBeVisible({ timeout: 10_000 });
     await jogarProximo(outra);
     await expect(outra.getByRole("button", { name: /Pular/ })).toBeVisible();
