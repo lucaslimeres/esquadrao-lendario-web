@@ -1,5 +1,5 @@
 import { config } from "./config";
-import type { Campanha, CampanhaPublica, CampanhaResumo, Competicao, Estilo, FinalidadeCodigo, Formacao, Sessao, Usuario } from "./tipos";
+import type { Campanha, CampanhaPublica, CampanhaResumo, Competicao, Estilo, FinalidadeCodigo, Formacao, Grupo, GrupoAberto, MeuGrupo, Sessao, Usuario, Visibilidade } from "./tipos";
 
 /** Error coming from the API: `{ erro, codigo }` with a pt-BR message ready for the UI. */
 export class ApiError extends Error {
@@ -31,7 +31,7 @@ export function configurarAuth(token: TokenProvider, onUnauthorized: Unauthorize
 }
 
 interface Opcoes {
-  method?: "GET" | "POST";
+  method?: "GET" | "POST" | "PATCH" | "DELETE";
   body?: unknown;
   /** Override the session token (e.g. guest token during sign-up). */
   token?: string | null;
@@ -98,6 +98,27 @@ export const api = {
   proximaPartida: (id: string) =>
     request<{ partida: Campanha["partidas"][number]; campanha: Campanha }>(`/campanhas/${id}/proxima-partida`, { method: "POST" }),
   compartilhada: (codigo: string) => request<CampanhaPublica>(`/compartilhar/${codigo}`, { autenticado: false }),
+  // Campanha em grupo
+  gruposAbertos: (competicao?: string) =>
+    request<GrupoAberto[]>(`/grupos/abertos${competicao ? `?competicao=${encodeURIComponent(competicao)}` : ""}`, { autenticado: false }),
+  meusGrupos: () => request<MeuGrupo[]>("/grupos"),
+  /** Token optional: without it (or not a member) it is just the lobby. */
+  grupo: (codigo: string) => request<Grupo>(`/grupos/${encodeURIComponent(codigo)}`),
+  criarGrupo: (dados: { nome: string; competicao: string; visibilidade: Visibilidade; nomeTime?: string | null }) =>
+    request<Grupo>("/grupos", { method: "POST", body: dados }),
+  configurarGrupo: (codigo: string, dados: { nome?: string; visibilidade?: Visibilidade }) =>
+    request<Grupo>(`/grupos/${codigo}`, { method: "PATCH", body: dados }),
+  entrarNoGrupo: (codigo: string) => request<Grupo>(`/grupos/${encodeURIComponent(codigo)}/entrar`, { method: "POST" }),
+  sairDoGrupo: (codigo: string) => request<{ saiu: true }>(`/grupos/${codigo}/sair`, { method: "POST" }),
+  adicionarAoGrupo: (codigo: string, email: string) => request<Grupo>(`/grupos/${codigo}/membros`, { method: "POST", body: { email } }),
+  removerDoGrupo: (codigo: string, membroId: string) => request<Grupo>(`/grupos/${codigo}/membros/${membroId}`, { method: "DELETE" }),
+  meuTimeNoGrupo: (codigo: string, dados: { nomeTime?: string | null; pronto?: boolean }) =>
+    request<Grupo>(`/grupos/${codigo}/meu-time`, { method: "PATCH", body: dados }),
+  comecarMontagemDoGrupo: (codigo: string) => request<Grupo>(`/grupos/${codigo}/montagem`, { method: "POST" }),
+  montarTimeDoGrupo: (codigo: string, dados: { formacao: string; estilo: Estilo }) =>
+    request<{ campanhaId: string }>(`/grupos/${codigo}/meu-time/montar`, { method: "POST", body: dados }),
+  jogarNoGrupo: (codigo: string) => request<Grupo>(`/grupos/${codigo}/jogar`, { method: "POST" }),
+  forcarJogo: (codigo: string, partidaId: string) => request<Grupo>(`/grupos/${codigo}/partidas/${partidaId}/forcar`, { method: "POST" }),
   /** "Fale conosco". `site` is the hidden honeypot field (bots fill it, people don't). */
   enviarContato: (dados: { nome: string; email: string; assunto: string; mensagem: string; site?: string }) =>
     request<{ recebida: true }>("/contato", { method: "POST", body: dados, autenticado: false }),

@@ -45,7 +45,8 @@ export interface Formacao {
 
 export interface ElencoResumo {
   id: string;
-  temporada: number;
+  /** Null for a group member's team (it has no champion season). */
+  temporada: number | null;
   rotulo: string;
   equipe: { nome: string; sigla: string; pais: string | null; corPrimaria: string; corSecundaria: string };
 }
@@ -131,6 +132,8 @@ export interface Campanha {
   estilo: Estilo;
   /** Squad name chosen when the campaign started ("Seu esquadrão" when none). */
   nomeTime: string;
+  /** Campanha em grupo: this is a member's draft for that group (null = solo campaign). */
+  torneio?: { codigo: string; nome: string } | null;
   resorteiosRestantes: number;
   competicao: { slug: string; nome: string; formato: Competicao["formato"]; jogosAteTitulo: number };
   formacao: { codigo: string; vagas: VagaCampanha[] };
@@ -163,3 +166,104 @@ export type CampanhaPublica = Pick<
   Campanha,
   "codigo" | "status" | "estilo" | "nomeTime" | "competicao" | "formacao" | "overallTime" | "resultado" | "grupo" | "partidas" | "artilheiros"
 >;
+
+// ───────────────────────── Campanha em grupo ─────────────────────────
+
+export type StatusGrupo = "inscricoes" | "montagem" | "em_andamento" | "encerrado";
+export type Visibilidade = "publico" | "privado";
+
+/** A slot of the 32-team bracket: a member's team or a champion squad (same badge shape). */
+export interface TimeGrupo {
+  id: string;
+  grupo: string | null;
+  eliminado: boolean;
+  seuTime: boolean;
+  membro: boolean;
+  nome: string;
+  elenco: ElencoResumo | null;
+}
+
+/** A group match from a neutral point of view (A × B). `naPerspectiva` turns it into the player's. */
+export interface PartidaGrupo {
+  id: string;
+  fase: Fase;
+  rodada: number;
+  grupo: string | null;
+  timeA: TimeGrupo | null;
+  timeB: TimeGrupo | null;
+  prontoA: boolean;
+  prontoB: boolean;
+  simulada: boolean;
+  simuladaEm: string | null;
+  golsA: number | null;
+  golsB: number | null;
+  prorrogacao: boolean;
+  penaltisA: number | null;
+  penaltisB: number | null;
+  vencedor: "a" | "b" | "empate" | null;
+  gols: Array<{ minuto: number; lado: "a" | "b"; jogadorId: string; jogadorNome: string }>;
+  penaltis: Array<{ lado: "a" | "b"; jogadorNome: string; convertido: boolean }> | null;
+}
+
+export interface LinhaGrupoTorneio extends Omit<LinhaGrupo, "time"> {
+  time: TimeGrupo | null;
+}
+
+export interface MembroGrupo {
+  id: string;
+  nomeTime: string | null;
+  pronto: boolean;
+  convidado: boolean;
+  moderador: boolean;
+  seuTime: boolean;
+  montagem: "nao_comecou" | "montando" | "pronto" | null;
+}
+
+export interface Grupo {
+  codigo: string;
+  nome: string;
+  visibilidade: Visibilidade;
+  status: StatusGrupo;
+  faseAtual: Fase | null;
+  competicao: Campanha["competicao"];
+  /** Server clock, to line up the live match with `simuladaEm`. */
+  agora: string;
+  souMembro: boolean;
+  souModerador: boolean;
+  meuMembro: { id: string; nomeTime: string | null; pronto: boolean; campanha: { id: string; status: StatusCampanha } | null } | null;
+  membros: MembroGrupo[];
+  vagas: { total: number; ocupadas: number };
+  visaoCompleta: boolean;
+  meuTime: TimeGrupo | null;
+  campeao: TimeGrupo | null;
+  proximaPartida: (PartidaGrupo & { situacao: "jogar" | "aguardando_adversario" | "adversario_pronto" }) | null;
+  aguardandoFase: boolean;
+  progressoFase: { jogos: number; jogados: number } | null;
+  grupos: Array<{ letra: string; encerrado: boolean; classificacao: LinhaGrupoTorneio[] }>;
+  partidas: PartidaGrupo[];
+  pendentes: Array<{ id: string; fase: Fase; timeA: string; timeB: string; prontoA: boolean; prontoB: boolean }>;
+  criadoEm: string;
+  iniciadoEm: string | null;
+  encerradoEm: string | null;
+}
+
+export interface GrupoAberto {
+  codigo: string;
+  nome: string;
+  competicao: { slug: string | null; nome: string | null };
+  membros: number;
+  vagas: number;
+  criadoEm: string;
+}
+
+export interface MeuGrupo {
+  codigo: string;
+  nome: string;
+  status: StatusGrupo;
+  nomeTime: string | null;
+  moderador: boolean;
+  competicao: { slug: string | null; nome: string | null };
+  resultado: "campeao" | "eliminado" | null;
+  criadoEm: string;
+  encerradoEm: string | null;
+}

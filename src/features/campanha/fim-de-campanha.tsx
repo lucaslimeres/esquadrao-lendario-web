@@ -11,10 +11,10 @@ import { useSessao } from "@/stores/sessao";
 import { AvisoConvidado } from "../aviso-convidado";
 import { Artilharia, ListaPartidas, TabelaGrupo } from "./andamento";
 
-export function BotaoCompartilhar({ codigo, titulo }: { codigo: string; titulo: string }) {
+export function BotaoCompartilhar({ codigo, titulo, url: urlFixa, rotulo = "Compartilhar" }: { codigo?: string; titulo: string; url?: string; rotulo?: string }) {
   const [copiado, setCopiado] = useState(false);
   const compartilhar = async () => {
-    const url = linkCompartilhamento(codigo);
+    const url = urlFixa ?? linkCompartilhamento(codigo!);
     if (navigator.share) {
       try {
         await navigator.share({ title: "Esquadrão Lendário", text: titulo, url });
@@ -29,7 +29,7 @@ export function BotaoCompartilhar({ codigo, titulo }: { codigo: string; titulo: 
   };
   return (
     <Button variant="contorno" onClick={compartilhar} className="w-full sm:w-64">
-      {copiado ? "Link copiado!" : "Compartilhar"} <Share2 aria-hidden />
+      {copiado ? "Link copiado!" : rotulo} <Share2 aria-hidden />
     </Button>
   );
 }

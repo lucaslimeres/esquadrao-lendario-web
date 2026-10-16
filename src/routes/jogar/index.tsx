@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { ArrowRight, Check } from "lucide-react";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { ArrowRight, Check, Users } from "lucide-react";
 import { useState } from "react";
 import { z } from "zod";
 import { Campo } from "@/components/jogo/campo";
@@ -79,6 +79,12 @@ function NovaCampanha() {
     <Pagina larga>
       <TituloPagina rotulo="Nova campanha">Qual o esquema?</TituloPagina>
       <AvisoConvidado />
+      <p className="mb-8 flex flex-wrap items-center gap-2 text-sm">
+        <Users className="size-4" aria-hidden /> Quer jogar com a galera?
+        <Link to="/grupos" className="font-semibold text-verde underline">
+          Monte uma campanha em grupo
+        </Link>
+      </p>
 
       <section aria-labelledby="titulo-competicao" className="mb-10">
         <h2 id="titulo-competicao" className="rotulo mb-3">1 · Competição</h2>

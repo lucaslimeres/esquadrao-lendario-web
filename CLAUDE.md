@@ -26,6 +26,12 @@ estilo shadcn (`radix-ui` + `class-variance-authority`), React Hook Form + Zod e
   início, gols, intervalo, prorrogação, pênaltis e fim, montados com o que a API já
   simulou; mesma cópia no mobile).
 - `src/stores/sessao.ts`: sessão do jogador.
+- **Campanha em grupo:** rotas `grupos/index` (criar, entrar com código, meus grupos e
+  grupos abertos) e `grupos/$codigo` (saguão, montagem e torneio); telas em
+  `src/features/grupo/` e helpers em `src/lib/grupo.ts` (`naPerspectiva` vira o jogo neutro
+  A × B no formato da campanha solo; `decorridoAoVivo` + `relogioDoServidor` sincronizam o
+  ao vivo pelo `simuladaEm` e o `agora` da API). A montagem de um membro usa `jogar/$id`
+  (com `campanha.torneio`), que leva de volta ao grupo em vez de "Começar campanha".
 - **Painel admin:**
   - Rotas em `src/routes/admin/`: `login`, `esqueci-senha` (código de 6 números pela
     `adminApi`) e o layout com guarda `_painel` (dashboard, `base/`, `usuarios`,
@@ -61,6 +67,10 @@ estilo shadcn (`radix-ui` + `class-variance-authority`), React Hook Form + Zod e
     `AdminLayout`, escuro e com o selo "Admin".
   - Tabelas ficam sempre dentro de um contêiner `relative overflow-x-auto`. Sem o
     `relative`, as células `sr-only` vazam e criam rolagem horizontal no celular.
+- **Campanha em grupo:** o web nunca decide fase, confronto ou quem vê o quê: só exibe o
+  que `GET /grupos/:codigo` devolve (a API já filtra pelo que o membro pode ver). O jogo
+  do membro que ainda está sendo revelado abre ao vivo sozinho, no mesmo minuto para os
+  dois (`PartidaAoVivo` com `decorrido`); os já vistos ficam em `sessionStorage`.
 - Copy em pt-BR, no tom da marca ("Sorteia aí!", "Bola rolando!").
 
 ## Validar antes de subir

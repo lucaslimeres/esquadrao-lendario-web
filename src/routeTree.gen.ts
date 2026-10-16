@@ -20,6 +20,8 @@ import { Route as AdminPainelRouteImport } from './routes/admin/_painel'
 import { Route as AdminEsqueciSenhaRouteImport } from './routes/admin/esqueci-senha'
 import { Route as AdminLoginRouteImport } from './routes/admin/login'
 import { Route as CCodigoRouteImport } from './routes/c/$codigo'
+import { Route as GruposIndexRouteImport } from './routes/grupos/index'
+import { Route as GruposCodigoRouteImport } from './routes/grupos/$codigo'
 import { Route as JogarIndexRouteImport } from './routes/jogar/index'
 import { Route as JogarIdRouteImport } from './routes/jogar/$id'
 import { Route as AdminPainelIndexRouteImport } from './routes/admin/_painel/index'
@@ -85,6 +87,16 @@ const AdminLoginRoute = AdminLoginRouteImport.update({
 const CCodigoRoute = CCodigoRouteImport.update({
   id: '/c/$codigo',
   path: '/c/$codigo',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GruposIndexRoute = GruposIndexRouteImport.update({
+  id: '/grupos/',
+  path: '/grupos/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GruposCodigoRoute = GruposCodigoRouteImport.update({
+  id: '/grupos/$codigo',
+  path: '/grupos/$codigo',
   getParentRoute: () => rootRouteImport,
 } as any)
 const JogarIndexRoute = JogarIndexRouteImport.update({
@@ -160,7 +172,9 @@ export interface FileRoutesByFullPath {
   '/admin/esqueci-senha': typeof AdminEsqueciSenhaRoute
   '/admin/login': typeof AdminLoginRoute
   '/c/$codigo': typeof CCodigoRoute
+  '/grupos/$codigo': typeof GruposCodigoRoute
   '/jogar/$id': typeof JogarIdRoute
+  '/grupos/': typeof GruposIndexRoute
   '/jogar/': typeof JogarIndexRoute
   '/admin/administradores': typeof AdminPainelAdministradoresRoute
   '/admin/configuracoes': typeof AdminPainelConfiguracoesRoute
@@ -183,7 +197,9 @@ export interface FileRoutesByTo {
   '/admin/esqueci-senha': typeof AdminEsqueciSenhaRoute
   '/admin/login': typeof AdminLoginRoute
   '/c/$codigo': typeof CCodigoRoute
+  '/grupos/$codigo': typeof GruposCodigoRoute
   '/jogar/$id': typeof JogarIdRoute
+  '/grupos': typeof GruposIndexRoute
   '/jogar': typeof JogarIndexRoute
   '/admin/administradores': typeof AdminPainelAdministradoresRoute
   '/admin/configuracoes': typeof AdminPainelConfiguracoesRoute
@@ -208,7 +224,9 @@ export interface FileRoutesById {
   '/admin/esqueci-senha': typeof AdminEsqueciSenhaRoute
   '/admin/login': typeof AdminLoginRoute
   '/c/$codigo': typeof CCodigoRoute
+  '/grupos/$codigo': typeof GruposCodigoRoute
   '/jogar/$id': typeof JogarIdRoute
+  '/grupos/': typeof GruposIndexRoute
   '/jogar/': typeof JogarIndexRoute
   '/admin/_painel/administradores': typeof AdminPainelAdministradoresRoute
   '/admin/_painel/configuracoes': typeof AdminPainelConfiguracoesRoute
@@ -234,7 +252,9 @@ export interface FileRouteTypes {
     | '/admin/esqueci-senha'
     | '/admin/login'
     | '/c/$codigo'
+    | '/grupos/$codigo'
     | '/jogar/$id'
+    | '/grupos/'
     | '/jogar/'
     | '/admin/administradores'
     | '/admin/configuracoes'
@@ -257,7 +277,9 @@ export interface FileRouteTypes {
     | '/admin/esqueci-senha'
     | '/admin/login'
     | '/c/$codigo'
+    | '/grupos/$codigo'
     | '/jogar/$id'
+    | '/grupos'
     | '/jogar'
     | '/admin/administradores'
     | '/admin/configuracoes'
@@ -281,7 +303,9 @@ export interface FileRouteTypes {
     | '/admin/esqueci-senha'
     | '/admin/login'
     | '/c/$codigo'
+    | '/grupos/$codigo'
     | '/jogar/$id'
+    | '/grupos/'
     | '/jogar/'
     | '/admin/_painel/administradores'
     | '/admin/_painel/configuracoes'
@@ -306,7 +330,9 @@ export interface RootRouteChildren {
   AdminEsqueciSenhaRoute: typeof AdminEsqueciSenhaRoute
   AdminLoginRoute: typeof AdminLoginRoute
   CCodigoRoute: typeof CCodigoRoute
+  GruposCodigoRoute: typeof GruposCodigoRoute
   JogarIdRoute: typeof JogarIdRoute
+  GruposIndexRoute: typeof GruposIndexRoute
   JogarIndexRoute: typeof JogarIndexRoute
 }
 
@@ -387,6 +413,20 @@ declare module '@tanstack/react-router' {
       path: '/c/$codigo'
       fullPath: '/c/$codigo'
       preLoaderRoute: typeof CCodigoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/grupos/': {
+      id: '/grupos/'
+      path: '/grupos'
+      fullPath: '/grupos/'
+      preLoaderRoute: typeof GruposIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/grupos/$codigo': {
+      id: '/grupos/$codigo'
+      path: '/grupos/$codigo'
+      fullPath: '/grupos/$codigo'
+      preLoaderRoute: typeof GruposCodigoRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/jogar/': {
@@ -509,7 +549,9 @@ const rootRouteChildren: RootRouteChildren = {
   AdminEsqueciSenhaRoute: AdminEsqueciSenhaRoute,
   AdminLoginRoute: AdminLoginRoute,
   CCodigoRoute: CCodigoRoute,
+  GruposCodigoRoute: GruposCodigoRoute,
   JogarIdRoute: JogarIdRoute,
+  GruposIndexRoute: GruposIndexRoute,
   JogarIndexRoute: JogarIndexRoute,
 }
 export const routeTree = rootRouteImport
