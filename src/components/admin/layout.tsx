@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { LayoutDashboard, LogOut, Mail, Menu, ShieldCheck, Trophy, Users, X } from "lucide-react";
+import { LayoutDashboard, LogOut, Mail, Menu, Settings, ShieldCheck, Trophy, Users, X } from "lucide-react";
 import { useState, type ReactNode } from "react";
 import { adminApi } from "@/lib/admin-api";
 import { cn } from "@/lib/utils";
@@ -12,6 +12,7 @@ const ITENS = [
   { to: "/admin/usuarios", rotulo: "Usuários", icone: Users, exato: false },
   { to: "/admin/mensagens", rotulo: "Mensagens", icone: Mail, exato: false },
   { to: "/admin/administradores", rotulo: "Administradores", icone: ShieldCheck, exato: false },
+  { to: "/admin/configuracoes", rotulo: "Configurações", icone: Settings, exato: false },
 ] as const;
 
 /**
