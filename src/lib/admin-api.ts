@@ -57,6 +57,12 @@ const qs = (params: Record<string, string | number | boolean | undefined>) => {
 
 export const adminApi = {
   login: (email: string, senha: string) => adminRequest<{ token: string; admin: Admin }>("POST", "/admin/login", { email, senha }),
+  // Esqueci a senha (6-digit code by e-mail, panel's own table).
+  esqueciSenha: (email: string) => adminRequest<{ enviado: true }>("POST", "/admin/esqueci-senha", { email }),
+  reenviarCodigo: (email: string) => adminRequest<{ enviado: true }>("POST", "/admin/reenviar-codigo", { email }),
+  verificarCodigo: (email: string, codigo: string) => adminRequest<{ valido: true }>("POST", "/admin/verificar-codigo", { email, codigo }),
+  redefinirSenha: (email: string, codigo: string, senha: string) =>
+    adminRequest<{ token: string; admin: Admin }>("POST", "/admin/redefinir-senha", { email, codigo, senha }),
   me: () => adminRequest<Admin>("GET", "/admin/me"),
   dashboard: () => adminRequest<Dashboard>("GET", "/admin/dashboard"),
 

@@ -2,8 +2,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useEffect, useId, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input, Label, MensagemErro } from "@/components/ui/input";
-import { api, mensagemErro } from "@/lib/api";
-import type { FinalidadeCodigo } from "@/lib/tipos";
+import { mensagemErro } from "@/lib/api";
 
 export const DIGITOS_CODIGO = 6;
 /** Same gap the API enforces between two codes. */
@@ -36,11 +35,14 @@ export function CampoCodigo({ valor, onChange, erro, onCompleto }: { valor: stri
   );
 }
 
-/** "Reenviar código", available again after the same wait the API applies. */
-export function ReenviarCodigo({ email, finalidade }: { email: string; finalidade: FinalidadeCodigo }) {
+/**
+ * "Reenviar código", available again after the same wait the API applies. `pedir` calls the
+ * right client (player `api` or the panel's `adminApi`: never mixed).
+ */
+export function ReenviarCodigo({ pedir }: { pedir: () => Promise<unknown> }) {
   const [restante, setRestante] = useState(ESPERA_REENVIO_S);
   const reenviar = useMutation({
-    mutationFn: () => api.reenviarCodigo({ email, finalidade }),
+    mutationFn: pedir,
     onSuccess: () => setRestante(ESPERA_REENVIO_S),
   });
 

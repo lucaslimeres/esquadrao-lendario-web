@@ -73,7 +73,7 @@ function ConfirmarEmail() {
           </Button>
         </form>
         <div className="mt-6 space-y-2">
-          <ReenviarCodigo email={email} finalidade="confirmar_email" />
+          <ReenviarCodigo pedir={() => api.reenviarCodigo({ email, finalidade: "confirmar_email" })} />
           <p className="text-sm">
             E-mail errado?{" "}
             <Link to="/cadastro" search={{ redirect }} className="font-semibold text-verde underline">

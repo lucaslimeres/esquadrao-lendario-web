@@ -1,4 +1,4 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
 import { useState } from "react";
 import { z } from "zod";
@@ -54,6 +54,11 @@ function LoginAdmin() {
             {enviando ? "Entrando…" : "Entrar no painel"} <ArrowRight aria-hidden />
           </Button>
         </div>
+        <p className="mt-4 text-sm">
+          <Link to="/admin/esqueci-senha" search={{ email: email.trim().toLowerCase() || undefined }} className="font-semibold text-verde underline">
+            Esqueci minha senha
+          </Link>
+        </p>
         <p className="mt-6 text-xs text-neutro-700">Acesso exclusivo de administradores. Contas de jogador não entram aqui.</p>
       </form>
     </div>
