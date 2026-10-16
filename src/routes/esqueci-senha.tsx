@@ -97,7 +97,7 @@ function EsqueciSenha() {
             <Button type="submit" className="w-full" disabled={codigo.length !== DIGITOS_CODIGO || conferir.isPending}>
               {conferir.isPending ? "Conferindo…" : "Continuar"} <ArrowRight aria-hidden />
             </Button>
-            <ReenviarCodigo email={email} finalidade="redefinir_senha" />
+            <ReenviarCodigo pedir={() => api.reenviarCodigo({ email, finalidade: "redefinir_senha" })} />
             <Button variant="link" type="button" onClick={() => setPasso("email")}>
               Usar outro e-mail
             </Button>

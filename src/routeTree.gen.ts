@@ -17,6 +17,7 @@ import { Route as EsqueciSenhaRouteImport } from './routes/esqueci-senha'
 import { Route as MinhasCampanhasRouteImport } from './routes/minhas-campanhas'
 import { Route as PrivacidadeRouteImport } from './routes/privacidade'
 import { Route as AdminPainelRouteImport } from './routes/admin/_painel'
+import { Route as AdminEsqueciSenhaRouteImport } from './routes/admin/esqueci-senha'
 import { Route as AdminLoginRouteImport } from './routes/admin/login'
 import { Route as CCodigoRouteImport } from './routes/c/$codigo'
 import { Route as JogarIndexRouteImport } from './routes/jogar/index'
@@ -68,6 +69,11 @@ const PrivacidadeRoute = PrivacidadeRouteImport.update({
 const AdminPainelRoute = AdminPainelRouteImport.update({
   id: '/admin/_painel',
   path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminEsqueciSenhaRoute = AdminEsqueciSenhaRouteImport.update({
+  id: '/admin/esqueci-senha',
+  path: '/admin/esqueci-senha',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminLoginRoute = AdminLoginRouteImport.update({
@@ -144,6 +150,7 @@ export interface FileRoutesByFullPath {
   '/minhas-campanhas': typeof MinhasCampanhasRoute
   '/privacidade': typeof PrivacidadeRoute
   '/admin': typeof AdminPainelRouteWithChildren
+  '/admin/esqueci-senha': typeof AdminEsqueciSenhaRoute
   '/admin/login': typeof AdminLoginRoute
   '/c/$codigo': typeof CCodigoRoute
   '/jogar/$id': typeof JogarIdRoute
@@ -165,6 +172,7 @@ export interface FileRoutesByTo {
   '/esqueci-senha': typeof EsqueciSenhaRoute
   '/minhas-campanhas': typeof MinhasCampanhasRoute
   '/privacidade': typeof PrivacidadeRoute
+  '/admin/esqueci-senha': typeof AdminEsqueciSenhaRoute
   '/admin/login': typeof AdminLoginRoute
   '/c/$codigo': typeof CCodigoRoute
   '/jogar/$id': typeof JogarIdRoute
@@ -188,6 +196,7 @@ export interface FileRoutesById {
   '/minhas-campanhas': typeof MinhasCampanhasRoute
   '/privacidade': typeof PrivacidadeRoute
   '/admin/_painel': typeof AdminPainelRouteWithChildren
+  '/admin/esqueci-senha': typeof AdminEsqueciSenhaRoute
   '/admin/login': typeof AdminLoginRoute
   '/c/$codigo': typeof CCodigoRoute
   '/jogar/$id': typeof JogarIdRoute
@@ -212,6 +221,7 @@ export interface FileRouteTypes {
     | '/minhas-campanhas'
     | '/privacidade'
     | '/admin'
+    | '/admin/esqueci-senha'
     | '/admin/login'
     | '/c/$codigo'
     | '/jogar/$id'
@@ -233,6 +243,7 @@ export interface FileRouteTypes {
     | '/esqueci-senha'
     | '/minhas-campanhas'
     | '/privacidade'
+    | '/admin/esqueci-senha'
     | '/admin/login'
     | '/c/$codigo'
     | '/jogar/$id'
@@ -255,6 +266,7 @@ export interface FileRouteTypes {
     | '/minhas-campanhas'
     | '/privacidade'
     | '/admin/_painel'
+    | '/admin/esqueci-senha'
     | '/admin/login'
     | '/c/$codigo'
     | '/jogar/$id'
@@ -278,6 +290,7 @@ export interface RootRouteChildren {
   MinhasCampanhasRoute: typeof MinhasCampanhasRoute
   PrivacidadeRoute: typeof PrivacidadeRoute
   AdminPainelRoute: typeof AdminPainelRouteWithChildren
+  AdminEsqueciSenhaRoute: typeof AdminEsqueciSenhaRoute
   AdminLoginRoute: typeof AdminLoginRoute
   CCodigoRoute: typeof CCodigoRoute
   JogarIdRoute: typeof JogarIdRoute
@@ -340,6 +353,13 @@ declare module '@tanstack/react-router' {
       path: '/admin'
       fullPath: '/admin'
       preLoaderRoute: typeof AdminPainelRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/esqueci-senha': {
+      id: '/admin/esqueci-senha'
+      path: '/admin/esqueci-senha'
+      fullPath: '/admin/esqueci-senha'
+      preLoaderRoute: typeof AdminEsqueciSenhaRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin/login': {
@@ -464,6 +484,7 @@ const rootRouteChildren: RootRouteChildren = {
   MinhasCampanhasRoute: MinhasCampanhasRoute,
   PrivacidadeRoute: PrivacidadeRoute,
   AdminPainelRoute: AdminPainelRouteWithChildren,
+  AdminEsqueciSenhaRoute: AdminEsqueciSenhaRoute,
   AdminLoginRoute: AdminLoginRoute,
   CCodigoRoute: CCodigoRoute,
   JogarIdRoute: JogarIdRoute,

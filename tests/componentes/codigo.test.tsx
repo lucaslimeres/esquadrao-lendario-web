@@ -38,7 +38,7 @@ describe("ReenviarCodigo", () => {
     const reenviar = vi.spyOn(api, "reenviarCodigo").mockResolvedValue({ enviado: true });
     render(
       <QueryClientProvider client={new QueryClient()}>
-        <ReenviarCodigo email="ana@exemplo.com" finalidade="confirmar_email" />
+        <ReenviarCodigo pedir={() => api.reenviarCodigo({ email: "ana@exemplo.com", finalidade: "confirmar_email" })} />
       </QueryClientProvider>,
     );
     expect(screen.getByRole("button", { name: "Reenviar código em 60s" })).toBeDisabled();
