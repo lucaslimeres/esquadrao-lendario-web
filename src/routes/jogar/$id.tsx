@@ -72,9 +72,36 @@ function TelaCampanha() {
         <PartidaAoVivo partida={aoVivo.partida} nomeTime={campanha.nomeTime} onFim={fimDoAoVivo} />
       ) : (
         <>
-          {campanha.status !== "campea" && campanha.status !== "eliminada" && <AvisoConvidado />}
+          {campanha.status !== "campea" && campanha.status !== "eliminada" && !campanha.torneio && <AvisoConvidado />}
+          {campanha.torneio && (
+            <div className="mb-6 flex flex-col gap-2 border-2 border-tinta bg-white p-3 text-sm sm:flex-row sm:items-center sm:justify-between">
+              <p>
+                <strong>Campanha em grupo:</strong> {campanha.torneio.nome}. Os jogos acontecem na tela do grupo.
+              </p>
+              <Link to="/grupos/$codigo" params={{ codigo: campanha.torneio.codigo }} className="shrink-0 font-semibold text-verde underline">
+                Voltar ao grupo
+              </Link>
+            </div>
+          )}
           {campanha.status === "montagem" && <Montagem campanha={campanha} />}
-          {campanha.status === "pronta" && (
+          {campanha.status === "pronta" && campanha.torneio && (
+            <div className="grid gap-8 lg:grid-cols-[minmax(0,420px)_1fr]">
+              <Campo vagas={campanha.formacao.vagas} />
+              <div className="space-y-6">
+                <p className="text-lg">
+                  Time fechado! Overall do esquadrão:{" "}
+                  <strong className="font-display text-3xl">{campanha.overallTime?.toFixed(1).replace(".", ",")}</strong>
+                </p>
+                <p>O torneio começa quando todo mundo do grupo fechar o time.</p>
+                <Button asChild tamanho="grande" className="w-full sm:w-80">
+                  <Link to="/grupos/$codigo" params={{ codigo: campanha.torneio.codigo }}>
+                    Voltar ao grupo <ArrowRight aria-hidden />
+                  </Link>
+                </Button>
+              </div>
+            </div>
+          )}
+          {campanha.status === "pronta" && !campanha.torneio && (
             <div className="grid gap-8 lg:grid-cols-[minmax(0,420px)_1fr]">
               <Campo vagas={campanha.formacao.vagas} />
               <div className="space-y-6">

@@ -19,6 +19,9 @@ export function Cabecalho() {
       <Link to="/" hash="app" className="font-semibold hover:text-verde" onClick={() => setAberto(false)}>
         Baixe o app
       </Link>
+      <Link to="/grupos" className="font-semibold hover:text-verde" onClick={() => setAberto(false)}>
+        Em grupo
+      </Link>
       {logado ? (
         <>
           <Link to="/minhas-campanhas" className="font-semibold hover:text-verde" onClick={() => setAberto(false)}>

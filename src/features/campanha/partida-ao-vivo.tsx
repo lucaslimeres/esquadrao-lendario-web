@@ -4,7 +4,7 @@ import { Placar } from "@/components/jogo/placar";
 import { Button } from "@/components/ui/button";
 import { eventosAte } from "@/lib/eventos";
 import { fraseFinal } from "@/lib/jogo";
-import { atrasoDoPasso, etapaDoPasso, NOME_ETAPA } from "@/lib/ritmo";
+import { atrasoDoPasso, etapaDoPasso, NOME_ETAPA, passoNoTempo } from "@/lib/ritmo";
 import type { PartidaCampanha } from "@/lib/tipos";
 import { cn } from "@/lib/utils";
 import { LinhaDoTempo } from "./linha-do-tempo";
@@ -13,19 +13,30 @@ function prefereSemAnimacao() {
   return typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
 }
 
+interface Props {
+  partida: PartidaCampanha;
+  nomeTime?: string;
+  onFim: () => void;
+  /** Campanha em grupo: ms since kick-off, so both players watch the same minute together. */
+  decorrido?: number;
+}
+
 /** Minute-by-minute reveal of a match that the API already simulated. */
-export function PartidaAoVivo({ partida, nomeTime, onFim }: { partida: PartidaCampanha; nomeTime?: string; onFim: () => void }) {
+export function PartidaAoVivo({ partida, nomeTime, onFim, decorrido = 0 }: Props) {
   const duracao = partida.prorrogacao ? 120 : 90;
   const totalPenaltis = partida.penaltis?.length ?? 0;
   // Timeline: minutes 0…duracao, then one step per penalty kick.
   const fim = duracao + totalPenaltis;
-  const [passo, setPasso] = useState(() => (prefereSemAnimacao() ? fim : 0));
+  const [inicio] = useState(() => (prefereSemAnimacao() ? { passo: fim, restante: 0 } : passoNoTempo(partida, decorrido)));
+  const [passo, setPasso] = useState(inicio.passo);
 
   useEffect(() => {
     if (passo >= fim) return;
-    const t = window.setTimeout(() => setPasso((p) => p + 1), atrasoDoPasso(passo, partida));
+    // Joining mid-way: the first step only waits for what is left of it.
+    const atraso = passo === inicio.passo && decorrido > 0 ? inicio.restante : atrasoDoPasso(passo, partida);
+    const t = window.setTimeout(() => setPasso((p) => p + 1), atraso);
     return () => window.clearTimeout(t);
-  }, [passo, fim, partida]);
+  }, [passo, fim, partida, inicio, decorrido]);
 
   const minuto = Math.min(passo, duracao);
   const gols = partida.gols.filter((g) => g.minuto <= minuto);
