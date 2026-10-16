@@ -40,7 +40,7 @@ function CampanhaCompartilhada() {
     <Pagina larga>
       <div className={cn("mb-8 p-6 sm:p-10", data.resultado.campeao ? "bg-verde text-white" : "bg-tinta text-papel")}>
         <p className={cn("rotulo", data.resultado.campeao ? "text-verde-nevoa" : "text-verde-claro")}>
-          Esquadrão Lendário · {data.competicao.nome} · {data.formacao.codigo}
+          {data.nomeTime} · {data.competicao.nome} · {data.formacao.codigo}
         </p>
         <p className="mt-3 font-display text-5xl sm:text-7xl">{titulo}</p>
       </div>
@@ -48,8 +48,8 @@ function CampanhaCompartilhada() {
         <Campo vagas={data.formacao.vagas} />
         <div className="space-y-8">
           <Resumo campanha={data} />
-          {data.grupo && <TabelaGrupo grupo={data.grupo} />}
-          <ListaPartidas partidas={data.partidas} />
+          {data.grupo && <TabelaGrupo grupo={data.grupo} nomeTime={data.nomeTime} />}
+          <ListaPartidas partidas={data.partidas} nomeTime={data.nomeTime} />
           <Artilharia campanha={data} />
           <div className="border-t-2 border-tinta pt-6">
             <p className="font-display text-3xl">Monta o teu?</p>

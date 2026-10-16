@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Erro } from "@/components/ui/estados";
 import { ApiError } from "@/lib/api";
 import { NOME_FASE, placar } from "@/lib/jogo";
-import type { Campanha, PartidaCampanha } from "@/lib/tipos";
+import { NOME_TIME_PADRAO, type Campanha, type PartidaCampanha } from "@/lib/tipos";
 import { eventosDaPartida } from "@/lib/eventos";
 import { cn } from "@/lib/utils";
 import { LinhaDoTempo } from "./linha-do-tempo";
@@ -30,7 +30,7 @@ export function Andamento({ campanha, jogando, erro, onJogar }: Props) {
               Próximo · {NOME_FASE[proxima.fase]}
               {proxima.fase === "grupo" ? ` · rodada ${proxima.rodada}` : ""}
             </p>
-            <p className="mt-3 text-sm text-neutro-300">Seu esquadrão contra</p>
+            <p className="mt-3 text-sm text-neutro-300">{campanha.nomeTime} contra</p>
             <p className="text-3xl font-bold">{proxima.adversario?.rotulo ?? "—"}</p>
             {erro ? (
               <div className="mt-4 text-tinta">
@@ -42,12 +42,12 @@ export function Andamento({ campanha, jogando, erro, onJogar }: Props) {
             </Button>
           </div>
         )}
-        {campanha.grupo && <TabelaGrupo grupo={campanha.grupo} />}
-        <ListaPartidas partidas={campanha.partidas} />
+        {campanha.grupo && <TabelaGrupo grupo={campanha.grupo} nomeTime={campanha.nomeTime} />}
+        <ListaPartidas partidas={campanha.partidas} nomeTime={campanha.nomeTime} />
       </div>
       <aside className="space-y-6">
         <div>
-          <p className="rotulo mb-3">Seu esquadrão · {campanha.formacao.codigo}</p>
+          <p className="rotulo mb-3">{campanha.nomeTime} · {campanha.formacao.codigo}</p>
           <Campo vagas={campanha.formacao.vagas} />
         </div>
         <Artilharia campanha={campanha} />
@@ -56,7 +56,7 @@ export function Andamento({ campanha, jogando, erro, onJogar }: Props) {
   );
 }
 
-export function TabelaGrupo({ grupo }: { grupo: NonNullable<Campanha["grupo"]> }) {
+export function TabelaGrupo({ grupo, nomeTime = NOME_TIME_PADRAO }: { grupo: NonNullable<Campanha["grupo"]>; nomeTime?: string }) {
   return (
     <section>
       <h2 className="rotulo mb-3">Grupo {grupo.encerrado ? "· encerrado" : ""}</h2>
@@ -80,7 +80,7 @@ export function TabelaGrupo({ grupo }: { grupo: NonNullable<Campanha["grupo"]> }
                 <td className="p-2">
                   <span className={cn("inline-flex size-6 items-center justify-center text-xs font-bold", l.classificado ? "bg-verde text-white" : "")}>{l.posicao}</span>
                 </td>
-                <td className="p-2">{l.time.seuTime ? "Seu esquadrão" : <NomeElenco elenco={l.time.elenco} />}</td>
+                <td className="p-2">{l.time.seuTime ? nomeTime : <NomeElenco elenco={l.time.elenco} />}</td>
                 <td className="p-2 text-right font-bold">{l.pontos}</td>
                 <td className="p-2 text-right">{l.jogos}</td>
                 <td className="p-2 text-right">{l.vitorias}</td>
@@ -98,7 +98,7 @@ export function TabelaGrupo({ grupo }: { grupo: NonNullable<Campanha["grupo"]> }
 }
 
 /** Played matches; tapping one opens its history (goals with minute, half-time, penalties…). */
-export function ListaPartidas({ partidas }: { partidas: PartidaCampanha[] }) {
+export function ListaPartidas({ partidas, nomeTime = NOME_TIME_PADRAO }: { partidas: PartidaCampanha[]; nomeTime?: string }) {
   const [aberta, setAberta] = useState<string | null>(null);
   const jogadas = partidas.filter((p) => p.simulada);
   if (jogadas.length === 0) return null;
@@ -135,7 +135,7 @@ export function ListaPartidas({ partidas }: { partidas: PartidaCampanha[] }) {
               </button>
               {aberto && (
                 <div id={`lances-${p.id}`} className="border-t-2 border-gramado bg-papel p-3">
-                  <LinhaDoTempo eventos={eventosDaPartida(p)} partida={p} />
+                  <LinhaDoTempo eventos={eventosDaPartida(p)} partida={p} nomeTime={nomeTime} />
                 </div>
               )}
             </li>

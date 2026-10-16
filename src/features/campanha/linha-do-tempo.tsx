@@ -1,10 +1,12 @@
 import { minutoDoEvento, TITULO_EVENTO, type Evento } from "@/lib/eventos";
-import type { PartidaCampanha } from "@/lib/tipos";
+import { NOME_TIME_PADRAO, type PartidaCampanha } from "@/lib/tipos";
 import { cn } from "@/lib/utils";
 
 interface Props {
   eventos: Evento[];
   partida: Pick<PartidaCampanha, "prorrogacao" | "adversario">;
+  /** The player's squad name. */
+  nomeTime?: string;
   /** Live match: newest on top, so the last thing that happened is always in view. */
   maisRecentePrimeiro?: boolean;
   /** Goal just scored (live): highlighted while the reveal pauses on it. */
@@ -14,7 +16,7 @@ interface Props {
 const placarTexto = (p: { pro: number; contra: number }) => `${p.pro}–${p.contra}`;
 
 /** Lance a lance: kickoff, goals, half-time, extra time, penalties and full time. */
-export function LinhaDoTempo({ eventos, partida, maisRecentePrimeiro, destaque }: Props) {
+export function LinhaDoTempo({ eventos, partida, nomeTime = NOME_TIME_PADRAO, maisRecentePrimeiro, destaque }: Props) {
   const lista = maisRecentePrimeiro ? [...eventos].reverse() : eventos;
   const rival = partida.adversario?.rotulo ?? "Adversário";
   return (
@@ -40,7 +42,7 @@ export function LinhaDoTempo({ eventos, partida, maisRecentePrimeiro, destaque }
                 <span className="block font-semibold">
                   Gol! <span className="font-normal">{e.jogadorNome}</span>
                 </span>
-                <span className="block text-sm text-neutro-700">{e.doSeuTime ? "Seu esquadrão" : rival}</span>
+                <span className="block text-sm text-neutro-700">{e.doSeuTime ? nomeTime : rival}</span>
               </span>
               <span className="font-display text-lg tabular-nums">{placarTexto(e.placar)}</span>
             </li>
@@ -52,7 +54,7 @@ export function LinhaDoTempo({ eventos, partida, maisRecentePrimeiro, destaque }
               <span className="w-12 shrink-0 rotulo text-[11px] text-neutro-700">Pên.</span>
               <span className="min-w-0 flex-1 truncate">
                 <span className="font-semibold">{e.convertido ? "Converteu" : "Perdeu"}</span> · {e.jogadorNome}
-                <span className="text-neutro-700"> ({e.doSeuTime ? "seu esquadrão" : rival})</span>
+                <span className="text-neutro-700"> ({e.doSeuTime ? nomeTime : rival})</span>
               </span>
               <span className="font-bold tabular-nums">{placarTexto(e.placar)}</span>
             </li>

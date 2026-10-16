@@ -5,7 +5,7 @@ import { EspacoPublicidade } from "@/components/anuncio";
 import { Campo } from "@/components/jogo/campo";
 import { Button } from "@/components/ui/button";
 import { linkCompartilhamento, textoEliminacao } from "@/lib/jogo";
-import type { Campanha } from "@/lib/tipos";
+import { NOME_TIME_PADRAO, type Campanha } from "@/lib/tipos";
 import { cn } from "@/lib/utils";
 import { useSessao } from "@/stores/sessao";
 import { AvisoConvidado } from "../aviso-convidado";
@@ -62,7 +62,9 @@ export function FimDeCampanha({ campanha }: { campanha: Campanha }) {
     <div className="space-y-8">
       {!logado && <AvisoConvidado />}
       <div className={cn("p-6 sm:p-10", campeao ? "bg-verde text-white" : "bg-tinta text-papel")}>
-        <p className={cn("rotulo", campeao ? "text-verde-nevoa" : "text-verde-claro")}>{campanha.competicao.nome}</p>
+        <p className={cn("rotulo", campeao ? "text-verde-nevoa" : "text-verde-claro")}>
+          {campanha.nomeTime} · {campanha.competicao.nome}
+        </p>
         <p className="mt-3 font-display text-5xl sm:text-7xl">{titulo}</p>
         {campanha.artilheiros[0] && (
           <p className="mt-4 text-lg">
@@ -77,7 +79,7 @@ export function FimDeCampanha({ campanha }: { campanha: Campanha }) {
             Jogar de novo <ArrowRight aria-hidden />
           </Link>
         </Button>
-        <BotaoCompartilhar codigo={campanha.codigo} titulo={`Meu esquadrão na ${campanha.competicao.nome}: ${titulo}`} />
+        <BotaoCompartilhar codigo={campanha.codigo} titulo={`${campanha.nomeTime === NOME_TIME_PADRAO ? "Meu esquadrão" : campanha.nomeTime} na ${campanha.competicao.nome}: ${titulo}`} />
         {logado && (
           <Button asChild variant="link">
             <Link to="/minhas-campanhas">Minhas campanhas</Link>
@@ -86,8 +88,8 @@ export function FimDeCampanha({ campanha }: { campanha: Campanha }) {
       </div>
       <div className="grid gap-8 lg:grid-cols-[1fr_minmax(0,380px)]">
         <div className="space-y-8">
-          {campanha.grupo && <TabelaGrupo grupo={campanha.grupo} />}
-          <ListaPartidas partidas={campanha.partidas} />
+          {campanha.grupo && <TabelaGrupo grupo={campanha.grupo} nomeTime={campanha.nomeTime} />}
+          <ListaPartidas partidas={campanha.partidas} nomeTime={campanha.nomeTime} />
         </div>
         <aside className="space-y-6">
           <Campo vagas={campanha.formacao.vagas} />

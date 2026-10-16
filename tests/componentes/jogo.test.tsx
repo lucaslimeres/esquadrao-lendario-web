@@ -3,7 +3,7 @@ import userEvent from "@testing-library/user-event";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { Campo } from "@/components/jogo/campo";
 import { CardJogador } from "@/components/jogo/card-jogador";
-import { SeloResultado } from "@/components/jogo/placar";
+import { Placar, SeloResultado } from "@/components/jogo/placar";
 import { ListaPartidas } from "@/features/campanha/andamento";
 import { PartidaAoVivo } from "@/features/campanha/partida-ao-vivo";
 import { RITMO } from "@/lib/ritmo";
@@ -132,5 +132,29 @@ describe("ListaPartidas", () => {
     ]);
     await userEvent.click(linha);
     expect(screen.queryByText("Primeiro")).not.toBeInTheDocument();
+  });
+});
+
+describe("nome do time", () => {
+  const partida: PartidaCampanha = {
+    id: "p3", fase: "grupo", rodada: 2,
+    adversario: { id: "e1", temporada: 2005, rotulo: "São Paulo 2005", equipe: { nome: "São Paulo", sigla: "SAO", pais: "BR", corPrimaria: "#FFFFFF", corSecundaria: "#000000" } },
+    simulada: true, golsPro: 1, golsContra: 0, prorrogacao: false, penaltisPro: null, penaltisContra: null, resultado: "V",
+    gols: [{ minuto: 30, doSeuTime: true, jogadorId: "a", jogadorNome: "Artilheiro" }],
+    penaltis: null,
+  };
+
+  it("placar e lances usam o nome escolhido; sem nome, Seu esquadrão", async () => {
+    const { unmount } = render(<Placar partida={partida} nomeTime="Os Invencíveis" />);
+    expect(screen.getByText("Os Invencíveis")).toBeInTheDocument();
+    unmount();
+    render(<Placar partida={partida} />);
+    expect(screen.getByText("Seu esquadrão")).toBeInTheDocument();
+  });
+
+  it("histórico do jogo mostra o nome no gol", async () => {
+    render(<ListaPartidas partidas={[partida]} nomeTime="Os Invencíveis" />);
+    await userEvent.click(screen.getByRole("button", { name: /São Paulo 2005/ }));
+    expect(screen.getByText("Artilheiro").closest("li")).toHaveTextContent("Os Invencíveis");
   });
 });
