@@ -7,7 +7,8 @@ import { defineConfig, loadEnv, type Plugin } from "vite";
 
 /**
  * Google AdSense, only when VITE_ADSENSE_CLIENT is set: the site-verification meta tag in
- * index.html (the crawler doesn't run the SPA) and /ads.txt (Google warns without it).
+ * index.html (the crawler doesn't run the SPA), /ads.txt (Google warns without it) and
+ * /app-ads.txt (AdMob verifies the app through the developer website).
  */
 function adsense(valor: string | undefined): Plugin {
   const id = valor?.trim().replace(/^ca-/, "");
@@ -17,7 +18,11 @@ function adsense(valor: string | undefined): Plugin {
     transformIndexHtml: (html) =>
       publisher ? html.replace("</head>", `  <meta name="google-adsense-account" content="ca-${publisher}" />\n  </head>`) : html,
     generateBundle() {
-      if (publisher) this.emitFile({ type: "asset", fileName: "ads.txt", source: `google.com, ${publisher}, DIRECT, f08c47fec0942fa0\n` });
+      if (!publisher) return;
+      const linha = `google.com, ${publisher}, DIRECT, f08c47fec0942fa0\n`;
+      this.emitFile({ type: "asset", fileName: "ads.txt", source: linha });
+      // AdMob (app) checks app-ads.txt on the developer website listed in the stores: same publisher.
+      this.emitFile({ type: "asset", fileName: "app-ads.txt", source: linha });
     },
   };
 }

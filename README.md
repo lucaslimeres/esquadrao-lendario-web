@@ -88,5 +88,5 @@ da SPA chegar vazio ao robô). Por isso não há anúncio em telas de jogo, list
 login, grupos ou link compartilhado, e as páginas de conteúdo são pré-renderizadas.
 Nunca durante a montagem, a campanha (em andamento ou no fim) ou a partida ao vivo, nem no
 painel admin. O script do Google só carrega em página que tem anúncio. Com `VITE_ADSENSE_CLIENT`
-definido, o build também gera `/ads.txt` e a meta `google-adsense-account` (verificação
+definido, o build também gera `/ads.txt`, `/app-ads.txt` (para o AdMob do app) e a meta `google-adsense-account` (verificação
 do site). Em `yarn dev`, os blocos vão com `data-adtest="on"` (não contam impressão).
