@@ -29,7 +29,7 @@ estilo shadcn (`radix-ui` + `class-variance-authority`), React Hook Form + Zod e
 - **Painel admin:**
   - Rotas em `src/routes/admin/`: `login`, `esqueci-senha` (código de 6 números pela
     `adminApi`) e o layout com guarda `_painel` (dashboard, `base/`, `usuarios`,
-    `administradores`).
+    `mensagens`, `administradores` e `configuracoes`, onde o admin troca a própria senha).
   - Cliente próprio em `src/lib/admin-api.ts`, sessão própria em
     `src/stores/admin-sessao.ts` (chave `esquadrao-admin-auth`) e layout em
     `src/components/admin/`.
