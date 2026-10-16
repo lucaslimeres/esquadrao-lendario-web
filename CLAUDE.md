@@ -27,8 +27,9 @@ estilo shadcn (`radix-ui` + `class-variance-authority`), React Hook Form + Zod e
   simulou; mesma cópia no mobile).
 - `src/stores/sessao.ts`: sessão do jogador.
 - **Painel admin:**
-  - Rotas em `src/routes/admin/`: `login` e o layout com guarda `_painel` (dashboard,
-    `base/`, `usuarios`, `administradores`).
+  - Rotas em `src/routes/admin/`: `login`, `esqueci-senha` (código de 6 números pela
+    `adminApi`) e o layout com guarda `_painel` (dashboard, `base/`, `usuarios`,
+    `administradores`).
   - Cliente próprio em `src/lib/admin-api.ts`, sessão própria em
     `src/stores/admin-sessao.ts` (chave `esquadrao-admin-auth`) e layout em
     `src/components/admin/`.
