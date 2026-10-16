@@ -1,7 +1,12 @@
 // Google AdSense: manual display units only (Auto ads stays off in the AdSense panel,
 // so Google never injects anchors, vignettes or anything over the content).
 
-export type PosicaoAnuncio = "landing" | "fimDeCampanha" | "compartilhada" | "minhasCampanhas";
+/**
+ * Only on screens with real editorial content (AdSense policy: no Google ads on screens without
+ * publisher content, under construction, or used for navigation/alerts/behaviour — so never on
+ * game screens, lists behind login, share links or forms).
+ */
+export type PosicaoAnuncio = "landing" | "conteudo";
 
 declare global {
   interface Window {
