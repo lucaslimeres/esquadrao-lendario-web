@@ -24,6 +24,7 @@ import { Route as JogarIndexRouteImport } from './routes/jogar/index'
 import { Route as JogarIdRouteImport } from './routes/jogar/$id'
 import { Route as AdminPainelIndexRouteImport } from './routes/admin/_painel/index'
 import { Route as AdminPainelAdministradoresRouteImport } from './routes/admin/_painel/administradores'
+import { Route as AdminPainelConfiguracoesRouteImport } from './routes/admin/_painel/configuracoes'
 import { Route as AdminPainelMensagensRouteImport } from './routes/admin/_painel/mensagens'
 import { Route as AdminPainelUsuariosRouteImport } from './routes/admin/_painel/usuarios'
 import { Route as AdminPainelBaseIndexRouteImport } from './routes/admin/_painel/base/index'
@@ -107,6 +108,12 @@ const AdminPainelAdministradoresRoute =
     path: '/administradores',
     getParentRoute: () => AdminPainelRoute,
   } as any)
+const AdminPainelConfiguracoesRoute =
+  AdminPainelConfiguracoesRouteImport.update({
+    id: '/configuracoes',
+    path: '/configuracoes',
+    getParentRoute: () => AdminPainelRoute,
+  } as any)
 const AdminPainelMensagensRoute = AdminPainelMensagensRouteImport.update({
   id: '/mensagens',
   path: '/mensagens',
@@ -156,6 +163,7 @@ export interface FileRoutesByFullPath {
   '/jogar/$id': typeof JogarIdRoute
   '/jogar/': typeof JogarIndexRoute
   '/admin/administradores': typeof AdminPainelAdministradoresRoute
+  '/admin/configuracoes': typeof AdminPainelConfiguracoesRoute
   '/admin/mensagens': typeof AdminPainelMensagensRoute
   '/admin/usuarios': typeof AdminPainelUsuariosRoute
   '/admin/': typeof AdminPainelIndexRoute
@@ -178,6 +186,7 @@ export interface FileRoutesByTo {
   '/jogar/$id': typeof JogarIdRoute
   '/jogar': typeof JogarIndexRoute
   '/admin/administradores': typeof AdminPainelAdministradoresRoute
+  '/admin/configuracoes': typeof AdminPainelConfiguracoesRoute
   '/admin/mensagens': typeof AdminPainelMensagensRoute
   '/admin/usuarios': typeof AdminPainelUsuariosRoute
   '/admin': typeof AdminPainelIndexRoute
@@ -202,6 +211,7 @@ export interface FileRoutesById {
   '/jogar/$id': typeof JogarIdRoute
   '/jogar/': typeof JogarIndexRoute
   '/admin/_painel/administradores': typeof AdminPainelAdministradoresRoute
+  '/admin/_painel/configuracoes': typeof AdminPainelConfiguracoesRoute
   '/admin/_painel/mensagens': typeof AdminPainelMensagensRoute
   '/admin/_painel/usuarios': typeof AdminPainelUsuariosRoute
   '/admin/_painel/': typeof AdminPainelIndexRoute
@@ -227,6 +237,7 @@ export interface FileRouteTypes {
     | '/jogar/$id'
     | '/jogar/'
     | '/admin/administradores'
+    | '/admin/configuracoes'
     | '/admin/mensagens'
     | '/admin/usuarios'
     | '/admin/'
@@ -249,6 +260,7 @@ export interface FileRouteTypes {
     | '/jogar/$id'
     | '/jogar'
     | '/admin/administradores'
+    | '/admin/configuracoes'
     | '/admin/mensagens'
     | '/admin/usuarios'
     | '/admin'
@@ -272,6 +284,7 @@ export interface FileRouteTypes {
     | '/jogar/$id'
     | '/jogar/'
     | '/admin/_painel/administradores'
+    | '/admin/_painel/configuracoes'
     | '/admin/_painel/mensagens'
     | '/admin/_painel/usuarios'
     | '/admin/_painel/'
@@ -404,6 +417,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminPainelAdministradoresRouteImport
       parentRoute: typeof AdminPainelRoute
     }
+    '/admin/_painel/configuracoes': {
+      id: '/admin/_painel/configuracoes'
+      path: '/configuracoes'
+      fullPath: '/admin/configuracoes'
+      preLoaderRoute: typeof AdminPainelConfiguracoesRouteImport
+      parentRoute: typeof AdminPainelRoute
+    }
     '/admin/_painel/mensagens': {
       id: '/admin/_painel/mensagens'
       path: '/mensagens'
@@ -451,6 +471,7 @@ declare module '@tanstack/react-router' {
 
 interface AdminPainelRouteChildren {
   AdminPainelAdministradoresRoute: typeof AdminPainelAdministradoresRoute
+  AdminPainelConfiguracoesRoute: typeof AdminPainelConfiguracoesRoute
   AdminPainelMensagensRoute: typeof AdminPainelMensagensRoute
   AdminPainelUsuariosRoute: typeof AdminPainelUsuariosRoute
   AdminPainelIndexRoute: typeof AdminPainelIndexRoute
@@ -462,6 +483,7 @@ interface AdminPainelRouteChildren {
 
 const AdminPainelRouteChildren: AdminPainelRouteChildren = {
   AdminPainelAdministradoresRoute: AdminPainelAdministradoresRoute,
+  AdminPainelConfiguracoesRoute: AdminPainelConfiguracoesRoute,
   AdminPainelMensagensRoute: AdminPainelMensagensRoute,
   AdminPainelUsuariosRoute: AdminPainelUsuariosRoute,
   AdminPainelIndexRoute: AdminPainelIndexRoute,

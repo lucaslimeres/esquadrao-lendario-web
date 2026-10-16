@@ -64,6 +64,7 @@ export const adminApi = {
   redefinirSenha: (email: string, codigo: string, senha: string) =>
     adminRequest<{ token: string; admin: Admin }>("POST", "/admin/redefinir-senha", { email, codigo, senha }),
   me: () => adminRequest<Admin>("GET", "/admin/me"),
+  trocarSenha: (senhaAtual: string, novaSenha: string) => adminRequest<{ alterada: true }>("POST", "/admin/me/senha", { senhaAtual, novaSenha }),
   dashboard: () => adminRequest<Dashboard>("GET", "/admin/dashboard"),
 
   admins: () => adminRequest<Admin[]>("GET", "/admin/administradores"),
