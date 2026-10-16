@@ -80,8 +80,10 @@ test("monta campeonato, time, elenco e jogadores até ficar jogável", async ({ 
   await expect(page.getByRole("row", { name: /Meia A/ })).toContainText("91");
   await expect(page.getByRole("row", { name: /Meia A/ })).toContainText("CAM");
 
+  // One complete squad is not enough: a campaign never draws the same squad twice (needs 14).
   await page.getByRole("link", { name: "Competição" }).click();
-  await expect(page.getByText("Jogável")).toBeVisible();
+  await expect(page.getByText("Incompleta")).toBeVisible();
+  await expect(page.getByText("Mínimo para jogar: 14")).toBeVisible();
 
   // Import a second squad by pasting JSON.
   await page.getByRole("button", { name: /Importar JSON/ }).click();
@@ -91,9 +93,9 @@ test("monta campeonato, time, elenco e jogadores até ficar jogável", async ({ 
   await expect(page.getByText(/Elenco criado: 11 jogadores novos/)).toBeVisible();
   await expect(page.getByRole("cell", { name: "2000" })).toBeVisible();
 
-  // The new competition shows up as playable in the public catalogue.
+  // Still 2 of 14: in the public catalogue it shows up as "em breve", not playable.
   await page.goto("/jogar");
-  await expect(page.getByRole("radio", { name: new RegExp(`Copa E2E ${sufixo}`) })).toBeEnabled();
+  await expect(page.getByRole("radio", { name: new RegExp(`Copa E2E ${sufixo}`) })).toBeDisabled();
 });
 
 test("times: busca e proteção de exclusão", async ({ page }) => {
