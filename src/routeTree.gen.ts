@@ -11,7 +11,9 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as CadastroRouteImport } from './routes/cadastro'
+import { Route as ConfirmarEmailRouteImport } from './routes/confirmar-email'
 import { Route as EntrarRouteImport } from './routes/entrar'
+import { Route as EsqueciSenhaRouteImport } from './routes/esqueci-senha'
 import { Route as MinhasCampanhasRouteImport } from './routes/minhas-campanhas'
 import { Route as PrivacidadeRouteImport } from './routes/privacidade'
 import { Route as AdminPainelRouteImport } from './routes/admin/_painel'
@@ -38,9 +40,19 @@ const CadastroRoute = CadastroRouteImport.update({
   path: '/cadastro',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ConfirmarEmailRoute = ConfirmarEmailRouteImport.update({
+  id: '/confirmar-email',
+  path: '/confirmar-email',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const EntrarRoute = EntrarRouteImport.update({
   id: '/entrar',
   path: '/entrar',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EsqueciSenhaRoute = EsqueciSenhaRouteImport.update({
+  id: '/esqueci-senha',
+  path: '/esqueci-senha',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MinhasCampanhasRoute = MinhasCampanhasRouteImport.update({
@@ -126,7 +138,9 @@ const AdminPainelBaseImportacoesIdRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/cadastro': typeof CadastroRoute
+  '/confirmar-email': typeof ConfirmarEmailRoute
   '/entrar': typeof EntrarRoute
+  '/esqueci-senha': typeof EsqueciSenhaRoute
   '/minhas-campanhas': typeof MinhasCampanhasRoute
   '/privacidade': typeof PrivacidadeRoute
   '/admin': typeof AdminPainelRouteWithChildren
@@ -146,7 +160,9 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/cadastro': typeof CadastroRoute
+  '/confirmar-email': typeof ConfirmarEmailRoute
   '/entrar': typeof EntrarRoute
+  '/esqueci-senha': typeof EsqueciSenhaRoute
   '/minhas-campanhas': typeof MinhasCampanhasRoute
   '/privacidade': typeof PrivacidadeRoute
   '/admin/login': typeof AdminLoginRoute
@@ -166,7 +182,9 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/cadastro': typeof CadastroRoute
+  '/confirmar-email': typeof ConfirmarEmailRoute
   '/entrar': typeof EntrarRoute
+  '/esqueci-senha': typeof EsqueciSenhaRoute
   '/minhas-campanhas': typeof MinhasCampanhasRoute
   '/privacidade': typeof PrivacidadeRoute
   '/admin/_painel': typeof AdminPainelRouteWithChildren
@@ -188,7 +206,9 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/cadastro'
+    | '/confirmar-email'
     | '/entrar'
+    | '/esqueci-senha'
     | '/minhas-campanhas'
     | '/privacidade'
     | '/admin'
@@ -208,7 +228,9 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/cadastro'
+    | '/confirmar-email'
     | '/entrar'
+    | '/esqueci-senha'
     | '/minhas-campanhas'
     | '/privacidade'
     | '/admin/login'
@@ -227,7 +249,9 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/cadastro'
+    | '/confirmar-email'
     | '/entrar'
+    | '/esqueci-senha'
     | '/minhas-campanhas'
     | '/privacidade'
     | '/admin/_painel'
@@ -248,7 +272,9 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   CadastroRoute: typeof CadastroRoute
+  ConfirmarEmailRoute: typeof ConfirmarEmailRoute
   EntrarRoute: typeof EntrarRoute
+  EsqueciSenhaRoute: typeof EsqueciSenhaRoute
   MinhasCampanhasRoute: typeof MinhasCampanhasRoute
   PrivacidadeRoute: typeof PrivacidadeRoute
   AdminPainelRoute: typeof AdminPainelRouteWithChildren
@@ -274,11 +300,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CadastroRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/confirmar-email': {
+      id: '/confirmar-email'
+      path: '/confirmar-email'
+      fullPath: '/confirmar-email'
+      preLoaderRoute: typeof ConfirmarEmailRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/entrar': {
       id: '/entrar'
       path: '/entrar'
       fullPath: '/entrar'
       preLoaderRoute: typeof EntrarRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/esqueci-senha': {
+      id: '/esqueci-senha'
+      path: '/esqueci-senha'
+      fullPath: '/esqueci-senha'
+      preLoaderRoute: typeof EsqueciSenhaRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/minhas-campanhas': {
@@ -418,7 +458,9 @@ const AdminPainelRouteWithChildren = AdminPainelRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   CadastroRoute: CadastroRoute,
+  ConfirmarEmailRoute: ConfirmarEmailRoute,
   EntrarRoute: EntrarRoute,
+  EsqueciSenhaRoute: EsqueciSenhaRoute,
   MinhasCampanhasRoute: MinhasCampanhasRoute,
   PrivacidadeRoute: PrivacidadeRoute,
   AdminPainelRoute: AdminPainelRouteWithChildren,

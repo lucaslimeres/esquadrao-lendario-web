@@ -43,7 +43,9 @@ elencos importados.
 | `/` | Landing: como funciona, cards, competições (da API), regras, app nas lojas, com/sem conta |
 | `/jogar` | Nova campanha: competição, formação e estilo. Sem sessão, cria um convidado na hora |
 | `/jogar/:id` | O jogo: montagem (sorteio e escolha no campo), campanha (grupo, jogo ao vivo minuto a minuto) e tela final com compartilhamento |
-| `/entrar`, `/cadastro` | Conta. Cadastrar durante uma partida sem conta leva a partida junto |
+| `/entrar`, `/cadastro` | Conta. O cadastro manda um código de 6 números por e-mail e só entra depois de confirmar. Cadastrar durante uma partida sem conta leva a partida junto (na confirmação) |
+| `/confirmar-email` | Código de 6 números do cadastro (também aparece quando quem nunca confirmou tenta entrar). Reenviar a cada 60s |
+| `/esqueci-senha` | E-mail → código de 6 números → nova senha, e já entra |
 | `/minhas-campanhas` | Histórico (só com conta) |
 | `/c/:codigo` | Resumo público de uma campanha (link compartilhado) |
 | `/privacidade` | Política de privacidade (dados, cookies e anúncios do Google, LGPD) |

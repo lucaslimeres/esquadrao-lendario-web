@@ -1,9 +1,7 @@
-import { useQueryClient } from "@tanstack/react-query";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { z } from "zod";
 import { Pagina, TituloPagina } from "@/components/layout";
 import { FormularioAuth } from "@/features/auth-form";
-import { destinoSeguro } from "@/features/sessao";
 import { api } from "@/lib/api";
 import { useSessao } from "@/stores/sessao";
 
@@ -21,9 +19,7 @@ export const Route = createFileRoute("/cadastro")({
 function Cadastro() {
   const { redirect } = Route.useSearch();
   const navigate = useNavigate();
-  const queryClient = useQueryClient();
-  const { modo, sessao, entrar } = useSessao();
-  const convidado = modo === "convidado";
+  const convidado = useSessao((s) => s.modo === "convidado");
 
   return (
     <Pagina>
@@ -43,10 +39,9 @@ function Cadastro() {
             { nome: "senha", rotulo: "Senha", tipo: "password", autoComplete: "new-password" },
           ]}
           aoEnviar={async (dados) => {
-            // With the guest token, the API turns the guest into this account (campaigns included).
-            entrar(await api.cadastro(dados, convidado ? (sessao?.token ?? null) : null));
-            queryClient.clear();
-            await navigate({ to: destinoSeguro(redirect) });
+            // No session yet: the account only logs in after the code sent by e-mail.
+            const { email } = await api.cadastro(dados);
+            await navigate({ to: "/confirmar-email", search: { email, redirect } });
           }}
         />
         <p className="mt-6">
