@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { createFileRoute, Link, redirect } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
 import { EspacoPublicidade } from "@/components/anuncio";
+import { MeusGrupos } from "@/features/grupo/meus-grupos";
 import { Pagina, TituloPagina } from "@/components/layout";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -34,6 +35,7 @@ function MinhasCampanhas() {
   return (
     <Pagina>
       <TituloPagina rotulo="Histórico">Minhas campanhas</TituloPagina>
+      <MeusGrupos className="mb-10" titulo="Em grupo" />
       {isPending && <Carregando />}
       {isError && <Erro mensagem="Não deu para carregar suas campanhas." tentarDeNovo={() => refetch()} />}
       {data && data.length === 0 && (

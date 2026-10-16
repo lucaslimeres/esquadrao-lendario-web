@@ -57,3 +57,26 @@ export function atrasoDoPasso(passo: number, partida: Pick<PartidaCampanha, "pro
   }
   return RITMO.minuto;
 }
+
+/** Total reveal time of a match, in ms (sum of every step). */
+export function duracaoDaRevelacao(partida: Pick<PartidaCampanha, "prorrogacao" | "penaltis" | "gols">): number {
+  const fim = (partida.prorrogacao ? 120 : 90) + (partida.penaltis?.length ?? 0);
+  let total = 0;
+  for (let passo = 0; passo < fim; passo++) total += atrasoDoPasso(passo, partida);
+  return total;
+}
+
+/**
+ * Step the reveal is at after `decorrido` ms. Campanha em grupo: both players of a match
+ * start from the server's kick-off time, so they watch the same minute at the same time.
+ */
+export function passoNoTempo(partida: Pick<PartidaCampanha, "prorrogacao" | "penaltis" | "gols">, decorrido: number): { passo: number; restante: number } {
+  const fim = (partida.prorrogacao ? 120 : 90) + (partida.penaltis?.length ?? 0);
+  let tempo = 0;
+  for (let passo = 0; passo < fim; passo++) {
+    const atraso = atrasoDoPasso(passo, partida);
+    if (tempo + atraso > decorrido) return { passo, restante: tempo + atraso - decorrido };
+    tempo += atraso;
+  }
+  return { passo: fim, restante: 0 };
+}
