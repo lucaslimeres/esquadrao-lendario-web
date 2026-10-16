@@ -1,4 +1,5 @@
-import { Play } from "lucide-react";
+import { ChevronDown, Play } from "lucide-react";
+import { useState } from "react";
 import { Campo } from "@/components/jogo/campo";
 import { NomeElenco } from "@/components/jogo/distintivo";
 import { SeloResultado } from "@/components/jogo/placar";
@@ -7,7 +8,9 @@ import { Erro } from "@/components/ui/estados";
 import { ApiError } from "@/lib/api";
 import { NOME_FASE, placar } from "@/lib/jogo";
 import type { Campanha, PartidaCampanha } from "@/lib/tipos";
+import { eventosDaPartida } from "@/lib/eventos";
 import { cn } from "@/lib/utils";
+import { LinhaDoTempo } from "./linha-do-tempo";
 
 interface Props {
   campanha: Campanha;
@@ -94,30 +97,50 @@ export function TabelaGrupo({ grupo }: { grupo: NonNullable<Campanha["grupo"]> }
   );
 }
 
+/** Played matches; tapping one opens its history (goals with minute, half-time, penalties…). */
 export function ListaPartidas({ partidas }: { partidas: PartidaCampanha[] }) {
+  const [aberta, setAberta] = useState<string | null>(null);
   const jogadas = partidas.filter((p) => p.simulada);
   if (jogadas.length === 0) return null;
   return (
     <section>
       <h2 className="rotulo mb-3">Jogos</h2>
       <ul className="divide-y-2 divide-gramado border-2 border-neutro-400 bg-white">
-        {jogadas.map((p) => (
-          <li key={p.id} className="flex items-center gap-3 p-3">
-            <SeloResultado resultado={p.resultado} />
-            <span className="min-w-0 flex-1">
-              <span className="rotulo block text-[11px] text-neutro-700">{NOME_FASE[p.fase]}</span>
-              <NomeElenco elenco={p.adversario} />
-            </span>
-            <span className="text-right">
-              <span className="font-display text-xl tabular-nums">{placar(p.golsPro, p.golsContra)}</span>
-              {p.penaltisPro !== null && (
-                <span className="block text-xs text-neutro-700">
-                  pên. {p.penaltisPro}–{p.penaltisContra}
+        {jogadas.map((p) => {
+          const aberto = aberta === p.id;
+          return (
+            <li key={p.id}>
+              <button
+                type="button"
+                aria-expanded={aberto}
+                aria-controls={`lances-${p.id}`}
+                onClick={() => setAberta(aberto ? null : p.id)}
+                className="flex w-full items-center gap-3 p-3 text-left hover:bg-papel"
+              >
+                <SeloResultado resultado={p.resultado} />
+                <span className="min-w-0 flex-1">
+                  <span className="rotulo block text-[11px] text-neutro-700">{NOME_FASE[p.fase]}</span>
+                  <NomeElenco elenco={p.adversario} />
                 </span>
+                <span className="text-right">
+                  <span className="font-display text-xl tabular-nums">{placar(p.golsPro, p.golsContra)}</span>
+                  {p.penaltisPro !== null && (
+                    <span className="block text-xs text-neutro-700">
+                      pên. {p.penaltisPro}–{p.penaltisContra}
+                    </span>
+                  )}
+                </span>
+                <ChevronDown className={cn("size-5 shrink-0 transition-transform", aberto && "rotate-180")} aria-hidden />
+                <span className="sr-only">{aberto ? "Esconder lances" : "Ver lances"}</span>
+              </button>
+              {aberto && (
+                <div id={`lances-${p.id}`} className="border-t-2 border-gramado bg-papel p-3">
+                  <LinhaDoTempo eventos={eventosDaPartida(p)} partida={p} />
+                </div>
               )}
-            </span>
-          </li>
-        ))}
+            </li>
+          );
+        })}
       </ul>
     </section>
   );

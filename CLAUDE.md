@@ -21,8 +21,10 @@ estilo shadcn (`radix-ui` + `class-variance-authority`), React Hook Form + Zod e
 - `src/components/jogo/`: campo, card de jogador, placar e distintivo genérico, seguindo o
   guia de marca.
 - `src/components/ui/`: botão, badge, input e estados.
-- `src/lib/`: `api.ts` (cliente), `tipos.ts` (contratos da API) e `jogo.ts` (textos e
-  raridade).
+- `src/lib/`: `api.ts` (cliente), `tipos.ts` (contratos da API), `jogo.ts` (textos e
+  raridade), `ritmo.ts` (ritmo da partida ao vivo) e `eventos.ts` (lances da partida:
+  início, gols, intervalo, prorrogação, pênaltis e fim, montados com o que a API já
+  simulou; mesma cópia no mobile).
 - `src/stores/sessao.ts`: sessão do jogador.
 - **Painel admin:**
   - Rotas em `src/routes/admin/`: `login` e o layout com guarda `_painel` (dashboard,
