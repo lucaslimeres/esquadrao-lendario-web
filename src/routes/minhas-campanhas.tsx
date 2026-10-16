@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Carregando, Erro } from "@/components/ui/estados";
 import { api } from "@/lib/api";
 import { NOME_STATUS } from "@/lib/jogo";
-import type { CampanhaResumo } from "@/lib/tipos";
+import { NOME_TIME_PADRAO, type CampanhaResumo } from "@/lib/tipos";
 import { estaLogado } from "@/stores/sessao";
 
 export const Route = createFileRoute("/minhas-campanhas")({
@@ -56,7 +56,10 @@ function MinhasCampanhas() {
               <li key={c.id}>
                 <Link to="/jogar/$id" params={{ id: c.id }} className="flex items-center gap-4 p-4 hover:bg-gramado">
                   <span className="min-w-0 flex-1">
-                    <span className="block font-bold">{c.competicao.nome ?? "Competição"}</span>
+                    <span className="block font-bold">
+                      {c.competicao.nome ?? "Competição"}
+                      {c.nomeTime && c.nomeTime !== NOME_TIME_PADRAO && <span className="font-normal"> · {c.nomeTime}</span>}
+                    </span>
                     <span className="text-sm text-neutro-700">
                       {c.formacao} · {dataCurta.format(new Date(c.criadaEm))}
                     </span>

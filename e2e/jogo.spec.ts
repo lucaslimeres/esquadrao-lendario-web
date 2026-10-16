@@ -48,7 +48,11 @@ test("sem conta: joga a campanha inteira e nada fica no histórico", async ({ pa
   await page.getByRole("button", { name: /Começar a montar o time/ }).click();
   await expect(page.getByText("Jogando sem conta.")).toBeVisible();
   await montarTime(page);
+  // Optional squad name: shows up in the next-match card, scoreboard and table.
+  await page.getByLabel("Nome do time (opcional)").fill("Os Invencíveis");
   await page.getByRole("button", { name: /Começar campanha/ }).click();
+  await expect(page.getByText("Os Invencíveis contra")).toBeVisible();
+  await expect(page.getByRole("cell", { name: "Os Invencíveis" })).toBeVisible();
   const jogos = await jogarAteOFim(page);
   expect(jogos).toBeGreaterThanOrEqual(3);
   await expect(page.getByText(/É CAMPEÃO!|Caiu|Vice-campeão/)).toBeVisible();

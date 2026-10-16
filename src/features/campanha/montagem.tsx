@@ -156,7 +156,6 @@ function LinhaJogador({ jogador, selecionado, desabilitado, contagem, onSelecion
             return (
               <Button key={vaga} tamanho="pequeno" variant={secundaria ? "contorno" : "primario"} disabled={desabilitado} onClick={() => onEscalar(vaga)}>
                 {nomeVaga(vaga, (contagem.get(posicao) ?? 0) > 1)}
-                {secundaria ? " (−7%)" : ""}
               </Button>
             );
           })}

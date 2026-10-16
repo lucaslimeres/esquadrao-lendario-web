@@ -14,7 +14,7 @@ function prefereSemAnimacao() {
 }
 
 /** Minute-by-minute reveal of a match that the API already simulated. */
-export function PartidaAoVivo({ partida, onFim }: { partida: PartidaCampanha; onFim: () => void }) {
+export function PartidaAoVivo({ partida, nomeTime, onFim }: { partida: PartidaCampanha; nomeTime?: string; onFim: () => void }) {
   const duracao = partida.prorrogacao ? 120 : 90;
   const totalPenaltis = partida.penaltis?.length ?? 0;
   // Timeline: minutes 0…duracao, then one step per penalty kick.
@@ -38,6 +38,7 @@ export function PartidaAoVivo({ partida, onFim }: { partida: PartidaCampanha; on
     <section aria-live="polite" className="mx-auto max-w-2xl">
       <Placar
         partida={partida}
+        nomeTime={nomeTime}
         golsPro={gols.filter((g) => g.doSeuTime).length}
         golsContra={gols.filter((g) => !g.doSeuTime).length}
         minuto={terminou ? null : minuto}
@@ -55,6 +56,7 @@ export function PartidaAoVivo({ partida, onFim }: { partida: PartidaCampanha; on
         <LinhaDoTempo
           eventos={eventosAte(partida, passo)}
           partida={partida}
+          nomeTime={nomeTime}
           maisRecentePrimeiro
           destaque={(e) => e.tipo === "gol" && golAgora.some((g) => g.minuto === e.minuto && g.jogadorNome === e.jogadorNome)}
         />

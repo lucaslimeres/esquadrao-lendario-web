@@ -93,7 +93,8 @@ export const api = {
   resortear: (id: string) => request<Campanha>(`/campanhas/${id}/resorteio`, { method: "POST" }),
   escolher: (id: string, dados: { jogadorId: string; vaga: string }) =>
     request<Campanha>(`/campanhas/${id}/escolhas`, { method: "POST", body: dados }),
-  iniciar: (id: string) => request<Campanha>(`/campanhas/${id}/iniciar`, { method: "POST" }),
+  /** Blank name keeps "Seu esquadrão". */
+  iniciar: (id: string, nomeTime?: string) => request<Campanha>(`/campanhas/${id}/iniciar`, { method: "POST", body: { nomeTime: nomeTime?.trim() || null } }),
   proximaPartida: (id: string) =>
     request<{ partida: Campanha["partidas"][number]; campanha: Campanha }>(`/campanhas/${id}/proxima-partida`, { method: "POST" }),
   compartilhada: (codigo: string) => request<CampanhaPublica>(`/compartilhar/${codigo}`, { autenticado: false }),

@@ -1,5 +1,5 @@
 import { NOME_FASE } from "@/lib/jogo";
-import type { PartidaCampanha } from "@/lib/tipos";
+import { NOME_TIME_PADRAO, type PartidaCampanha } from "@/lib/tipos";
 import { cn } from "@/lib/utils";
 
 interface Props {
@@ -8,11 +8,13 @@ interface Props {
   golsPro?: number;
   golsContra?: number;
   minuto?: number | null;
+  /** The player's squad name ("Seu esquadrão" when none was given). */
+  nomeTime?: string;
   className?: string;
 }
 
 /** Dark scoreboard from the brand guide. */
-export function Placar({ partida, golsPro, golsContra, minuto, className }: Props) {
+export function Placar({ partida, golsPro, golsContra, minuto, nomeTime = NOME_TIME_PADRAO, className }: Props) {
   const pro = golsPro ?? partida.golsPro;
   const contra = golsContra ?? partida.golsContra;
   return (
@@ -25,7 +27,7 @@ export function Placar({ partida, golsPro, golsContra, minuto, className }: Prop
         {minuto !== undefined && minuto !== null && <span className="rotulo text-[11px] text-verde-claro">{minuto}'</span>}
       </div>
       <div className="mt-3 grid grid-cols-[1fr_auto_1fr] items-center gap-3">
-        <span className="text-sm font-bold sm:text-base">Seu esquadrão</span>
+        <span className="text-sm font-bold sm:text-base">{nomeTime}</span>
         <span className="font-display text-5xl tabular-nums sm:text-7xl" aria-label={`${pro ?? 0} a ${contra ?? 0}`}>
           {pro ?? 0}–{contra ?? 0}
         </span>
