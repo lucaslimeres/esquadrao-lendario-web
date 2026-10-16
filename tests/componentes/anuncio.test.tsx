@@ -32,12 +32,12 @@ describe("EspacoPublicidade", () => {
     config.anuncios = {
       ...original,
       cliente: "ca-pub-1234567890123456",
-      slots: { ...original.slots, landing: "111", fimDeCampanha: "222" },
+      slots: { ...original.slots, landing: "111", conteudo: "222" },
     };
     render(
       <StrictMode>
         <EspacoPublicidade posicao="landing" />
-        <EspacoPublicidade posicao="fimDeCampanha" />
+        <EspacoPublicidade posicao="conteudo" />
       </StrictMode>,
     );
     expect(screen.getAllByRole("complementary", { name: "Publicidade" })).toHaveLength(2);
@@ -53,7 +53,7 @@ describe("EspacoPublicidade", () => {
 
   it("prévia mostra o espaço sem falar com o Google", () => {
     config.anuncios = { ...original, cliente: null, previa: true };
-    render(<EspacoPublicidade posicao="compartilhada" />);
+    render(<EspacoPublicidade posicao="conteudo" />);
     expect(screen.getByText("Espaço do anúncio")).toBeInTheDocument();
     expect(document.getElementById("adsbygoogle-js")).toBeNull();
   });

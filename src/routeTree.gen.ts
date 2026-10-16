@@ -11,11 +11,16 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as CadastroRouteImport } from './routes/cadastro'
+import { Route as ComoFuncionaASimulacaoRouteImport } from './routes/como-funciona-a-simulacao'
+import { Route as ComoJogarRouteImport } from './routes/como-jogar'
 import { Route as ConfirmarEmailRouteImport } from './routes/confirmar-email'
 import { Route as EntrarRouteImport } from './routes/entrar'
 import { Route as EsqueciSenhaRouteImport } from './routes/esqueci-senha'
 import { Route as MinhasCampanhasRouteImport } from './routes/minhas-campanhas'
+import { Route as PerguntasFrequentesRouteImport } from './routes/perguntas-frequentes'
+import { Route as PosicoesEFormacoesRouteImport } from './routes/posicoes-e-formacoes'
 import { Route as PrivacidadeRouteImport } from './routes/privacidade'
+import { Route as SobreRouteImport } from './routes/sobre'
 import { Route as AdminPainelRouteImport } from './routes/admin/_painel'
 import { Route as AdminEsqueciSenhaRouteImport } from './routes/admin/esqueci-senha'
 import { Route as AdminLoginRouteImport } from './routes/admin/login'
@@ -44,6 +49,16 @@ const CadastroRoute = CadastroRouteImport.update({
   path: '/cadastro',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ComoFuncionaASimulacaoRoute = ComoFuncionaASimulacaoRouteImport.update({
+  id: '/como-funciona-a-simulacao',
+  path: '/como-funciona-a-simulacao',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ComoJogarRoute = ComoJogarRouteImport.update({
+  id: '/como-jogar',
+  path: '/como-jogar',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ConfirmarEmailRoute = ConfirmarEmailRouteImport.update({
   id: '/confirmar-email',
   path: '/confirmar-email',
@@ -64,9 +79,24 @@ const MinhasCampanhasRoute = MinhasCampanhasRouteImport.update({
   path: '/minhas-campanhas',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PerguntasFrequentesRoute = PerguntasFrequentesRouteImport.update({
+  id: '/perguntas-frequentes',
+  path: '/perguntas-frequentes',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PosicoesEFormacoesRoute = PosicoesEFormacoesRouteImport.update({
+  id: '/posicoes-e-formacoes',
+  path: '/posicoes-e-formacoes',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PrivacidadeRoute = PrivacidadeRouteImport.update({
   id: '/privacidade',
   path: '/privacidade',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SobreRoute = SobreRouteImport.update({
+  id: '/sobre',
+  path: '/sobre',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminPainelRoute = AdminPainelRouteImport.update({
@@ -163,11 +193,16 @@ const AdminPainelBaseImportacoesIdRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/cadastro': typeof CadastroRoute
+  '/como-funciona-a-simulacao': typeof ComoFuncionaASimulacaoRoute
+  '/como-jogar': typeof ComoJogarRoute
   '/confirmar-email': typeof ConfirmarEmailRoute
   '/entrar': typeof EntrarRoute
   '/esqueci-senha': typeof EsqueciSenhaRoute
   '/minhas-campanhas': typeof MinhasCampanhasRoute
+  '/perguntas-frequentes': typeof PerguntasFrequentesRoute
+  '/posicoes-e-formacoes': typeof PosicoesEFormacoesRoute
   '/privacidade': typeof PrivacidadeRoute
+  '/sobre': typeof SobreRoute
   '/admin': typeof AdminPainelRouteWithChildren
   '/admin/esqueci-senha': typeof AdminEsqueciSenhaRoute
   '/admin/login': typeof AdminLoginRoute
@@ -189,11 +224,16 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/cadastro': typeof CadastroRoute
+  '/como-funciona-a-simulacao': typeof ComoFuncionaASimulacaoRoute
+  '/como-jogar': typeof ComoJogarRoute
   '/confirmar-email': typeof ConfirmarEmailRoute
   '/entrar': typeof EntrarRoute
   '/esqueci-senha': typeof EsqueciSenhaRoute
   '/minhas-campanhas': typeof MinhasCampanhasRoute
+  '/perguntas-frequentes': typeof PerguntasFrequentesRoute
+  '/posicoes-e-formacoes': typeof PosicoesEFormacoesRoute
   '/privacidade': typeof PrivacidadeRoute
+  '/sobre': typeof SobreRoute
   '/admin/esqueci-senha': typeof AdminEsqueciSenhaRoute
   '/admin/login': typeof AdminLoginRoute
   '/c/$codigo': typeof CCodigoRoute
@@ -215,11 +255,16 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/cadastro': typeof CadastroRoute
+  '/como-funciona-a-simulacao': typeof ComoFuncionaASimulacaoRoute
+  '/como-jogar': typeof ComoJogarRoute
   '/confirmar-email': typeof ConfirmarEmailRoute
   '/entrar': typeof EntrarRoute
   '/esqueci-senha': typeof EsqueciSenhaRoute
   '/minhas-campanhas': typeof MinhasCampanhasRoute
+  '/perguntas-frequentes': typeof PerguntasFrequentesRoute
+  '/posicoes-e-formacoes': typeof PosicoesEFormacoesRoute
   '/privacidade': typeof PrivacidadeRoute
+  '/sobre': typeof SobreRoute
   '/admin/_painel': typeof AdminPainelRouteWithChildren
   '/admin/esqueci-senha': typeof AdminEsqueciSenhaRoute
   '/admin/login': typeof AdminLoginRoute
@@ -243,11 +288,16 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/cadastro'
+    | '/como-funciona-a-simulacao'
+    | '/como-jogar'
     | '/confirmar-email'
     | '/entrar'
     | '/esqueci-senha'
     | '/minhas-campanhas'
+    | '/perguntas-frequentes'
+    | '/posicoes-e-formacoes'
     | '/privacidade'
+    | '/sobre'
     | '/admin'
     | '/admin/esqueci-senha'
     | '/admin/login'
@@ -269,11 +319,16 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/cadastro'
+    | '/como-funciona-a-simulacao'
+    | '/como-jogar'
     | '/confirmar-email'
     | '/entrar'
     | '/esqueci-senha'
     | '/minhas-campanhas'
+    | '/perguntas-frequentes'
+    | '/posicoes-e-formacoes'
     | '/privacidade'
+    | '/sobre'
     | '/admin/esqueci-senha'
     | '/admin/login'
     | '/c/$codigo'
@@ -294,11 +349,16 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/cadastro'
+    | '/como-funciona-a-simulacao'
+    | '/como-jogar'
     | '/confirmar-email'
     | '/entrar'
     | '/esqueci-senha'
     | '/minhas-campanhas'
+    | '/perguntas-frequentes'
+    | '/posicoes-e-formacoes'
     | '/privacidade'
+    | '/sobre'
     | '/admin/_painel'
     | '/admin/esqueci-senha'
     | '/admin/login'
@@ -321,11 +381,16 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   CadastroRoute: typeof CadastroRoute
+  ComoFuncionaASimulacaoRoute: typeof ComoFuncionaASimulacaoRoute
+  ComoJogarRoute: typeof ComoJogarRoute
   ConfirmarEmailRoute: typeof ConfirmarEmailRoute
   EntrarRoute: typeof EntrarRoute
   EsqueciSenhaRoute: typeof EsqueciSenhaRoute
   MinhasCampanhasRoute: typeof MinhasCampanhasRoute
+  PerguntasFrequentesRoute: typeof PerguntasFrequentesRoute
+  PosicoesEFormacoesRoute: typeof PosicoesEFormacoesRoute
   PrivacidadeRoute: typeof PrivacidadeRoute
+  SobreRoute: typeof SobreRoute
   AdminPainelRoute: typeof AdminPainelRouteWithChildren
   AdminEsqueciSenhaRoute: typeof AdminEsqueciSenhaRoute
   AdminLoginRoute: typeof AdminLoginRoute
@@ -350,6 +415,20 @@ declare module '@tanstack/react-router' {
       path: '/cadastro'
       fullPath: '/cadastro'
       preLoaderRoute: typeof CadastroRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/como-funciona-a-simulacao': {
+      id: '/como-funciona-a-simulacao'
+      path: '/como-funciona-a-simulacao'
+      fullPath: '/como-funciona-a-simulacao'
+      preLoaderRoute: typeof ComoFuncionaASimulacaoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/como-jogar': {
+      id: '/como-jogar'
+      path: '/como-jogar'
+      fullPath: '/como-jogar'
+      preLoaderRoute: typeof ComoJogarRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/confirmar-email': {
@@ -380,11 +459,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MinhasCampanhasRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/perguntas-frequentes': {
+      id: '/perguntas-frequentes'
+      path: '/perguntas-frequentes'
+      fullPath: '/perguntas-frequentes'
+      preLoaderRoute: typeof PerguntasFrequentesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/posicoes-e-formacoes': {
+      id: '/posicoes-e-formacoes'
+      path: '/posicoes-e-formacoes'
+      fullPath: '/posicoes-e-formacoes'
+      preLoaderRoute: typeof PosicoesEFormacoesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/privacidade': {
       id: '/privacidade'
       path: '/privacidade'
       fullPath: '/privacidade'
       preLoaderRoute: typeof PrivacidadeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sobre': {
+      id: '/sobre'
+      path: '/sobre'
+      fullPath: '/sobre'
+      preLoaderRoute: typeof SobreRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin/_painel': {
@@ -540,11 +640,16 @@ const AdminPainelRouteWithChildren = AdminPainelRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   CadastroRoute: CadastroRoute,
+  ComoFuncionaASimulacaoRoute: ComoFuncionaASimulacaoRoute,
+  ComoJogarRoute: ComoJogarRoute,
   ConfirmarEmailRoute: ConfirmarEmailRoute,
   EntrarRoute: EntrarRoute,
   EsqueciSenhaRoute: EsqueciSenhaRoute,
   MinhasCampanhasRoute: MinhasCampanhasRoute,
+  PerguntasFrequentesRoute: PerguntasFrequentesRoute,
+  PosicoesEFormacoesRoute: PosicoesEFormacoesRoute,
   PrivacidadeRoute: PrivacidadeRoute,
+  SobreRoute: SobreRoute,
   AdminPainelRoute: AdminPainelRouteWithChildren,
   AdminEsqueciSenhaRoute: AdminEsqueciSenhaRoute,
   AdminLoginRoute: AdminLoginRoute,

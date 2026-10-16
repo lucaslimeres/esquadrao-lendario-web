@@ -1,7 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { ChevronDown, Hourglass, Play, Trophy, Zap } from "lucide-react";
 import { useMemo, useState } from "react";
-import { EspacoPublicidade } from "@/components/anuncio";
 import { Distintivo } from "@/components/jogo/distintivo";
 import { Button } from "@/components/ui/button";
 import { Erro } from "@/components/ui/estados";
@@ -109,7 +108,6 @@ export function TorneioGrupo({ grupo, recebidoEm }: { grupo: Grupo; recebidoEm: 
           <TabelaDoGrupo key={g.letra} letra={g.letra} encerrado={g.encerrado} linhas={g.classificacao} />
         ))}
         <JogosPorFase grupo={grupo} />
-        {grupo.status === "encerrado" && <EspacoPublicidade posicao="fimDeCampanha" />}
       </div>
       <aside className="space-y-6">
         {grupo.meuTime && (

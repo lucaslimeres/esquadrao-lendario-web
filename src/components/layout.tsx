@@ -2,6 +2,7 @@ import { Link, useNavigate } from "@tanstack/react-router";
 import { LogOut, Menu, X } from "lucide-react";
 import { useState, type ReactNode } from "react";
 import { useSessao } from "@/stores/sessao";
+import { GUIAS } from "@/lib/guias";
 import { Logo } from "./logo";
 import { Button } from "./ui/button";
 
@@ -13,8 +14,8 @@ export function Cabecalho() {
 
   const links = (
     <>
-      <Link to="/" hash="como-funciona" className="font-semibold hover:text-verde" onClick={() => setAberto(false)}>
-        Como funciona
+      <Link to="/como-jogar" className="font-semibold hover:text-verde" onClick={() => setAberto(false)}>
+        Como jogar
       </Link>
       <Link to="/" hash="app" className="font-semibold hover:text-verde" onClick={() => setAberto(false)}>
         Baixe o app
@@ -83,6 +84,13 @@ export function Rodape() {
       <div className="mx-auto grid max-w-6xl gap-6 px-4 py-8 sm:grid-cols-[auto_1fr] sm:items-start">
         <Logo />
         <div className="space-y-2 text-sm text-neutro-700 sm:justify-self-end sm:text-right">
+          <nav aria-label="Guias" className="flex flex-wrap gap-x-3 gap-y-1 sm:justify-end">
+            {GUIAS.map((g) => (
+              <Link key={g.to} to={g.to} className="font-semibold text-tinta underline-offset-4 hover:underline">
+                {g.titulo}
+              </Link>
+            ))}
+          </nav>
           <p>
             <Link to="/" hash="fale-conosco" className="font-semibold text-tinta underline-offset-4 hover:underline">
               Fale conosco
