@@ -56,9 +56,15 @@ estilo shadcn (`radix-ui` + `class-variance-authority`), React Hook Form + Zod e
   - Verde só na ação principal, nas lendas, na vitória e nas telas de sorteio e título.
   - Nunca usar vermelho, escudos, logos ou fotos reais.
 - **Anúncios (AdSense):** só via `EspacoPublicidade` (`components/anuncio.tsx`), no fluxo
-  da página, com o rótulo "Publicidade" e altura fixa. Nunca sobre o conteúdo, nunca na
-  montagem, na campanha em andamento, na partida ao vivo ou no `/admin`, e nunca colado
-  em botão. Sem `VITE_ADSENSE_CLIENT`, nada é renderizado. Auto ads fica desligado no
+  da página, com o rótulo "Publicidade" e altura fixa, e **só em página com conteúdo
+  editorial**: landing (`landing`) e guias (`conteudo`, via `features/guia/artigo.tsx`).
+  Nunca em tela de jogo (montagem, campanha, fim, partida ao vivo), grupo, lista, login,
+  formulário, link compartilhado ou `/admin` — o AdSense recusa o site por isso. Nunca
+  colado em botão.
+- **Páginas de conteúdo pré-renderizadas** (`src/prerender.tsx` + `scripts/prerender.mjs`,
+  rodam no `yarn build`): landing, guias (`lib/guias.ts`) e privacidade saem com o HTML
+  pronto, sitemap e robots. Página nova de conteúdo entra em `GUIAS`/`PAGINAS`. Rotas
+  restantes caem no shell `app.html` (`vercel.json`). Sem `VITE_ADSENSE_CLIENT`, nada é renderizado. Auto ads fica desligado no
   painel do AdSense.
 - **Painel admin** separado de verdade:
   - Nunca usar `lib/api.ts`, `useSessao` ou o token do jogador dentro de `/admin`, e

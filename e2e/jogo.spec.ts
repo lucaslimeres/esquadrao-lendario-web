@@ -118,3 +118,13 @@ test("link compartilhado abre o resumo público", async ({ page }) => {
   await expect(page.getByText("Link inválido")).toBeVisible();
   await expect(page.getByRole("link", { name: /Montar o meu/ })).toBeVisible();
 });
+
+test("guias com conteúdo: navegação pelo rodapé e entre guias", async ({ page }) => {
+  await page.goto("/como-jogar");
+  await expect(page.getByRole("heading", { level: 1, name: "Como jogar" })).toBeVisible();
+  await expect(page).toHaveTitle("Como jogar — Esquadrão Lendário");
+  await page.getByRole("navigation", { name: "Guias" }).getByRole("link", { name: "Posições e formações" }).click();
+  await expect(page.getByRole("heading", { level: 1, name: "Posições e formações" })).toBeVisible();
+  await page.getByRole("navigation", { name: "Leia também" }).getByRole("link", { name: /Perguntas frequentes/ }).click();
+  await expect(page.getByText("Quantas pessoas cabem num grupo?")).toBeVisible();
+});
