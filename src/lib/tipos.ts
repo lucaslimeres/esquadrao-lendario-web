@@ -121,11 +121,16 @@ export interface Artilheiro {
   gols: number;
 }
 
+/** Shown when the player didn't name the squad (the API already applies it; kept for older responses). */
+export const NOME_TIME_PADRAO = "Seu esquadrão";
+
 export interface Campanha {
   id: string;
   codigo: string;
   status: StatusCampanha;
   estilo: Estilo;
+  /** Squad name chosen when the campaign started ("Seu esquadrão" when none). */
+  nomeTime: string;
   resorteiosRestantes: number;
   competicao: { slug: string; nome: string; formato: Competicao["formato"]; jogosAteTitulo: number };
   formacao: { codigo: string; vagas: VagaCampanha[] };
@@ -147,6 +152,8 @@ export interface CampanhaResumo {
   status: StatusCampanha;
   formacao: string;
   estilo: Estilo;
+  /** Squad name chosen when the campaign started ("Seu esquadrão" when none). */
+  nomeTime: string;
   competicao: { slug: string | null; nome: string | null };
   criadaEm: string;
   finalizadaEm: string | null;
@@ -154,5 +161,5 @@ export interface CampanhaResumo {
 
 export type CampanhaPublica = Pick<
   Campanha,
-  "codigo" | "status" | "estilo" | "competicao" | "formacao" | "overallTime" | "resultado" | "grupo" | "partidas" | "artilheiros"
+  "codigo" | "status" | "estilo" | "nomeTime" | "competicao" | "formacao" | "overallTime" | "resultado" | "grupo" | "partidas" | "artilheiros"
 >;

@@ -6,6 +6,7 @@ import { Campo } from "@/components/jogo/campo";
 import { Pagina, TituloPagina } from "@/components/layout";
 import { Button } from "@/components/ui/button";
 import { Carregando, Erro } from "@/components/ui/estados";
+import { Input, Label } from "@/components/ui/input";
 import { AvisoConvidado } from "@/features/aviso-convidado";
 import { Andamento } from "@/features/campanha/andamento";
 import { FimDeCampanha } from "@/features/campanha/fim-de-campanha";
@@ -14,7 +15,9 @@ import { PartidaAoVivo } from "@/features/campanha/partida-ao-vivo";
 import { chaveCampanha, useAcaoCampanha, useCampanha } from "@/features/campanha/use-campanha";
 import { api, ApiError } from "@/lib/api";
 import { NOME_STATUS } from "@/lib/jogo";
-import type { Campanha, PartidaCampanha } from "@/lib/tipos";
+import { NOME_TIME_PADRAO, type Campanha, type PartidaCampanha } from "@/lib/tipos";
+
+const NOME_TIME_MAX = 30;
 
 export const Route = createFileRoute("/jogar/$id")({
   component: TelaCampanha,
@@ -28,7 +31,8 @@ function TelaCampanha() {
   // opponent) is only applied afterwards so nothing spoils the score.
   const [aoVivo, setAoVivo] = useState<{ partida: PartidaCampanha; depois: Campanha } | null>(null);
 
-  const iniciar = useAcaoCampanha(id, () => api.iniciar(id));
+  const [nomeTime, setNomeTime] = useState("");
+  const iniciar = useAcaoCampanha(id, () => api.iniciar(id, nomeTime));
   const jogar = useMutation({
     mutationFn: () => api.proximaPartida(id),
     onSuccess: ({ partida, campanha: depois }) => setAoVivo({ partida, depois }),
@@ -65,7 +69,7 @@ function TelaCampanha() {
       </TituloPagina>
 
       {aoVivo ? (
-        <PartidaAoVivo partida={aoVivo.partida} onFim={fimDoAoVivo} />
+        <PartidaAoVivo partida={aoVivo.partida} nomeTime={campanha.nomeTime} onFim={fimDoAoVivo} />
       ) : (
         <>
           {campanha.status !== "campea" && campanha.status !== "eliminada" && <AvisoConvidado />}
@@ -84,10 +88,33 @@ function TelaCampanha() {
                     : "Mata-mata do início ao fim: perdeu, tá fora."}{" "}
                   São {campanha.competicao.jogosAteTitulo} jogos até o título.
                 </p>
-                {iniciar.error && <Erro mensagem={iniciar.error instanceof ApiError ? iniciar.error.message : "Não deu para começar."} />}
-                <Button tamanho="grande" className="w-full sm:w-80" disabled={iniciar.isPending} onClick={() => iniciar.mutate()}>
-                  {iniciar.isPending ? "Sorteando os adversários…" : "Começar campanha"} <ArrowRight aria-hidden />
-                </Button>
+                <form
+                  className="space-y-4"
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    if (!iniciar.isPending) iniciar.mutate();
+                  }}
+                >
+                  <div>
+                    <Label htmlFor="nome-time">Nome do time (opcional)</Label>
+                    <Input
+                      id="nome-time"
+                      value={nomeTime}
+                      maxLength={NOME_TIME_MAX}
+                      placeholder={NOME_TIME_PADRAO}
+                      autoComplete="off"
+                      aria-describedby="nome-time-dica"
+                      onChange={(e) => setNomeTime(e.target.value)}
+                    />
+                    <p id="nome-time-dica" className="mt-2 text-sm text-neutro-700">
+                      Aparece no placar, na tabela e no link compartilhado. Em branco, fica “{NOME_TIME_PADRAO}”.
+                    </p>
+                  </div>
+                  {iniciar.error && <Erro mensagem={iniciar.error instanceof ApiError ? iniciar.error.message : "Não deu para começar."} />}
+                  <Button type="submit" tamanho="grande" className="w-full sm:w-80" disabled={iniciar.isPending}>
+                    {iniciar.isPending ? "Sorteando os adversários…" : "Começar campanha"} <ArrowRight aria-hidden />
+                  </Button>
+                </form>
               </div>
             </div>
           )}
