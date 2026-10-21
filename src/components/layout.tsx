@@ -99,6 +99,10 @@ export function Rodape() {
             <Link to="/privacidade" className="font-semibold text-tinta underline-offset-4 hover:underline">
               Privacidade
             </Link>
+            {" · "}
+            <Link to="/excluir-conta" className="font-semibold text-tinta underline-offset-4 hover:underline">
+              Excluir conta
+            </Link>
           </p>
           <p>Clubes aparecem só pelo nome e ano. Nenhum escudo, logo ou foto oficial é usado.</p>
           <p>© {new Date().getFullYear()} Esquadrão Lendário</p>

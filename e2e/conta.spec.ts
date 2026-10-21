@@ -63,3 +63,27 @@ test("cadastro confirma o e-mail por código; esqueci a senha troca a senha por 
   await page.getByRole("button", { name: /^Entrar/ }).click();
   await expect(page).toHaveURL(/\/minhas-campanhas/);
 });
+
+test("excluir conta pelo site: pede a senha e apaga de vez", async ({ page }, info) => {
+  const email = `excluir.${info.project.name}.${Date.now()}@exemplo.com`;
+  await page.goto("/cadastro");
+  await page.getByLabel("Nome").fill("Quem vai embora");
+  await page.getByLabel("E-mail").fill(email);
+  await page.getByLabel("Senha").fill("senha-forte-123");
+  await page.getByRole("button", { name: /Criar conta/ }).click();
+  await page.getByLabel("Código").fill(await codigoEnviadoPara(email));
+  await expect(page).toHaveURL(/\/minhas-campanhas/);
+
+  await page.goto("/excluir-conta");
+  await expect(page.getByText(email)).toBeVisible();
+  page.on("dialog", (d) => d.accept());
+  await page.getByLabel("Sua senha").fill("errada-123");
+  await page.getByRole("button", { name: /Excluir minha conta/ }).click();
+  await expect(page.getByText("Senha incorreta.")).toBeVisible();
+  await page.getByLabel("Sua senha").fill("senha-forte-123");
+  await page.getByRole("button", { name: /Excluir minha conta/ }).click();
+  await expect(page.getByText("Conta excluída.")).toBeVisible();
+
+  await entrar(page, email, "senha-forte-123");
+  await expect(page.getByText(/E-mail ou senha/)).toBeVisible();
+});

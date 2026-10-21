@@ -15,6 +15,11 @@ export const PAGINAS: Array<{ caminho: string; titulo: string; descricao: string
   { caminho: "/", titulo: "Esquadrão Lendário — monte o esquadrão dos sonhos", descricao: DESCRICAO_PADRAO },
   ...GUIAS.map((g) => ({ caminho: g.to, titulo: `${g.titulo} — Esquadrão Lendário`, descricao: g.resumo })),
   {
+    caminho: "/excluir-conta",
+    titulo: "Excluir conta — Esquadrão Lendário",
+    descricao: "Como excluir a sua conta do Esquadrão Lendário e as suas campanhas, pelo site ou pelo app.",
+  },
+  {
     caminho: "/privacidade",
     titulo: "Política de privacidade — Esquadrão Lendário",
     descricao: "O que o Esquadrão Lendário guarda, para quê, cookies e anúncios do Google, e como pedir para apagar seus dados (LGPD).",
