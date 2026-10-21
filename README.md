@@ -49,7 +49,8 @@ elencos importados.
 | `/esqueci-senha` | E-mail → código de 6 números → nova senha, e já entra |
 | `/minhas-campanhas` | Histórico (só com conta) |
 | `/c/:codigo` | Resumo público de uma campanha (link compartilhado) |
-| `/privacidade` | Política de privacidade (dados, cookies e anúncios do Google, LGPD) |
+| `/privacidade` | Política de privacidade do site e do app (dados, AdSense/AdMob, compras, exclusão, LGPD). É o link de privacidade das lojas |
+| `/excluir-conta` | Excluir a conta (pede a senha). É o link de exclusão de conta do Google Play |
 | `/como-jogar`, `/posicoes-e-formacoes`, `/como-funciona-a-simulacao`, `/perguntas-frequentes`, `/sobre` | Guias com conteúdo próprio (pré-renderizados no build, com anúncio) |
 | `/grupos`, `/grupos/:codigo` | Campanha em grupo |
 | `/admin/login` | Login do painel administrativo (só admins, tabela separada dos jogadores) |

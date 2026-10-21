@@ -84,6 +84,8 @@ export const api = {
   redefinirSenha: (dados: { email: string; codigo: string; senha: string }) =>
     request<Sessao>("/auth/redefinir-senha", { method: "POST", body: dados, autenticado: false }),
   me: () => request<Usuario>("/me"),
+  /** Deletes the account for good (asks for the password again). */
+  excluirConta: (senha: string) => request<{ excluida: true }>("/me/excluir", { method: "POST", body: { senha } }),
 
   criarCampanha: (dados: { competicao: string; formacao: string; estilo: Estilo }) =>
     request<Campanha>("/campanhas", { method: "POST", body: dados }),
