@@ -16,6 +16,7 @@ import { Route as ComoJogarRouteImport } from './routes/como-jogar'
 import { Route as ConfirmarEmailRouteImport } from './routes/confirmar-email'
 import { Route as EntrarRouteImport } from './routes/entrar'
 import { Route as EsqueciSenhaRouteImport } from './routes/esqueci-senha'
+import { Route as ExcluirContaRouteImport } from './routes/excluir-conta'
 import { Route as MinhasCampanhasRouteImport } from './routes/minhas-campanhas'
 import { Route as PerguntasFrequentesRouteImport } from './routes/perguntas-frequentes'
 import { Route as PosicoesEFormacoesRouteImport } from './routes/posicoes-e-formacoes'
@@ -72,6 +73,11 @@ const EntrarRoute = EntrarRouteImport.update({
 const EsqueciSenhaRoute = EsqueciSenhaRouteImport.update({
   id: '/esqueci-senha',
   path: '/esqueci-senha',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ExcluirContaRoute = ExcluirContaRouteImport.update({
+  id: '/excluir-conta',
+  path: '/excluir-conta',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MinhasCampanhasRoute = MinhasCampanhasRouteImport.update({
@@ -198,6 +204,7 @@ export interface FileRoutesByFullPath {
   '/confirmar-email': typeof ConfirmarEmailRoute
   '/entrar': typeof EntrarRoute
   '/esqueci-senha': typeof EsqueciSenhaRoute
+  '/excluir-conta': typeof ExcluirContaRoute
   '/minhas-campanhas': typeof MinhasCampanhasRoute
   '/perguntas-frequentes': typeof PerguntasFrequentesRoute
   '/posicoes-e-formacoes': typeof PosicoesEFormacoesRoute
@@ -229,6 +236,7 @@ export interface FileRoutesByTo {
   '/confirmar-email': typeof ConfirmarEmailRoute
   '/entrar': typeof EntrarRoute
   '/esqueci-senha': typeof EsqueciSenhaRoute
+  '/excluir-conta': typeof ExcluirContaRoute
   '/minhas-campanhas': typeof MinhasCampanhasRoute
   '/perguntas-frequentes': typeof PerguntasFrequentesRoute
   '/posicoes-e-formacoes': typeof PosicoesEFormacoesRoute
@@ -260,6 +268,7 @@ export interface FileRoutesById {
   '/confirmar-email': typeof ConfirmarEmailRoute
   '/entrar': typeof EntrarRoute
   '/esqueci-senha': typeof EsqueciSenhaRoute
+  '/excluir-conta': typeof ExcluirContaRoute
   '/minhas-campanhas': typeof MinhasCampanhasRoute
   '/perguntas-frequentes': typeof PerguntasFrequentesRoute
   '/posicoes-e-formacoes': typeof PosicoesEFormacoesRoute
@@ -293,6 +302,7 @@ export interface FileRouteTypes {
     | '/confirmar-email'
     | '/entrar'
     | '/esqueci-senha'
+    | '/excluir-conta'
     | '/minhas-campanhas'
     | '/perguntas-frequentes'
     | '/posicoes-e-formacoes'
@@ -324,6 +334,7 @@ export interface FileRouteTypes {
     | '/confirmar-email'
     | '/entrar'
     | '/esqueci-senha'
+    | '/excluir-conta'
     | '/minhas-campanhas'
     | '/perguntas-frequentes'
     | '/posicoes-e-formacoes'
@@ -354,6 +365,7 @@ export interface FileRouteTypes {
     | '/confirmar-email'
     | '/entrar'
     | '/esqueci-senha'
+    | '/excluir-conta'
     | '/minhas-campanhas'
     | '/perguntas-frequentes'
     | '/posicoes-e-formacoes'
@@ -386,6 +398,7 @@ export interface RootRouteChildren {
   ConfirmarEmailRoute: typeof ConfirmarEmailRoute
   EntrarRoute: typeof EntrarRoute
   EsqueciSenhaRoute: typeof EsqueciSenhaRoute
+  ExcluirContaRoute: typeof ExcluirContaRoute
   MinhasCampanhasRoute: typeof MinhasCampanhasRoute
   PerguntasFrequentesRoute: typeof PerguntasFrequentesRoute
   PosicoesEFormacoesRoute: typeof PosicoesEFormacoesRoute
@@ -450,6 +463,13 @@ declare module '@tanstack/react-router' {
       path: '/esqueci-senha'
       fullPath: '/esqueci-senha'
       preLoaderRoute: typeof EsqueciSenhaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/excluir-conta': {
+      id: '/excluir-conta'
+      path: '/excluir-conta'
+      fullPath: '/excluir-conta'
+      preLoaderRoute: typeof ExcluirContaRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/minhas-campanhas': {
@@ -645,6 +665,7 @@ const rootRouteChildren: RootRouteChildren = {
   ConfirmarEmailRoute: ConfirmarEmailRoute,
   EntrarRoute: EntrarRoute,
   EsqueciSenhaRoute: EsqueciSenhaRoute,
+  ExcluirContaRoute: ExcluirContaRoute,
   MinhasCampanhasRoute: MinhasCampanhasRoute,
   PerguntasFrequentesRoute: PerguntasFrequentesRoute,
   PosicoesEFormacoesRoute: PosicoesEFormacoesRoute,
