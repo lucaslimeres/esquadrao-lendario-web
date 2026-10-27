@@ -52,6 +52,8 @@ elencos importados.
 | `/privacidade` | Política de privacidade do site e do app (dados, AdSense/AdMob, compras, exclusão, LGPD). É o link de privacidade das lojas |
 | `/excluir-conta` | Excluir a conta (pede a senha). É o link de exclusão de conta do Google Play |
 | `/como-jogar`, `/posicoes-e-formacoes`, `/como-funciona-a-simulacao`, `/perguntas-frequentes`, `/sobre` | Guias com conteúdo próprio (pré-renderizados no build, com anúncio) |
+| `/campeoes`, `/campeoes/:competicao`, `/campeoes/:competicao/:ano` | Galeria de campeões: todos os elencos da base, por competição, e a página de cada título (texto gerado dos dados, elenco, melhor XI, posição entre os campeões, quanto é sorteado e escalado). Pré-renderizada, com anúncio |
+| `/estatisticas` | Estatísticas das campanhas solo: taxa de título por competição, formação e estilo, craques mais escalados e artilheiros. Pré-renderizada, com anúncio |
 | `/grupos`, `/grupos/:codigo` | Campanha em grupo |
 | `/admin/login` | Login do painel administrativo (só admins, tabela separada dos jogadores) |
 | `/admin` | Dashboard: jogadores, campanhas, taxa de título, base e competições |
@@ -67,7 +69,13 @@ HTML já renderizado das páginas de conteúdo (landing, guias e privacidade) em
 `sitemap.xml` e `robots.txt`. O shell vazio da SPA fica em `dist/app.html`, e o
 `vercel.json` reescreve para ele toda rota que não é arquivo (a Vercel serve os arquivos
 pré-renderizados primeiro). Na landing, as competições vêm da API no build (até 5 s; sem
-API, sai o "Carregando…" e o navegador busca depois). Configure `VITE_API_URL` no projeto da Vercel e libere o
+API, sai o "Carregando…" e o navegador busca depois). A galeria de campeões e as
+estatísticas também são pré-renderizadas: o build lê `GET /galeria` e gera uma página por
+competição e por título, mais `/estatisticas`, todas no sitemap. Sem API no build, essas
+páginas ficam fora do pré-render e do sitemap (o shell busca os dados no navegador). O HTML
+pré-renderizado é uma foto do momento do deploy; o navegador sempre atualiza com os dados
+ao vivo (a API guarda em cache por 10 minutos). Elenco novo publicado no painel só entra
+no HTML e no sitemap no próximo deploy. Configure `VITE_API_URL` no projeto da Vercel e libere o
 domínio do site no `CORS_ORIGIN` da API.
 
 ## Anúncios (Google AdSense)
@@ -80,7 +88,7 @@ quando o Google não tem anúncio para ela. Posições:
 | Posição | Onde |
 |---|---|
 | `landing` | Landing, entre "Regras" e "App mobile" |
-| `conteudo` | Guias (`/como-jogar`, `/posicoes-e-formacoes`, `/como-funciona-a-simulacao`, `/perguntas-frequentes`, `/sobre`), depois do texto |
+| `conteudo` | Guias (`/como-jogar`, `/posicoes-e-formacoes`, `/como-funciona-a-simulacao`, `/perguntas-frequentes`, `/sobre`), galeria de campeões (`/campeoes/...`) e `/estatisticas`, depois do conteúdo |
 
 **Só em página com conteúdo editorial.** O AdSense recusa anúncio em tela sem conteúdo do
 editor, em construção ou usada para navegação/ações (outubro de 2026: o site foi recusado

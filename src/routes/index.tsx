@@ -175,6 +175,14 @@ function Competicoes() {
           ))}
         </ul>
       )}
+      <p className="mt-6 flex flex-wrap gap-x-6 gap-y-2">
+        <Link to="/campeoes" className="inline-flex items-center gap-2 font-semibold underline-offset-4 hover:underline">
+          Conheça os elencos campeões da base <ArrowRight className="size-4" aria-hidden />
+        </Link>
+        <Link to="/estatisticas" className="inline-flex items-center gap-2 font-semibold underline-offset-4 hover:underline">
+          Veja as estatísticas das campanhas <ArrowRight className="size-4" aria-hidden />
+        </Link>
+      </p>
     </Secao>
   );
 }

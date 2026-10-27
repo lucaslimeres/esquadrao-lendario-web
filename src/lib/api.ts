@@ -1,5 +1,5 @@
 import { config } from "./config";
-import type { Campanha, CampanhaPublica, CampanhaResumo, Competicao, Estilo, FinalidadeCodigo, Formacao, Grupo, GrupoAberto, MeuGrupo, Sessao, Usuario, Visibilidade } from "./tipos";
+import type { Campanha, CampanhaPublica, CampanhaResumo, Competicao, Estatisticas, Estilo, FinalidadeCodigo, Formacao, Galeria, Grupo, TituloGaleria, GrupoAberto, MeuGrupo, Sessao, Usuario, Visibilidade } from "./tipos";
 
 /** Error coming from the API: `{ erro, codigo }` with a pt-BR message ready for the UI. */
 export class ApiError extends Error {
@@ -100,6 +100,12 @@ export const api = {
   proximaPartida: (id: string) =>
     request<{ partida: Campanha["partidas"][number]; campanha: Campanha }>(`/campanhas/${id}/proxima-partida`, { method: "POST" }),
   compartilhada: (codigo: string) => request<CampanhaPublica>(`/compartilhar/${codigo}`, { autenticado: false }),
+  // Galeria de campeões e estatísticas (públicas)
+  galeria: () => request<Galeria>("/galeria", { autenticado: false }),
+  tituloGaleria: (competicao: string, temporada: number) =>
+    request<TituloGaleria>(`/galeria/${encodeURIComponent(competicao)}/${temporada}`, { autenticado: false }),
+  estatisticas: () => request<Estatisticas>("/estatisticas", { autenticado: false }),
+
   // Campanha em grupo
   gruposAbertos: (competicao?: string) =>
     request<GrupoAberto[]>(`/grupos/abertos${competicao ? `?competicao=${encodeURIComponent(competicao)}` : ""}`, { autenticado: false }),

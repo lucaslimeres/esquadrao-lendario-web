@@ -16,6 +16,7 @@ import { Route as ComoJogarRouteImport } from './routes/como-jogar'
 import { Route as ConfirmarEmailRouteImport } from './routes/confirmar-email'
 import { Route as EntrarRouteImport } from './routes/entrar'
 import { Route as EsqueciSenhaRouteImport } from './routes/esqueci-senha'
+import { Route as EstatisticasRouteImport } from './routes/estatisticas'
 import { Route as ExcluirContaRouteImport } from './routes/excluir-conta'
 import { Route as MinhasCampanhasRouteImport } from './routes/minhas-campanhas'
 import { Route as PerguntasFrequentesRouteImport } from './routes/perguntas-frequentes'
@@ -26,6 +27,7 @@ import { Route as AdminPainelRouteImport } from './routes/admin/_painel'
 import { Route as AdminEsqueciSenhaRouteImport } from './routes/admin/esqueci-senha'
 import { Route as AdminLoginRouteImport } from './routes/admin/login'
 import { Route as CCodigoRouteImport } from './routes/c/$codigo'
+import { Route as CampeoesIndexRouteImport } from './routes/campeoes/index'
 import { Route as GruposIndexRouteImport } from './routes/grupos/index'
 import { Route as GruposCodigoRouteImport } from './routes/grupos/$codigo'
 import { Route as JogarIndexRouteImport } from './routes/jogar/index'
@@ -35,6 +37,8 @@ import { Route as AdminPainelAdministradoresRouteImport } from './routes/admin/_
 import { Route as AdminPainelConfiguracoesRouteImport } from './routes/admin/_painel/configuracoes'
 import { Route as AdminPainelMensagensRouteImport } from './routes/admin/_painel/mensagens'
 import { Route as AdminPainelUsuariosRouteImport } from './routes/admin/_painel/usuarios'
+import { Route as CampeoesCompeticaoIndexRouteImport } from './routes/campeoes/$competicao/index'
+import { Route as CampeoesCompeticaoTemporadaRouteImport } from './routes/campeoes/$competicao/$temporada'
 import { Route as AdminPainelBaseIndexRouteImport } from './routes/admin/_painel/base/index'
 import { Route as AdminPainelBaseCompeticoesIdRouteImport } from './routes/admin/_painel/base/competicoes.$id'
 import { Route as AdminPainelBaseElencosIdRouteImport } from './routes/admin/_painel/base/elencos.$id'
@@ -73,6 +77,11 @@ const EntrarRoute = EntrarRouteImport.update({
 const EsqueciSenhaRoute = EsqueciSenhaRouteImport.update({
   id: '/esqueci-senha',
   path: '/esqueci-senha',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EstatisticasRoute = EstatisticasRouteImport.update({
+  id: '/estatisticas',
+  path: '/estatisticas',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ExcluirContaRoute = ExcluirContaRouteImport.update({
@@ -125,6 +134,11 @@ const CCodigoRoute = CCodigoRouteImport.update({
   path: '/c/$codigo',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CampeoesIndexRoute = CampeoesIndexRouteImport.update({
+  id: '/campeoes/',
+  path: '/campeoes/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const GruposIndexRoute = GruposIndexRouteImport.update({
   id: '/grupos/',
   path: '/grupos/',
@@ -172,6 +186,17 @@ const AdminPainelUsuariosRoute = AdminPainelUsuariosRouteImport.update({
   path: '/usuarios',
   getParentRoute: () => AdminPainelRoute,
 } as any)
+const CampeoesCompeticaoIndexRoute = CampeoesCompeticaoIndexRouteImport.update({
+  id: '/campeoes/$competicao/',
+  path: '/campeoes/$competicao/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CampeoesCompeticaoTemporadaRoute =
+  CampeoesCompeticaoTemporadaRouteImport.update({
+    id: '/campeoes/$competicao/$temporada',
+    path: '/campeoes/$competicao/$temporada',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const AdminPainelBaseIndexRoute = AdminPainelBaseIndexRouteImport.update({
   id: '/base/',
   path: '/base/',
@@ -204,6 +229,7 @@ export interface FileRoutesByFullPath {
   '/confirmar-email': typeof ConfirmarEmailRoute
   '/entrar': typeof EntrarRoute
   '/esqueci-senha': typeof EsqueciSenhaRoute
+  '/estatisticas': typeof EstatisticasRoute
   '/excluir-conta': typeof ExcluirContaRoute
   '/minhas-campanhas': typeof MinhasCampanhasRoute
   '/perguntas-frequentes': typeof PerguntasFrequentesRoute
@@ -216,13 +242,16 @@ export interface FileRoutesByFullPath {
   '/c/$codigo': typeof CCodigoRoute
   '/grupos/$codigo': typeof GruposCodigoRoute
   '/jogar/$id': typeof JogarIdRoute
+  '/campeoes/': typeof CampeoesIndexRoute
   '/grupos/': typeof GruposIndexRoute
   '/jogar/': typeof JogarIndexRoute
   '/admin/administradores': typeof AdminPainelAdministradoresRoute
   '/admin/configuracoes': typeof AdminPainelConfiguracoesRoute
   '/admin/mensagens': typeof AdminPainelMensagensRoute
   '/admin/usuarios': typeof AdminPainelUsuariosRoute
+  '/campeoes/$competicao/$temporada': typeof CampeoesCompeticaoTemporadaRoute
   '/admin/': typeof AdminPainelIndexRoute
+  '/campeoes/$competicao/': typeof CampeoesCompeticaoIndexRoute
   '/admin/base/': typeof AdminPainelBaseIndexRoute
   '/admin/base/competicoes/$id': typeof AdminPainelBaseCompeticoesIdRoute
   '/admin/base/elencos/$id': typeof AdminPainelBaseElencosIdRoute
@@ -236,6 +265,7 @@ export interface FileRoutesByTo {
   '/confirmar-email': typeof ConfirmarEmailRoute
   '/entrar': typeof EntrarRoute
   '/esqueci-senha': typeof EsqueciSenhaRoute
+  '/estatisticas': typeof EstatisticasRoute
   '/excluir-conta': typeof ExcluirContaRoute
   '/minhas-campanhas': typeof MinhasCampanhasRoute
   '/perguntas-frequentes': typeof PerguntasFrequentesRoute
@@ -247,13 +277,16 @@ export interface FileRoutesByTo {
   '/c/$codigo': typeof CCodigoRoute
   '/grupos/$codigo': typeof GruposCodigoRoute
   '/jogar/$id': typeof JogarIdRoute
+  '/campeoes': typeof CampeoesIndexRoute
   '/grupos': typeof GruposIndexRoute
   '/jogar': typeof JogarIndexRoute
   '/admin/administradores': typeof AdminPainelAdministradoresRoute
   '/admin/configuracoes': typeof AdminPainelConfiguracoesRoute
   '/admin/mensagens': typeof AdminPainelMensagensRoute
   '/admin/usuarios': typeof AdminPainelUsuariosRoute
+  '/campeoes/$competicao/$temporada': typeof CampeoesCompeticaoTemporadaRoute
   '/admin': typeof AdminPainelIndexRoute
+  '/campeoes/$competicao': typeof CampeoesCompeticaoIndexRoute
   '/admin/base': typeof AdminPainelBaseIndexRoute
   '/admin/base/competicoes/$id': typeof AdminPainelBaseCompeticoesIdRoute
   '/admin/base/elencos/$id': typeof AdminPainelBaseElencosIdRoute
@@ -268,6 +301,7 @@ export interface FileRoutesById {
   '/confirmar-email': typeof ConfirmarEmailRoute
   '/entrar': typeof EntrarRoute
   '/esqueci-senha': typeof EsqueciSenhaRoute
+  '/estatisticas': typeof EstatisticasRoute
   '/excluir-conta': typeof ExcluirContaRoute
   '/minhas-campanhas': typeof MinhasCampanhasRoute
   '/perguntas-frequentes': typeof PerguntasFrequentesRoute
@@ -280,13 +314,16 @@ export interface FileRoutesById {
   '/c/$codigo': typeof CCodigoRoute
   '/grupos/$codigo': typeof GruposCodigoRoute
   '/jogar/$id': typeof JogarIdRoute
+  '/campeoes/': typeof CampeoesIndexRoute
   '/grupos/': typeof GruposIndexRoute
   '/jogar/': typeof JogarIndexRoute
   '/admin/_painel/administradores': typeof AdminPainelAdministradoresRoute
   '/admin/_painel/configuracoes': typeof AdminPainelConfiguracoesRoute
   '/admin/_painel/mensagens': typeof AdminPainelMensagensRoute
   '/admin/_painel/usuarios': typeof AdminPainelUsuariosRoute
+  '/campeoes/$competicao/$temporada': typeof CampeoesCompeticaoTemporadaRoute
   '/admin/_painel/': typeof AdminPainelIndexRoute
+  '/campeoes/$competicao/': typeof CampeoesCompeticaoIndexRoute
   '/admin/_painel/base/': typeof AdminPainelBaseIndexRoute
   '/admin/_painel/base/competicoes/$id': typeof AdminPainelBaseCompeticoesIdRoute
   '/admin/_painel/base/elencos/$id': typeof AdminPainelBaseElencosIdRoute
@@ -302,6 +339,7 @@ export interface FileRouteTypes {
     | '/confirmar-email'
     | '/entrar'
     | '/esqueci-senha'
+    | '/estatisticas'
     | '/excluir-conta'
     | '/minhas-campanhas'
     | '/perguntas-frequentes'
@@ -314,13 +352,16 @@ export interface FileRouteTypes {
     | '/c/$codigo'
     | '/grupos/$codigo'
     | '/jogar/$id'
+    | '/campeoes/'
     | '/grupos/'
     | '/jogar/'
     | '/admin/administradores'
     | '/admin/configuracoes'
     | '/admin/mensagens'
     | '/admin/usuarios'
+    | '/campeoes/$competicao/$temporada'
     | '/admin/'
+    | '/campeoes/$competicao/'
     | '/admin/base/'
     | '/admin/base/competicoes/$id'
     | '/admin/base/elencos/$id'
@@ -334,6 +375,7 @@ export interface FileRouteTypes {
     | '/confirmar-email'
     | '/entrar'
     | '/esqueci-senha'
+    | '/estatisticas'
     | '/excluir-conta'
     | '/minhas-campanhas'
     | '/perguntas-frequentes'
@@ -345,13 +387,16 @@ export interface FileRouteTypes {
     | '/c/$codigo'
     | '/grupos/$codigo'
     | '/jogar/$id'
+    | '/campeoes'
     | '/grupos'
     | '/jogar'
     | '/admin/administradores'
     | '/admin/configuracoes'
     | '/admin/mensagens'
     | '/admin/usuarios'
+    | '/campeoes/$competicao/$temporada'
     | '/admin'
+    | '/campeoes/$competicao'
     | '/admin/base'
     | '/admin/base/competicoes/$id'
     | '/admin/base/elencos/$id'
@@ -365,6 +410,7 @@ export interface FileRouteTypes {
     | '/confirmar-email'
     | '/entrar'
     | '/esqueci-senha'
+    | '/estatisticas'
     | '/excluir-conta'
     | '/minhas-campanhas'
     | '/perguntas-frequentes'
@@ -377,13 +423,16 @@ export interface FileRouteTypes {
     | '/c/$codigo'
     | '/grupos/$codigo'
     | '/jogar/$id'
+    | '/campeoes/'
     | '/grupos/'
     | '/jogar/'
     | '/admin/_painel/administradores'
     | '/admin/_painel/configuracoes'
     | '/admin/_painel/mensagens'
     | '/admin/_painel/usuarios'
+    | '/campeoes/$competicao/$temporada'
     | '/admin/_painel/'
+    | '/campeoes/$competicao/'
     | '/admin/_painel/base/'
     | '/admin/_painel/base/competicoes/$id'
     | '/admin/_painel/base/elencos/$id'
@@ -398,6 +447,7 @@ export interface RootRouteChildren {
   ConfirmarEmailRoute: typeof ConfirmarEmailRoute
   EntrarRoute: typeof EntrarRoute
   EsqueciSenhaRoute: typeof EsqueciSenhaRoute
+  EstatisticasRoute: typeof EstatisticasRoute
   ExcluirContaRoute: typeof ExcluirContaRoute
   MinhasCampanhasRoute: typeof MinhasCampanhasRoute
   PerguntasFrequentesRoute: typeof PerguntasFrequentesRoute
@@ -410,8 +460,11 @@ export interface RootRouteChildren {
   CCodigoRoute: typeof CCodigoRoute
   GruposCodigoRoute: typeof GruposCodigoRoute
   JogarIdRoute: typeof JogarIdRoute
+  CampeoesIndexRoute: typeof CampeoesIndexRoute
   GruposIndexRoute: typeof GruposIndexRoute
   JogarIndexRoute: typeof JogarIndexRoute
+  CampeoesCompeticaoTemporadaRoute: typeof CampeoesCompeticaoTemporadaRoute
+  CampeoesCompeticaoIndexRoute: typeof CampeoesCompeticaoIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -463,6 +516,13 @@ declare module '@tanstack/react-router' {
       path: '/esqueci-senha'
       fullPath: '/esqueci-senha'
       preLoaderRoute: typeof EsqueciSenhaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/estatisticas': {
+      id: '/estatisticas'
+      path: '/estatisticas'
+      fullPath: '/estatisticas'
+      preLoaderRoute: typeof EstatisticasRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/excluir-conta': {
@@ -535,6 +595,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CCodigoRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/campeoes/': {
+      id: '/campeoes/'
+      path: '/campeoes'
+      fullPath: '/campeoes/'
+      preLoaderRoute: typeof CampeoesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/grupos/': {
       id: '/grupos/'
       path: '/grupos'
@@ -597,6 +664,20 @@ declare module '@tanstack/react-router' {
       fullPath: '/admin/usuarios'
       preLoaderRoute: typeof AdminPainelUsuariosRouteImport
       parentRoute: typeof AdminPainelRoute
+    }
+    '/campeoes/$competicao/': {
+      id: '/campeoes/$competicao/'
+      path: '/campeoes/$competicao'
+      fullPath: '/campeoes/$competicao/'
+      preLoaderRoute: typeof CampeoesCompeticaoIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/campeoes/$competicao/$temporada': {
+      id: '/campeoes/$competicao/$temporada'
+      path: '/campeoes/$competicao/$temporada'
+      fullPath: '/campeoes/$competicao/$temporada'
+      preLoaderRoute: typeof CampeoesCompeticaoTemporadaRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/admin/_painel/base/': {
       id: '/admin/_painel/base/'
@@ -665,6 +746,7 @@ const rootRouteChildren: RootRouteChildren = {
   ConfirmarEmailRoute: ConfirmarEmailRoute,
   EntrarRoute: EntrarRoute,
   EsqueciSenhaRoute: EsqueciSenhaRoute,
+  EstatisticasRoute: EstatisticasRoute,
   ExcluirContaRoute: ExcluirContaRoute,
   MinhasCampanhasRoute: MinhasCampanhasRoute,
   PerguntasFrequentesRoute: PerguntasFrequentesRoute,
@@ -677,8 +759,11 @@ const rootRouteChildren: RootRouteChildren = {
   CCodigoRoute: CCodigoRoute,
   GruposCodigoRoute: GruposCodigoRoute,
   JogarIdRoute: JogarIdRoute,
+  CampeoesIndexRoute: CampeoesIndexRoute,
   GruposIndexRoute: GruposIndexRoute,
   JogarIndexRoute: JogarIndexRoute,
+  CampeoesCompeticaoTemporadaRoute: CampeoesCompeticaoTemporadaRoute,
+  CampeoesCompeticaoIndexRoute: CampeoesCompeticaoIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

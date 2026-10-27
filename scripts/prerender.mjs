@@ -14,9 +14,12 @@ await writeFile(join(DIST, "app.html"), casca);
 
 const vite = await createServer({ server: { middlewareMode: true }, appType: "custom", logLevel: "error" });
 try {
-  const { renderizar, PAGINAS } = await vite.ssrLoadModule("/src/prerender.tsx");
-  for (const pagina of PAGINAS) {
-    const html = await renderizar(pagina.caminho);
+  const { renderizar, listarPaginas } = await vite.ssrLoadModule("/src/prerender.tsx");
+  const prontas = [];
+  for (const pagina of await listarPaginas()) {
+    const html = await renderizar(pagina);
+    if (html === null) continue;
+    prontas.push(pagina);
     const final = casca
       .replace(/<title>.*?<\/title>/s, `<title>${escapar(pagina.titulo)}</title>`)
       .replace(/(<meta\s+name="description"\s+content=")[^"]*(")/s, `$1${escapar(pagina.descricao)}$2`)
@@ -30,7 +33,7 @@ try {
   const hoje = new Date().toISOString().slice(0, 10);
   await writeFile(
     join(DIST, "sitemap.xml"),
-    `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${PAGINAS.map(
+    `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${prontas.map(
       (p) => `  <url><loc>${SITE}${p.caminho}</loc><lastmod>${hoje}</lastmod></url>`,
     ).join("\n")}\n</urlset>\n`,
   );

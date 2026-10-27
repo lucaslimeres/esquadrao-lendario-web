@@ -267,3 +267,60 @@ export interface MeuGrupo {
   criadoEm: string;
   encerradoEm: string | null;
 }
+
+// ───────────────────────── Galeria de campeões e estatísticas ─────────────────────────
+
+export type EquipeGaleria = ElencoResumo["equipe"];
+
+export interface TituloResumo {
+  temporada: number;
+  equipe: EquipeGaleria;
+  overallTime: number | null;
+  totalJogadores: number;
+  craque: { nome: string; posicao: Posicao; overall: number } | null;
+  vezesSorteado: number;
+}
+
+export interface Galeria {
+  resumo: { titulos: number; equipes: number; jogadores: number; maioresCampeoes: Array<{ nome: string; titulos: number }> };
+  competicoes: Array<{ slug: string; nome: string; descricao: string | null; formato: Competicao["formato"]; titulos: TituloResumo[] }>;
+}
+
+export interface TituloGaleria {
+  competicao: { slug: string; nome: string; descricao: string | null; formato: Competicao["formato"] };
+  temporada: number;
+  equipe: EquipeGaleria;
+  jogadores: Array<{ nome: string; posicao: Posicao; posicoesSecundarias: Posicao[]; overall: number; vezesEscalado: number }>;
+  melhorXI: { formacao: string; overall: number | null; escalacao: Array<{ vaga: string; posicao: Posicao; nome: string; overall: number; overallEfetivo: number }> };
+  ranking: { posicao: number; total: number; mediaOverall: number };
+  uso: { vezesSorteado: number; vezesEscalados: number; maisEscolhidos: Array<{ nome: string; posicao: Posicao; overall: number; vezesEscalado: number }> };
+  anterior: { temporada: number; equipe: string } | null;
+  proximo: { temporada: number; equipe: string } | null;
+  outrosTitulos: Array<{ competicao: { slug: string; nome: string }; temporada: number }>;
+}
+
+export interface LinhaEstatistica {
+  chave: string;
+  campanhas: number;
+  titulos: number;
+  /** Percent, one decimal (null without finished campaigns). */
+  taxaDeTitulo: number | null;
+}
+
+export interface JogadorDestaque {
+  nome: string;
+  posicao: Posicao;
+  overall: number;
+  total: number;
+  titulo: { competicao: { slug: string; nome: string }; temporada: number; equipe: string };
+}
+
+export interface Estatisticas {
+  atualizadoEm: string;
+  campanhas: { total: number; finalizadas: number; titulos: number; taxaDeTitulo: number | null };
+  porCompeticao: Array<LinhaEstatistica & { nome: string }>;
+  porFormacao: LinhaEstatistica[];
+  porEstilo: LinhaEstatistica[];
+  maisEscalados: JogadorDestaque[];
+  artilheiros: JogadorDestaque[];
+}
