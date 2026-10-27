@@ -57,14 +57,19 @@ estilo shadcn (`radix-ui` + `class-variance-authority`), React Hook Form + Zod e
   - Nunca usar vermelho, escudos, logos ou fotos reais.
 - **Anúncios (AdSense):** só via `EspacoPublicidade` (`components/anuncio.tsx`), no fluxo
   da página, com o rótulo "Publicidade" e altura fixa, e **só em página com conteúdo
-  editorial**: landing (`landing`) e guias (`conteudo`, via `features/guia/artigo.tsx`).
+  editorial**: landing (`landing`), guias (`conteudo`, via `features/guia/artigo.tsx`),
+  galeria de campeões e estatísticas (`conteudo`).
   Nunca em tela de jogo (montagem, campanha, fim, partida ao vivo), grupo, lista, login,
   formulário, link compartilhado ou `/admin` — o AdSense recusa o site por isso. Nunca
   colado em botão.
 - **Páginas de conteúdo pré-renderizadas** (`src/prerender.tsx` + `scripts/prerender.mjs`,
   rodam no `yarn build`): landing, guias (`lib/guias.ts`) e privacidade saem com o HTML
   pronto, sitemap e robots. Página nova de conteúdo entra em `GUIAS`/`PAGINAS`. Rotas
-  restantes caem no shell `app.html` (`vercel.json`). Sem `VITE_ADSENSE_CLIENT`, nada é renderizado. Auto ads fica desligado no
+  restantes caem no shell `app.html` (`vercel.json`). A galeria de campeões (`/campeoes`,
+  `/campeoes/$competicao`, `/campeoes/$competicao/$temporada`) e `/estatisticas` entram por
+  `listarPaginas()`, que lê `GET /galeria` no build (sem API, ficam de fora); cada página
+  declara os dados (`dados`, chaves em `lib/galeria.ts`) e é pulada se eles falharem.
+- Sem `VITE_ADSENSE_CLIENT`, nenhum anúncio é renderizado. Auto ads fica desligado no
   painel do AdSense.
 - **Painel admin** separado de verdade:
   - Nunca usar `lib/api.ts`, `useSessao` ou o token do jogador dentro de `/admin`, e

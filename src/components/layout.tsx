@@ -17,6 +17,9 @@ export function Cabecalho() {
       <Link to="/como-jogar" className="font-semibold hover:text-verde" onClick={() => setAberto(false)}>
         Como jogar
       </Link>
+      <Link to="/campeoes" className="font-semibold hover:text-verde" onClick={() => setAberto(false)}>
+        Campeões
+      </Link>
       <Link to="/" hash="app" className="font-semibold hover:text-verde" onClick={() => setAberto(false)}>
         Baixe o app
       </Link>
@@ -85,6 +88,12 @@ export function Rodape() {
         <Logo />
         <div className="space-y-2 text-sm text-neutro-700 sm:justify-self-end sm:text-right">
           <nav aria-label="Guias" className="flex flex-wrap gap-x-3 gap-y-1 sm:justify-end">
+            <Link to="/campeoes" className="font-semibold text-tinta underline-offset-4 hover:underline">
+              Galeria de campeões
+            </Link>
+            <Link to="/estatisticas" className="font-semibold text-tinta underline-offset-4 hover:underline">
+              Estatísticas
+            </Link>
             {GUIAS.map((g) => (
               <Link key={g.to} to={g.to} className="font-semibold text-tinta underline-offset-4 hover:underline">
                 {g.titulo}
