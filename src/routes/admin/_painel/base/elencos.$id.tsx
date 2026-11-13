@@ -10,7 +10,7 @@ import { Distintivo } from "@/components/jogo/distintivo";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Carregando, Erro } from "@/components/ui/estados";
-import { CamposJogador, FormElenco, FormJogador } from "@/features/admin/forms-base";
+import { CamposJogador, FormElenco, FormEquipe, FormJogador } from "@/features/admin/forms-base";
 import { jogadorVazio, type DadosJogador } from "@/lib/admin-base";
 import { adminApi } from "@/lib/admin-api";
 import type { JogadorAdmin } from "@/lib/admin-tipos";
@@ -26,6 +26,7 @@ function Elenco() {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const [editandoElenco, setEditandoElenco] = useState(false);
+  const [editandoTime, setEditandoTime] = useState(false);
   const [editando, setEditando] = useState<JogadorAdmin | null>(null);
   const { data: e, isPending, isError, refetch } = useQuery({ queryKey: ["admin", "elenco", id], queryFn: () => adminApi.elenco(id) });
   const atualizar = () => queryClient.invalidateQueries({ queryKey: ["admin"] });
@@ -64,6 +65,9 @@ function Elenco() {
       />
       <div className="mb-6 flex flex-wrap items-center gap-4">
         <Distintivo equipe={e.equipe} className="size-12 text-xs" />
+        <Button variant="contorno" tamanho="pequeno" onClick={() => setEditandoTime(true)}>
+          Editar time (nome e cores) <Pencil aria-hidden />
+        </Button>
         {e.completo ? <Badge variant="avancou">Completo: entra no sorteio</Badge> : <Badge variant="contorno">Incompleto: precisa de 11 ativos com goleiro</Badge>}
         <span className="text-sm text-neutro-700">
           {e.jogadoresAtivos} ativos de {e.totalJogadores} · {e.goleirosAtivos} goleiro(s) · usado em {e.usadoEmCampanhas} registro(s) de campanha
@@ -135,6 +139,7 @@ function Elenco() {
       </Tabela>
       {alternarAtivo.error && <div className="mt-3"><Erro mensagem={mensagemErro(alternarAtivo.error)} /></div>}
 
+      {editandoTime && <FormEquipe equipe={e.equipe} aoFechar={() => setEditandoTime(false)} aoSalvar={atualizar} />}
       {editandoElenco && <FormElenco competicaoId={e.competicaoId} elenco={e} aoFechar={() => setEditandoElenco(false)} aoSalvar={atualizar} />}
       {editando && <FormJogador jogador={editando} aoFechar={() => setEditando(null)} aoSalvar={atualizar} />}
     </>
