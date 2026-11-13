@@ -104,7 +104,8 @@ export function CamposEquipe({ valor, mudar }: { valor: DadosEquipe; mudar: (v: 
 
 const equipeVazia: DadosEquipe = { nome: "", sigla: "", pais: "BR", corPrimaria: "#1F5F3F", corSecundaria: "#FFFFFF" };
 
-export function FormEquipe({ equipe, aoFechar, aoSalvar }: DialogoForm<EquipeAdmin> & { equipe?: EquipeAdmin }) {
+/** The team is shared by all its squads: editing name or colors here changes every title of it. */
+export function FormEquipe({ equipe, aoFechar, aoSalvar }: DialogoForm<EquipeAdmin> & { equipe?: Omit<EquipeAdmin, "totalElencos"> }) {
   const [valor, setValor] = useState<DadosEquipe>(equipe ? { nome: equipe.nome, sigla: equipe.sigla, pais: equipe.pais, corPrimaria: equipe.corPrimaria, corSecundaria: equipe.corSecundaria } : equipeVazia);
   const salvar = useMutation({
     mutationFn: () => (equipe ? adminApi.atualizarEquipe(equipe.id, valor) : adminApi.criarEquipe(valor)),
@@ -117,6 +118,7 @@ export function FormEquipe({ equipe, aoFechar, aoSalvar }: DialogoForm<EquipeAdm
     <Dialogo aberto aoMudar={(v) => !v && aoFechar()} titulo={equipe ? "Editar time" : "Novo time"}>
       <form className="space-y-4" onSubmit={(e) => { e.preventDefault(); salvar.mutate(); }}>
         {salvar.error && <Erro mensagem={mensagemErro(salvar.error)} />}
+        {equipe && <p className="text-sm text-neutro-700">Nome, sigla e cores valem para todos os elencos campeões deste time.</p>}
         <CamposEquipe valor={valor} mudar={setValor} />
         <Button type="submit" className="w-full" disabled={salvar.isPending}>{salvar.isPending ? "Salvando…" : "Salvar"}</Button>
       </form>
