@@ -31,7 +31,7 @@ elencos importados.
 | Variável | Uso |
 |---|---|
 | `VITE_API_URL` | URL da API |
-| `VITE_APP_STORE_URL`, `VITE_PLAY_STORE_URL` | Links do app nas lojas. Vazio mostra "Em breve" na landing |
+| `VITE_APP_STORE_URL`, `VITE_PLAY_STORE_URL` | Links do app nas lojas. App Store vazio mostra "Em breve" na landing; o Google Play já tem o link publicado como padrão no código |
 | `VITE_ADSENSE_CLIENT` | ID de editor do AdSense (`ca-pub-…`). Vazio = sem anúncios, sem script do Google |
 | `VITE_ADSENSE_SLOT_LANDING`, `VITE_ADSENSE_SLOT_CONTEUDO` | Bloco de anúncios da landing e o das páginas de guia. Sem o de conteúdo, os guias usam o da landing |
 | `VITE_SITE_URL` | URL pública do site para o sitemap, o robots.txt e o link canônico (padrão `https://www.esquadraolendario.com.br`) |
