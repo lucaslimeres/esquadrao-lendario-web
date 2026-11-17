@@ -59,7 +59,7 @@ function ComoJogar() {
               <strong>Posição de origem:</strong> o jogador entra com o overall cheio.
             </>,
             <>
-              <strong>Posição secundária:</strong> ele também pode jogar, mas rende um pouco menos (o overall cai cerca de 7%).
+              <strong>Posição secundária:</strong> ele também pode jogar, com o mesmo overall.
             </>,
             <>
               <strong>Re-sorteios:</strong> não gostou do time que caiu? Você tem três trocas por campanha. Use com cuidado: a vaga mais

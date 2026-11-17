@@ -29,8 +29,8 @@ export function Campo({ vagas, destacadas = [], aoEscolherVaga, mostrarNomes = t
           >
             <BlocoVaga vaga={vaga} destacada={destacada} onClick={destacada && aoEscolherVaga ? () => aoEscolherVaga(vaga.codigo) : undefined} />
             {mostrarNomes && vaga.jogador && (
-              <span className="mt-1 max-w-20 truncate bg-papel px-1 text-[11px] font-semibold leading-tight sm:max-w-24 sm:text-xs">
-                {sobrenome(vaga.jogador.nome)}
+              <span className="mt-1 w-20 bg-papel px-1 text-center text-[11px] font-semibold leading-tight break-words sm:w-24 sm:text-xs">
+                {vaga.jogador.nome}
               </span>
             )}
           </div>
@@ -80,11 +80,6 @@ function BlocoVaga({ vaga, destacada, onClick }: { vaga: VagaCampanha; destacada
       <span className="font-display text-xl sm:text-2xl">{Math.round(jogador.overallEfetivo)}</span>
     </div>
   );
-}
-
-function sobrenome(nome: string): string {
-  const partes = nome.trim().split(/\s+/);
-  return partes.length > 1 && partes.at(-1)!.length > 2 ? partes.at(-1)! : nome;
 }
 
 function LinhasDoCampo() {
