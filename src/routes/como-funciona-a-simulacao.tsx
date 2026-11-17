@@ -23,8 +23,7 @@ function Simulacao() {
 
       <Secao titulo="1. A força de cada setor">
         <p>
-          Primeiro, o jogo calcula o overall efetivo de cada jogador: o overall cheio na posição de origem, um pouco menos numa posição
-          secundária. Com isso, monta três forças por time: ataque, meio-campo e defesa, cada uma somando a contribuição das posições que
+          Primeiro, o jogo pega o overall de cada jogador: o mesmo na posição de origem e nas secundárias. Com isso, monta três forças por time: ataque, meio-campo e defesa, cada uma somando a contribuição das posições que
           atuam naquele setor. O goleiro entra à parte. O estilo também conta: o ofensivo multiplica o ataque por 1,05 e a defesa por 0,95,
           e o defensivo faz o inverso.
         </p>

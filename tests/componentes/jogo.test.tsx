@@ -33,7 +33,7 @@ describe("Campo", () => {
     const { container } = render(<Campo vagas={vagas} destacadas={["CB_1"]} aoEscolherVaga={escolher} />);
     expect(container.querySelector('[data-vaga="GK_1"]')).toHaveAttribute("data-estado", "vazia");
     expect(container.querySelector('[data-vaga="ST_1"]')).toHaveAttribute("data-estado", "preenchida");
-    expect(screen.getByText("Tal")).toBeInTheDocument();
+    expect(screen.getByText("Fulano de Tal")).toBeInTheDocument();
     expect(screen.getAllByRole("button")).toHaveLength(1);
     await userEvent.click(screen.getByRole("button", { name: /vaga CB/ }));
     expect(escolher).toHaveBeenCalledWith("CB_1");
