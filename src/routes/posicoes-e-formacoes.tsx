@@ -54,7 +54,7 @@ function PosicoesEFormacoes() {
       <Secao titulo="Posição de origem e posição secundária">
         <p>
           Todo jogador tem uma posição principal e pode ter posições secundárias, de acordo com o que ele realmente fazia em campo. Na
-          posição principal, ele joga com o overall cheio. Numa posição secundária, rende cerca de 7% menos. Fora dessas posições, ele não
+          posição principal, ele joga com o overall cheio. Numa posição secundária, também. Fora dessas posições, ele não
           pode ser escalado. Na tela de escolha, as vagas da posição principal aparecem em destaque e as secundárias, com o botão em
           contorno.
         </p>
